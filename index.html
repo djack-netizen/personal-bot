@@ -8,3 +8,154 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a2e;--surface3:#2a2a3e;--accent:#00d4ff;--indigo:#6366f1;--text:#e4e4e7;--text2:#a1a1aa;--border:rgba(255,255,255,0.07);--accentGlow:rgba(0,212,255,0.08);--green:#22c55e;--red:#ef4444;--yellow:#eab308;--blue:#3b82f6}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+::selection{background:var(--accent);color:#000}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.layout{display:grid;grid-template-columns:1fr 380px;grid-template-rows:auto auto 1fr;height:100vh}
+.top-banner{grid-column:1/-1;background:#000;padding:12px 24px;display:flex;align-items:center;gap:14px}
+.top-banner img{height:36px;border-radius:8px}
+.top-banner .identity{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:1.5px}
+.top-banner .name{font-weight:600;font-size:14px;color:#fff}
+.top-banner .role{font-size:11px;color:var(--text2);letter-spacing:2px}
+
+.header{grid-column:1/-1;background:var(--surface);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.header-left{display:flex;align-items:baseline;gap:16px}
+.logo{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--indigo));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.greeting{font-size:15px;color:var(--text2)}
+.header-right{display:flex;align-items:center;gap:16px}
+.status-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dot.green{background:var(--green);animation:pulse 2s infinite}
+.dot.red{background:var(--red)}
+.dot.yellow{background:var(--yellow)}
+.dot.blue{background:var(--blue)}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--indigo));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+
+.main{grid-column:1/2;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:24px}
+.quick-actions{display:flex;gap:10px;flex-wrap:wrap}
+.pill{padding:9px 18px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--text);font-size:13px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:7px}
+.pill:hover{border-color:rgba(0,212,255,.4);box-shadow:0 0 16px rgba(0,212,255,.15);transform:translateY(-1px)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;transition:all .2s}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.card-title{font-size:20px;font-weight:700}
+.card-sub{font-size:13px;color:var(--text2);margin-top:4px}
+.badge{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(0,212,255,.15);color:var(--accent)}
+
+.section-label{font-size:13px;font-weight:600;color:var(--text2);margin:14px 0 10px;display:flex;align-items:center;gap:8px}
+.item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px;background:var(--surface2);margin-bottom:6px}
+.item-left{display:flex;align-items:center;gap:10px;font-size:14px}
+.item-time{font-size:12px;color:var(--text2);white-space:nowrap}
+
+.client-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.client-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s;font-size:14px}
+.client-card:hover{border-color:rgba(0,212,255,.3);background:var(--accentGlow);transform:translateY(-1px)}
+
+.chat{grid-column:2/3;grid-row:3/4;border-left:1px solid var(--border);display:flex;flex-direction:column;background:var(--bg)}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;flex-shrink:0}
+.messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:88%;padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.55;animation:fadeIn .3s ease}
+.msg.archy{background:var(--surface2);border:1px solid var(--border);align-self:flex-start}
+.msg.user{background:linear-gradient(135deg,var(--accent),var(--indigo));color:#fff;align-self:flex-end}
+.chat-input{padding:14px 16px;border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0}
+.chat-input input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none}
+.chat-input input:focus{border-color:rgba(0,212,255,.4)}
+.send-btn{width:40px;height:40px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),var(--indigo));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
+@media(max-width:900px){
+.layout{grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto}
+.chat{grid-column:1;grid-row:4;border-left:none;border-top:1px solid var(--border);max-height:45vh}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="top-banner">
+<img src="https://images.squarespace-cdn.com/content/v1/64b151bfedb79c5124ad8a5b/05b2b427-0b03-49d3-bd39-e45dbe4565f8/OPN+Logo.png?format=300w" alt="OPN">
+<div class="identity"><div class="name">DAVID JACK</div><div class="role">Personal Bot</div></div>
+</div>
+
+<div class="header">
+<div class="header-left">
+<span class="logo">David Jack's Personal Bot 🚀</span>
+<span class="greeting" id="greeting"></span>
+</div>
+<div class="header-right">
+<div class="status-badge"><span class="dot green"></span> All systems online</div>
+<div class="avatar">DJ</div>
+</div>
+</div>
+
+<div class="main">
+<div class="quick-actions">
+<button class="pill">📧 Check Email</button>
+<button class="pill">✏️ Draft Email</button>
+<button class="pill">🧹 Clean Inbox</button>
+<button class="pill">📋 Task Board</button>
+<button class="pill">☀️ Morning Brief</button>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div><div class="card-title" id="dateTitle"></div><div class="card-sub">3 items need attention · 2 events today</div></div>
+<span class="badge">Live</span>
+</div>
+<div class="section-label">📧 Emails Needing Attention</div>
+<div class="item"><div class="item-left"><span class="dot red"></span> Royal Sonesta contract renewal</div><div class="item-time">2h ago</div></div>
+<div class="item"><div class="item-left"><span class="dot yellow"></span> Fireclay Q1 campaign</div><div class="item-time">5h ago</div></div>
+<div class="item"><div class="item-left"><span class="dot blue"></span> Blossom influencer deck</div><div class="item-time">Yesterday</div></div>
+<div class="section-label">📅 Today's Calendar</div>
+<div class="item"><div class="item-left"><span class="dot green"></span> Blossom Brand Strategy sync</div><div class="item-time">10:00 AM</div></div>
+<div class="item"><div class="item-left"><span class="dot green"></span> Hotel Washington Creative Review</div><div class="item-time">2:30 PM</div></div>
+<div class="section-label">⚠️ Follow-ups Slipping</div>
+<div class="item"><div class="item-left"><span class="dot red"></span> YTDC/Mercy Me content approval — 3 days overdue</div><div class="item-time" style="color:var(--red)">Overdue</div></div>
+<div class="item"><div class="item-left"><span class="dot yellow"></span> Vue social calendar not confirmed</div><div class="item-time" style="color:var(--yellow)">Due Mon</div></div>
+</div>
+
+<div>
+<div class="card-title" style="margin-bottom:14px">Client Overview</div>
+<div class="client-grid" id="clientGrid"></div>
+</div>
+</div>
+
+<div class="chat">
+<div class="chat-header"><span class="dot green"></span> Personal Assistant</div>
+<div class="messages" id="messages"></div>
+<div class="chat-input"><input type="text" id="chatInput" placeholder="Ask me anything..."><button class="send-btn" id="sendBtn">↑</button></div>
+</div>
+</div>
+
+<script>
+const h=new Date().getHours();
+document.getElementById('greeting').textContent=`Good ${h<12?'morning':h<18?'afternoon':'evening'}, David`;
+document.getElementById('dateTitle').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+const clients=[
+['Royal Sonesta','red'],['Blossom','green'],['YTDC/Mercy Me','yellow'],['Hotel Washington','green'],['Vue','yellow'],['The Spa','green'],['Fireclay','yellow'],['DIAMO','green'],['Royal Restaurant','green'],['Accelerate Long Island','green'],['Yours Truly DC','green']
+];
+const grid=document.getElementById('clientGrid');
+clients.forEach(([n,c])=>{const d=document.createElement('div');d.className='client-card';d.innerHTML=`<span class="dot ${c}"></span>${n}`;grid.appendChild(d)});
+
+const initMsgs=[
+{from:'bot',text:"Good evening, David. You've got 3 emails that need your attention and 2 meetings today. The Royal Sonesta contract renewal is the most time-sensitive — want me to draft a response?"},
+{from:'user',text:"Yes, draft something that acknowledges their terms but asks for a 15-day extension on the review period."},
+{from:'bot',text:"Done — I've drafted a reply to Jennifer at Royal Sonesta. Professional tone, requests a 15-day extension citing internal review process. Want to see it before I send?"},
+{from:'user',text:"Show me the draft first."},
+{from:'bot',text:"Here's the draft: <em>Hi Jennifer, Thank you for sending over the renewal terms. We're reviewing everything internally and would like to request a 15-day extension on the review period to ensure alignment across our team. We remain committed to the partnership and will have our response to you by March 8th. Best, David</em> Want me to send, edit, or hold?"}
+];
+const msgsEl=document.getElementById('messages');
+function addMsg(from,text){const d=document.createElement('div');d.className=`msg ${from==='user'?'user':'archy'}`;d.innerHTML=text;msgsEl.appendChild(d);msgsEl.scrollTop=msgsEl.scrollHeight}
+initMsgs.forEach(m=>addMsg(m.from,m.text));
+
+const input=document.getElementById('chatInput');
+function send(){const t=input.value.trim();if(!t)return;addMsg('user',t);input.value='';setTimeout(()=>addMsg('bot',"I'm on it. Let me look into that for you..."),800)}
+document.getElementById('sendBtn').addEventListener('click',send);
+input.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+</script>
+</body>
+</html>
