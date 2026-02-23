@@ -10,15 +10,15 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a1a;color:#e0e0e0;font-family:'Plus Jakarta Sans',sans-serif;padding:24px;min-height:100vh}
 .container{max-width:1280px;margin:0 auto}
-h1{font-size:1.75rem;font-weight:700;color:#fff;margin-bottom:4px}
-.subtitle{color:#888;font-size:.85rem;margin-bottom:20px}
-.pills{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+h1{font-size:1.75rem;font-weight:700;color:#fff;margin-bottom:4px;text-align:center}
+.subtitle{color:#888;font-size:.85rem;margin-bottom:20px;text-align:center}
+.pills{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:50px;font-size:.8rem;font-weight:500;text-decoration:none;transition:transform .2s,box-shadow .2s}
 .pill:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.4)}
 .pill-fb{background:linear-gradient(135deg,#1877f2,#0a54c4);color:#fff}
 .pill-ig{background:linear-gradient(135deg,#e1306c,#c13584);color:#fff}
 .pill-ads{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
-.toggle-row{display:flex;gap:8px;margin-bottom:24px}
+.toggle-row{display:flex;gap:8px;margin-bottom:24px;justify-content:center}
 .toggle-btn{padding:8px 20px;border-radius:50px;border:1px solid #333;background:transparent;color:#888;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .3s}
 .toggle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border-color:transparent;box-shadow:0 4px 15px rgba(124,58,237,.4)}
 .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:32px}
@@ -61,8 +61,8 @@ footer{text-align:center;padding:24px 0;color:#555;font-size:.75rem;border-top:1
 </head>
 <body>
 <div class="container">
-  <h1>Mercy Me DC &mdash; Paid Ads Dashboard</h1>
-  <p class="subtitle">Meta Ads Performance Overview</p>
+  <h1>Mercy Me DC Paid Ad Dashboard</h1>
+  <p class="subtitle">Powered by <strong>OPN Agency</strong></p>
 
   <div class="pills">
     <a href="https://www.facebook.com/mercymedc" target="_blank" class="pill pill-fb">
