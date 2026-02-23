@@ -16,7 +16,7 @@ body{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif;background:var(-
 .title-area{margin-bottom:36px;text-align:center}
 .title-area h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
 .title-area .powered{color:var(--muted);font-size:.88rem;margin-bottom:14px}
-.social-pills{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
+.social-pills{display:flex;gap:10px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
 .social-pill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--pill);padding:5px 14px;font-size:.78rem;font-weight:600;border:1px solid transparent;background-origin:border-box;background-clip:padding-box,border-box;background-image:linear-gradient(var(--bg),var(--bg)),var(--grad2);color:var(--text);text-decoration:none;transition:all .25s}
 .social-pill:hover{box-shadow:0 0 12px rgba(99,102,241,.3);transform:translateY(-1px)}
 .social-pill svg{width:14px;height:14px;fill:currentColor}
@@ -34,24 +34,27 @@ body{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif;background:var(-
 .kpi-value{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
 .section-title{font-size:1.15rem;font-weight:700;margin-bottom:16px}
 .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);overflow-x:auto;margin-bottom:36px}
-table{width:100%;border-collapse:collapse;min-width:700px}
+table{width:100%;border-collapse:collapse;min-width:600px}
 th{text-align:left;padding:14px 16px;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-bottom:1px solid var(--border)}
 td{padding:14px 16px;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,0.03)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,0.02)}
+td a{color:var(--text);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,0.2);transition:all .2s}
+td a:hover{color:#818cf8;border-bottom-color:#818cf8}
 .pill{display:inline-flex;align-items:center;border-radius:var(--pill);padding:3px 12px;font-size:.73rem;font-weight:600}
 .pill-active{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
-.pill-completed{background:rgba(161,161,170,.15);color:var(--muted)}
-.pill-meta{background:rgba(59,130,246,.12);color:#60a5fa}
-.chart-area{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:24px;margin-bottom:36px}
-.chart-title{font-size:1rem;font-weight:700;margin-bottom:16px}
+.pill-paused{background:rgba(234,179,8,.15);color:#eab308}
 .chart-grid-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
+.chart-area{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:24px;position:relative}
+.chart-title{font-size:1rem;font-weight:700;margin-bottom:16px}
+.chart-canvas-wrap{position:relative;width:100%;height:0;padding-bottom:56%}
+.chart-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
 .footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
 .footer strong{color:var(--text);font-weight:700}
 .data-container{transition:opacity .3s}
 .data-container.switching{opacity:0}
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
-@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}.chart-canvas-wrap{padding-bottom:70%}}
 @media print{
   body{background:#fff;color:#111}
   .kpi-card,.table-wrap,.chart-area{background:#f8f8f8;border:1px solid #ddd;backdrop-filter:none;color:#111}
@@ -67,10 +70,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <h1>Royal Restaurant Paid Ad Dashboard</h1>
     <div class="powered">Powered by <strong>OPN Agency</strong></div>
     <div class="social-pills">
-      <a href="#" class="social-pill"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Meta Ads</a>
+      <a href="https://www.facebook.com/theroyalrestaurantva" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</a>
+      <a href="https://www.instagram.com/theroyalrestaurant" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
+      <a href="https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=10153753733980167" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ads Manager</a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
-      <div class="period-badge" id="periodBadge">Feb 16 – Feb 22, 2025</div>
+      <div class="period-badge" id="periodBadge">Feb 16 – Feb 22, 2026</div>
       <div class="date-pills">
         <div class="date-pill active" onclick="setRange(7)">7 Days</div>
         <div class="date-pill" onclick="setRange(14)">14 Days</div>
@@ -82,7 +87,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="data-container" id="dataContainer">
     <div class="kpi-row fade-in" id="kpiRow"></div>
 
-    <div class="section-title fade-in">Campaign Performance <span style="font-size:.75rem;color:var(--muted);font-weight:400">(Last 30 Days)</span></div>
+    <div class="section-title fade-in">Active Campaigns</div>
     <div class="table-wrap fade-in">
       <table>
         <thead>
@@ -95,81 +100,79 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="chart-grid-row fade-in">
       <div class="chart-area">
         <div class="chart-title">Daily Ad Spend</div>
-        <canvas id="spendChart" height="220"></canvas>
+        <div class="chart-canvas-wrap"><canvas id="spendChart"></canvas></div>
       </div>
       <div class="chart-area">
         <div class="chart-title">Impressions vs Clicks</div>
-        <canvas id="impClickChart" height="220"></canvas>
+        <div class="chart-canvas-wrap"><canvas id="impClickChart"></canvas></div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="footer">
-  Dashboard generated by <strong>OPN Agency</strong> · Data from Meta Ads API · Last updated: February 23, 2026 14:36 UTC
+  Dashboard generated by <strong>OPN Agency</strong> · Data from Meta Ads API · Last updated: February 23, 2026
 </div>
 
 <script>
+const AD_ACCOUNT = '10153753733980167';
+const ADS_MGR = 'https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=' + AD_ACCOUNT;
+
 const DAILY = [
-  {d:'Jan 24',spend:25.71,imp:3834,clicks:273},
-  {d:'Jan 25',spend:28.78,imp:4890,clicks:355},
-  {d:'Jan 26',spend:26.59,imp:4580,clicks:316},
-  {d:'Jan 27',spend:26.56,imp:4213,clicks:325},
-  {d:'Jan 28',spend:25.54,imp:3904,clicks:269},
-  {d:'Jan 29',spend:25.43,imp:3747,clicks:256},
-  {d:'Jan 30',spend:25.83,imp:4202,clicks:286},
-  {d:'Jan 31',spend:25.14,imp:4415,clicks:292},
-  {d:'Feb 1',spend:28.32,imp:5072,clicks:319},
-  {d:'Feb 2',spend:43.42,imp:7680,clicks:509},
-  {d:'Feb 3',spend:45.19,imp:7508,clicks:526},
-  {d:'Feb 4',spend:43.45,imp:6841,clicks:556},
-  {d:'Feb 5',spend:59.84,imp:8697,clicks:666},
-  {d:'Feb 6',spend:75.10,imp:10828,clicks:773},
-  {d:'Feb 7',spend:68.67,imp:10116,clicks:579},
-  {d:'Feb 8',spend:70.66,imp:9893,clicks:584},
-  {d:'Feb 9',spend:43.13,imp:6359,clicks:373},
-  {d:'Feb 10',spend:26.08,imp:3798,clicks:166},
-  {d:'Feb 11',spend:24.94,imp:3999,clicks:161},
-  {d:'Feb 12',spend:25.35,imp:4314,clicks:133},
-  {d:'Feb 13',spend:24.75,imp:3880,clicks:151},
-  {d:'Feb 14',spend:22.45,imp:3707,clicks:131},
-  {d:'Feb 15',spend:25.89,imp:3814,clicks:169},
-  {d:'Feb 16',spend:24.74,imp:3779,clicks:158},
-  {d:'Feb 17',spend:22.18,imp:3432,clicks:160},
-  {d:'Feb 18',spend:22.60,imp:3256,clicks:150},
-  {d:'Feb 19',spend:23.17,imp:3468,clicks:176},
-  {d:'Feb 20',spend:21.23,imp:3129,clicks:171},
-  {d:'Feb 21',spend:20.86,imp:3186,clicks:165},
-  {d:'Feb 22',spend:25.63,imp:4087,clicks:185},
-  {d:'Feb 23',spend:3.74,imp:517,clicks:24}
+  {d:'Jan 24',spend:8.44,imp:1410,clicks:82},
+  {d:'Jan 25',spend:9.00,imp:1744,clicks:91},
+  {d:'Jan 26',spend:8.44,imp:1656,clicks:101},
+  {d:'Jan 27',spend:8.26,imp:1395,clicks:101},
+  {d:'Jan 28',spend:8.13,imp:1239,clicks:74},
+  {d:'Jan 29',spend:7.81,imp:1206,clicks:72},
+  {d:'Jan 30',spend:8.13,imp:1212,clicks:75},
+  {d:'Jan 31',spend:8.34,imp:1384,clicks:98},
+  {d:'Feb 01',spend:8.99,imp:1639,clicks:92},
+  {d:'Feb 02',spend:8.65,imp:1500,clicks:69},
+  {d:'Feb 03',spend:8.07,imp:1363,clicks:58},
+  {d:'Feb 04',spend:7.65,imp:1345,clicks:77},
+  {d:'Feb 05',spend:14.59,imp:2202,clicks:99},
+  {d:'Feb 06',spend:18.47,imp:2668,clicks:96},
+  {d:'Feb 07',spend:17.32,imp:2450,clicks:98},
+  {d:'Feb 08',spend:19.80,imp:2964,clicks:104},
+  {d:'Feb 09',spend:18.36,imp:2864,clicks:115},
+  {d:'Feb 10',spend:17.68,imp:2620,clicks:92},
+  {d:'Feb 11',spend:17.44,imp:2562,clicks:87},
+  {d:'Feb 12',spend:17.24,imp:2760,clicks:83},
+  {d:'Feb 13',spend:16.99,imp:2280,clicks:86},
+  {d:'Feb 14',spend:15.02,imp:2285,clicks:69},
+  {d:'Feb 15',spend:16.81,imp:2381,clicks:91},
+  {d:'Feb 16',spend:15.93,imp:2411,clicks:86},
+  {d:'Feb 17',spend:14.43,imp:2186,clicks:89},
+  {d:'Feb 18',spend:14.78,imp:2099,clicks:79},
+  {d:'Feb 19',spend:14.55,imp:2131,clicks:82},
+  {d:'Feb 20',spend:14.56,imp:2102,clicks:88},
+  {d:'Feb 21',spend:13.82,imp:2112,clicks:79},
+  {d:'Feb 22',spend:16.52,imp:2653,clicks:89}
 ];
 
 const KPI = {
   7: {
-    period:'Feb 16 \u2013 Feb 22, 2025',
-    spend:'$160.41', impressions:'24,337', reach:'18,530',
-    clicks:'1,165', ctr:'4.79%', cpc:'$0.14'
+    period:'Feb 16 – Feb 22, 2026',
+    spend:'$104.59', impressions:'15,694', reach:'11,257',
+    clicks:'592', ctr:'3.77%', cpc:'$0.18'
   },
   14: {
-    period:'Feb 9 \u2013 Feb 23, 2025',
-    spend:'$356.74', impressions:'54,725', reach:'35,657',
-    clicks:'2,473', ctr:'4.52%', cpc:'$0.14'
+    period:'Feb 9 – Feb 22, 2026',
+    spend:'$224.13', impressions:'33,446', reach:'20,153',
+    clicks:'1,215', ctr:'3.63%', cpc:'$0.18'
   },
   30: {
-    period:'Jan 24 \u2013 Feb 22, 2025',
-    spend:'$997.23', impressions:'154,628', reach:'87,275',
-    clicks:'9,333', ctr:'6.04%', cpc:'$0.11'
+    period:'Jan 24 – Feb 22, 2026',
+    spend:'$394.22', impressions:'60,823', reach:'34,512',
+    clicks:'2,602', ctr:'4.28%', cpc:'$0.15'
   }
 };
 
 const CAMPAIGNS = [
-  {name:'iExcel_RoyalRestaurant_DateNight',status:'Active',spend:'$240.26',imp:'39,413',clicks:'2,277',ctr:'5.78%',cpc:'$0.11'},
-  {name:'OPN_PAIDAD_Happy Hour',status:'Active',spend:'$149.78',imp:'23,298',clicks:'1,527',ctr:'6.55%',cpc:'$0.10'},
-  {name:'OPN_Music Mondays_Reel_Jan 2',status:'Active',spend:'$146.00',imp:'22,577',clicks:'1,911',ctr:'8.46%',cpc:'$0.08'},
-  {name:'OPN_Private Events_Reel_Jan 14_Top',status:'Active',spend:'$66.87',imp:'11,882',clicks:'498',ctr:'4.19%',cpc:'$0.13'},
-  {name:'OPN_Vday Pre-Fixe Menu',status:'Active',spend:'$140.85',imp:'22,601',clicks:'1,737',ctr:'7.69%',cpc:'$0.08'},
-  {name:'OPN_Catering Jan-Feb Offer_Static',status:'Active',spend:'$177.56',imp:'25,641',clicks:'576',ctr:'2.25%',cpc:'$0.31'},
-  {name:'OPN_VDay_Reel 1',status:'Active',spend:'$75.91',imp:'9,216',clicks:'807',ctr:'8.76%',cpc:'$0.09'}
+  {name:'OPN_Catering Jan-Feb Offer_Static',id:'6980676091382',status:'Active',spend:'$177.56',imp:'25,642',clicks:'576',ctr:'2.25%',cpc:'$0.31'},
+  {name:'OPN_PAIDAD_Happy Hour',id:'6917226822982',status:'Active',spend:'$149.79',imp:'23,299',clicks:'1,528',ctr:'6.56%',cpc:'$0.10'},
+  {name:'OPN_Private Events_Reel_Jan 14_Top',id:'6971168409582',status:'Active',spend:'$66.87',imp:'11,882',clicks:'498',ctr:'4.19%',cpc:'$0.13'}
 ];
 
 let currentRange = 7;
@@ -180,19 +183,19 @@ function fmt(n){return n.toLocaleString('en-US')}
 function setRange(r) {
   if (r === currentRange) return;
   currentRange = r;
-  document.querySelectorAll('.date-pill').forEach(p => {
+  document.querySelectorAll('.date-pill').forEach(function(p) {
     p.classList.toggle('active', parseInt(p.textContent) === r);
   });
-  const dc = document.getElementById('dataContainer');
+  var dc = document.getElementById('dataContainer');
   dc.classList.add('switching');
-  setTimeout(() => { render(r); dc.classList.remove('switching'); }, 300);
+  setTimeout(function() { render(r); dc.classList.remove('switching'); }, 300);
 }
 
 function render(r) {
-  const k = KPI[r];
+  var k = KPI[r];
   document.getElementById('periodBadge').textContent = k.period;
 
-  const kpis = [
+  var kpis = [
     {label:'Total Spend',value:k.spend},
     {label:'Impressions',value:k.impressions},
     {label:'Reach',value:k.reach},
@@ -200,50 +203,63 @@ function render(r) {
     {label:'CTR',value:k.ctr},
     {label:'CPC',value:k.cpc}
   ];
-  document.getElementById('kpiRow').innerHTML = kpis.map(x =>
-    `<div class="kpi-card"><div class="kpi-label">${x.label}</div><div class="kpi-value">${x.value}</div></div>`
-  ).join('');
+  var kpiHTML = '';
+  for (var i = 0; i < kpis.length; i++) {
+    kpiHTML += '<div class="kpi-card"><div class="kpi-label">' + kpis[i].label + '</div><div class="kpi-value">' + kpis[i].value + '</div></div>';
+  }
+  document.getElementById('kpiRow').innerHTML = kpiHTML;
 
-  const sliced = DAILY.slice(-r-1, -1);
-  const labels = sliced.map(d=>d.d);
-  const spendData = sliced.map(d=>d.spend);
-  const impData = sliced.map(d=>d.imp);
-  const clickData = sliced.map(d=>d.clicks);
+  var sliced = DAILY.slice(-r);
+  var labels = [];
+  var spendData = [];
+  var impData = [];
+  var clickData = [];
+  for (var j = 0; j < sliced.length; j++) {
+    labels.push(sliced[j].d);
+    spendData.push(sliced[j].spend);
+    impData.push(sliced[j].imp);
+    clickData.push(sliced[j].clicks);
+  }
 
   if(spendChart) spendChart.destroy();
   if(impClickChart) impClickChart.destroy();
 
-  const gridColor = 'rgba(255,255,255,0.06)';
-  const tickColor = '#a1a1aa';
+  var gridColor = 'rgba(255,255,255,0.06)';
+  var tickColor = '#a1a1aa';
 
   spendChart = new Chart(document.getElementById('spendChart'), {
     type:'bar',
-    data:{labels, datasets:[{label:'Spend ($)',data:spendData,backgroundColor:'rgba(99,102,241,0.7)',borderRadius:4,borderSkipped:false}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},y:{ticks:{color:tickColor,callback:v=>'$'+v},grid:{color:gridColor}}}}
+    data:{labels:labels, datasets:[{label:'Spend ($)',data:spendData,backgroundColor:'rgba(99,102,241,0.7)',borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},y:{ticks:{color:tickColor,callback:function(v){return '$'+v}},grid:{color:gridColor}}}}
   });
 
   impClickChart = new Chart(document.getElementById('impClickChart'), {
     type:'line',
-    data:{labels, datasets:[
-      {label:'Impressions',data:impData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',fill:true,tension:.3,yAxisID:'y',pointRadius:1},
-      {label:'Clicks',data:clickData,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.1)',fill:true,tension:.3,yAxisID:'y1',pointRadius:1}
+    data:{labels:labels, datasets:[
+      {label:'Impressions',data:impData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',fill:true,tension:.3,yAxisID:'y',pointRadius:2},
+      {label:'Clicks',data:clickData,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.1)',fill:true,tension:.3,yAxisID:'y1',pointRadius:2}
     ]},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:tickColor}}},scales:{
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:tickColor,font:{size:11}}}},scales:{
       x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},
-      y:{type:'linear',position:'left',ticks:{color:'#6366f1',callback:v=>fmt(v)},grid:{color:gridColor},title:{display:true,text:'Impressions',color:'#6366f1'}},
-      y1:{type:'linear',position:'right',ticks:{color:'#22c55e'},grid:{drawOnChartArea:false},title:{display:true,text:'Clicks',color:'#22c55e'}}
+      y:{type:'linear',position:'left',ticks:{color:'#6366f1',callback:function(v){return fmt(v)}},grid:{color:gridColor},title:{display:true,text:'Impressions',color:'#6366f1',font:{size:11}}},
+      y1:{type:'linear',position:'right',ticks:{color:'#22c55e'},grid:{drawOnChartArea:false},title:{display:true,text:'Clicks',color:'#22c55e',font:{size:11}}}
     }}
   });
 }
 
-document.getElementById('campaignBody').innerHTML = CAMPAIGNS
-  .sort((a,b)=>parseFloat(b.spend.replace('$',''))-parseFloat(a.spend.replace('$','')))
-  .map(c =>
-    `<tr><td style="font-weight:600">${c.name}</td><td><span class="pill pill-active">${c.status}</span></td><td>${c.spend}</td><td>${c.imp}</td><td>${c.clicks}</td><td>${c.ctr}</td><td>${c.cpc}</td></tr>`
-  ).join('');
+// Render campaigns
+var tbody = document.getElementById('campaignBody');
+var html = '';
+var sorted = CAMPAIGNS.slice().sort(function(a,b){return parseFloat(b.spend.replace('$',''))-parseFloat(a.spend.replace('$',''))});
+for (var c = 0; c < sorted.length; c++) {
+  var camp = sorted[c];
+  var adLink = ADS_MGR + '&selected_campaign_ids=' + camp.id;
+  var statusPill = camp.status === 'Active' ? 'pill-active' : 'pill-paused';
+  html += '<tr><td style="font-weight:600"><a href="' + adLink + '" target="_blank">' + camp.name + '</a></td><td><span class="pill ' + statusPill + '">' + camp.status + '</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td></tr>';
+}
+tbody.innerHTML = html;
 
 render(7);
 </script>
 </body>
-<!-- v2 -->
 </html>
