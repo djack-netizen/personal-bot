@@ -47,14 +47,17 @@ td a:hover{color:#818cf8;border-bottom-color:#818cf8}
 .chart-grid-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
 .chart-area{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:24px;position:relative}
 .chart-title{font-size:1rem;font-weight:700;margin-bottom:16px}
-.chart-canvas-wrap{position:relative;width:100%;height:0;padding-bottom:56%}
+.chart-canvas-wrap{position:relative;width:100%;height:0;padding-bottom:38%}
 .chart-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
 .footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
 .footer strong{color:var(--text);font-weight:700}
 .data-container{transition:opacity .3s}
 .data-container.switching{opacity:0}
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
-@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}.chart-canvas-wrap{padding-bottom:70%}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}.chart-canvas-wrap{padding-bottom:50%}}
+.view-link{display:inline-flex;align-items:center;gap:4px;color:#818cf8;font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s;white-space:nowrap}
+.view-link:hover{color:#a5b4fc;text-decoration:underline}
+.view-link svg{width:12px;height:12px;fill:currentColor}
 @media print{
   body{background:#fff;color:#111}
   .kpi-card,.table-wrap,.chart-area{background:#f8f8f8;border:1px solid #ddd;backdrop-filter:none;color:#111}
@@ -91,7 +94,7 @@ td a:hover{color:#818cf8;border-bottom-color:#818cf8}
     <div class="table-wrap fade-in">
       <table>
         <thead>
-          <tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr>
+          <tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Ad Link</th></tr>
         </thead>
         <tbody id="campaignBody"></tbody>
       </table>
@@ -255,7 +258,7 @@ for (var c = 0; c < sorted.length; c++) {
   var camp = sorted[c];
   var adLink = ADS_MGR + '&selected_campaign_ids=' + camp.id;
   var statusPill = camp.status === 'Active' ? 'pill-active' : 'pill-paused';
-  html += '<tr><td style="font-weight:600"><a href="' + adLink + '" target="_blank">' + camp.name + '</a></td><td><span class="pill ' + statusPill + '">' + camp.status + '</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td></tr>';
+  html += '<tr><td style="font-weight:600">' + camp.name + '</td><td><span class="pill ' + statusPill + '">' + camp.status + '</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td><td><a href="' + adLink + '" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td></tr>';
 }
 tbody.innerHTML = html;
 
