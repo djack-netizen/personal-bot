@@ -1,1 +1,103 @@
-µë-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Royal Sonesta â€” Paid Ad Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a1a;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--text:#e4e4e7;--muted:#a1a1aa;--grad:linear-gradient(135deg,#6366f1,#3b82f6);--grad2:linear-gradient(135deg,#6366f1,#3b82f6,#00d4ff);--green:#22c55e;--red:#ef4444;--yellow:#eab308;--radius:16px;--pill:999px}
+body{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+.fade-in{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.container{max-width:1200px;margin:0 auto;padding:32px 24px}
+.title-area{margin-bottom:36px;text-align:center}
+.title-area h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
+.title-area .powered{color:var(--muted);font-size:.88rem;margin-bottom:14px}
+.social-pills{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
+.social-pill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--pill);padding:5px 14px;font-size:.78rem;font-weight:600;border:1px solid transparent;background-origin:border-box;background-clip:padding-box,border-box;background-image:linear-gradient(var(--bg),var(--bg)),var(--grad2);color:var(--text);text-decoration:none;transition:all .25s}
+.social-pill:hover{box-shadow:0 0 12px rgba(99,102,241,.3);transform:translateY(-1px)}
+.social-pill svg{width:14px;height:14px;fill:currentColor}
+.period-badge{display:inline-block;border-radius:var(--pill);padding:4px 14px;font-size:.75rem;color:var(--muted);border:1px solid var(--border);background:var(--card)}
+.date-pills{display:flex;gap:8px}
+.date-pill{border-radius:var(--pill);padding:6px 18px;font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .25s}
+.date-pill:hover{border-color:rgba(99,102,241,.4);color:var(--text)}
+.date-pill.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 0 16px rgba(99,102,241,.35)}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:36px}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:22px 20px;transition:all .3s;position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);opacity:0;transition:opacity .3s;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(59,130,246,.06))}
+.kpi-card:hover{transform:translateY(-3px);border-color:rgba(99,102,241,.25);box-shadow:0 8px 32px rgba(99,102,241,.12)}
+.kpi-card:hover::before{opacity:1}
+.kpi-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
+.kpi-value{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+.section-title{font-size:1.15rem;font-weight:700;margin-bottom:16px}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);overflow-x:auto;margin-bottom:36px}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th{text-align:left;padding:14px 16px;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-bottom:1px solid var(--border)}
+td{padding:14px 16px;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,0.03)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.pill{display:inline-flex;align-items:center;border-radius:var(--pill);padding:3px 12px;font-size:.73rem;font-weight:600}
+.pill-active{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.pill-completed{background:rgba(161,161,170,.15);color:var(--muted)}
+.pill-meta{background:rgba(59,130,246,.12);color:#60a5fa}
+.chart-area{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:24px;margin-bottom:36px}
+.chart-title{font-size:1rem;font-weight:700;margin-bottom:16px}
+.chart-grid-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
+.footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+.footer strong{color:var(--text);font-weight:700}
+.data-container{transition:opacity .3s}
+.data-container.switching{opacity:0}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}}
+@media print{body{background:#fff;color:#111}.kpi-card,.table-wrap,.chart-area{background:#f8f8f8;border:1px solid #ddd;backdrop-filter:none;color:#111}.kpi-value,.section-title,.chart-title{color:#111}.kpi-label,.footer{color:#555}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="title-area fade-in">
+    <h1>Royal Sonesta Paid Ad Dashboard</h1>
+    <div class="powered">Powered by <strong>OPN Agency</strong></div>
+    <div class="social-pills">
+      <a href="#" class="social-pill"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Meta Ads</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
+      <div class="period-badge" id="periodBadge">Feb 16 &ndash; Feb 23, 2026</div>
+      <div class="date-pills">
+        <div class="date-pill active" onclick="setRange(7)">7 Days</div>
+        <div class="date-pill" onclick="setRange(14)">14 Days</div>
+        <div class="date-pill" onclick="setRange(30)">30 Days</div>
+      </div>
+    </div>
+  </div>
+  <div class="data-container" id="dataContainer">
+    <div class="kpi-row fade-in" id="kpiRow"></div>
+    <div class="section-title fade-in">Campaign Performance <span style="font-size:.75rem;color:var(--muted);font-weight:400">(Last 30 Days)</span></div>
+    <div class="table-wrap fade-in">
+      <table>
+        <thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+        <tbody id="campaignBody"></tbody>
+      </table>
+    </div>
+    <div class="chart-grid-row fade-in">
+      <div class="chart-area"><div class="chart-title">Daily Ad Spend</div><canvas id="spendChart" height="220"></canvas></div>
+      <div class="chart-area"><div class="chart-title">Impressions vs Clicks</div><canvas id="impClickChart" height="220"></canvas></div>
+    </div>
+  </div>
+</div>
+<div class="footer">Dashboard generated by <strong>OPN Agency</strong> &middot; Data from Meta Ads API &middot; Last updated: February 23, 2026 05:18 UTC</div>
+<script>
+const DAILY=[{d:'Jan 24',spend:40.75,imp:14850,clicks:247},{d:'Jan 25',spend:57.67,imp:23336,clicks:357},{d:'Jan 26',spend:51.81,imp:19960,clicks:274},{d:'Jan 27',spend:49.40,imp:17961,clicks:302},{d:'Jan 28',spend:49.58,imp:16689,clicks:238},{d:'Jan 29',spend:49.17,imp:15955,clicks:257},{d:'Jan 30',spend:52.41,imp:23102,clicks:323},{d:'Jan 31',spend:46.70,imp:24913,clicks:341},{d:'Feb 1',spend:60.03,imp:32882,clicks:453},{d:'Feb 2',spend:51.04,imp:27783,clicks:369},{d:'Feb 3',spend:49.58,imp:27184,clicks:335},{d:'Feb 4',spend:48.17,imp:23392,clicks:320},{d:'Feb 5',spend:50.76,imp:24724,clicks:335},{d:'Feb 6',spend:48.71,imp:23773,clicks:302},{d:'Feb 7',spend:48.67,imp:23200,clicks:287},{d:'Feb 8',spend:54.71,imp:26870,clicks:313},{d:'Feb 9',spend:53.53,imp:24295,clicks:333},{d:'Feb 10',spend:50.42,imp:22465,clicks:287},{d:'Feb 11',spend:49.81,imp:20670,clicks:243},{d:'Feb 12',spend:49.71,imp:19437,clicks:248},{d:'Feb 13',spend:48.28,imp:19950,clicks:296},{d:'Feb 14',spend:50.47,imp:22352,clicks:286},{d:'Feb 15',spend:52.37,imp:24441,clicks:289},{d:'Feb 16',spend:52.13,imp:22812,clicks:283},{d:'Feb 17',spend:49.94,imp:21804,clicks:274},{d:'Feb 18',spend:48.29,imp:19176,clicks:222},{d:'Feb 19',spend:43.70,imp:13895,clicks:204},{d:'Feb 20',spend:43.44,imp:12207,clicks:229},{d:'Feb 21',spend:39.87,imp:10800,clicks:157},{d:'Feb 22',spend:42.05,imp:9935,clicks:182},{d:'Feb 23',spend:0.62,imp:167,clicks:3}];
+const KPI={7:{period:'Feb 16 \u2013 Feb 23, 2026',spend:'$320.04',impressions:'110,796',reach:'87,554',clicks:'1,554',ctr:'1.40%',cpc:'$0.21'},14:{period:'Feb 9 \u2013 Feb 23, 2026',spend:'$674.63',impressions:'264,406',reach:'173,477',clicks:'3,536',ctr:'1.34%',cpc:'$0.19'},30:{period:'Jan 24 \u2013 Feb 23, 2026',spend:'$1,483.79',impressions:'630,980',reach:'374,524',clicks:'8,589',ctr:'1.36%',cpc:'$0.17'}};
+const CAMPAIGNS=[{name:'OPN_Winter Escape_Static_2',status:'Active',spend:'$441.70',imp:'113,226',clicks:'1,727',ctr:'1.53%',cpc:'$0.26'},{name:'iExcel_RoyalSonesta_Businesstripgetaways',status:'Active',spend:'$479.29',imp:'289,752',clicks:'3,982',ctr:'1.37%',cpc:'$0.12'},{name:'OPN_Three Nights_Static_1',status:'Active',spend:'$299.82',imp:'86,833',clicks:'1,295',ctr:'1.49%',cpc:'$0.23'},{name:'OPN_Winter Suite_Carrousel_1',status:'Active',spend:'$262.90',imp:'141,154',clicks:'1,585',ctr:'1.12%',cpc:'$0.17'}];
+let currentRange=7,spendChart,impClickChart;
+function fmt(n){return n.toLocaleString('en-US')}
+function setRange(r){if(r===currentRange)return;currentRange=r;document.querySelectorAll('.date-pill').forEach(p=>{p.classList.toggle('active',parseInt(p.textContent)===r)});const dc=document.getElementById('dataContainer');dc.classList.add('switching');setTimeout(()=>{render(r);dc.classList.remove('switching')},300)}
+function render(r){const k=KPI[r];document.getElementById('periodBadge').textContent=k.period;const kpis=[{label:'Total Spend',value:k.spend},{label:'Impressions',value:k.impressions},{label:'Reach',value:k.reach},{label:'Clicks',value:k.clicks},{label:'CTR',value:k.ctr},{label:'CPC',value:k.cpc}];document.getElementById('kpiRow').innerHTML=kpis.map(x=>`<div class="kpi-card"><div class="kpi-label">${x.label}</div><div class="kpi-value">${x.value}</div></div>`).join('');const sliced=DAILY.slice(-r-1,-1);const labels=sliced.map(d=>d.d);const spendData=sliced.map(d=>d.spend);const impData=sliced.map(d=>d.imp);const clickData=sliced.map(d=>d.clicks);if(spendChart)spendChart.destroy();if(impClickChart)impClickChart.destroy();const gridColor='rgba(255,255,255,0.06)';const tickColor='#a1a1aa';spendChart=new Chart(document.getElementById('spendChart'),{type:'bar',data:{labels,datasets:[{label:'Spend ($)',data:spendData,backgroundColor:'rgba(99,102,241,0.7)',borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},y:{ticks:{color:tickColor,callback:v=>'$'+v},grid:{color:gridColor}}}}});impClickChart=new Chart(document.getElementById('impClickChart'),{type:'line',data:{labels,datasets:[{label:'Impressions',data:impData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',fill:true,tension:.3,yAxisID:'y',pointRadius:1},{label:'Clicks',data:clickData,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.1)',fill:true,tension:.3,yAxisID:'y1',pointRadius:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:tickColor}}},scales:{x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},y:{type:'linear',position:'left',ticks:{color:'#6366f1',callback:v=>fmt(v)},grid:{color:gridColor},title:{display:true,text:'Impressions',color:'#6366f1'}},y1:{type:'linear',position:'right',ticks:{color:'#22c55e'},grid:{drawOnChartArea:false},title:{display:true,text:'Clicks',color:'#22c55e'}}}}})}
+document.getElementById('campaignBody').innerHTML=CAMPAIGNS.sort((a,b)=>parseFloat(b.spend.replace('$',''))-parseFloat(a.spend.replace('$',''))).map(c=>`<tr><td style="font-weight:600">${c.name}</td><td><span class="pill pill-active">${c.status}</span></td><td>${c.spend}</td><td>${c.imp}</td><td>${c.clicks}</td><td>${c.ctr}</td><td>${c.cpc}</td></tr>`).join('');
+render(7);
+</script>
+</body>
+</html>
