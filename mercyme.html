@@ -10,15 +10,15 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a1a;color:#e0e0e0;font-family:'Plus Jakarta Sans',sans-serif;padding:24px;min-height:100vh}
 .container{max-width:1280px;margin:0 auto}
-h1{font-size:1.75rem;font-weight:700;color:#fff;margin-bottom:4px;text-align:center}
-.subtitle{color:#888;font-size:.85rem;margin-bottom:20px;text-align:center}
-.pills{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+h1{font-size:1.75rem;font-weight:700;color:#fff;margin-bottom:4px}
+.subtitle{color:#888;font-size:.85rem;margin-bottom:20px}
+.pills{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:50px;font-size:.8rem;font-weight:500;text-decoration:none;transition:transform .2s,box-shadow .2s}
 .pill:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.4)}
 .pill-fb{background:linear-gradient(135deg,#1877f2,#0a54c4);color:#fff}
 .pill-ig{background:linear-gradient(135deg,#e1306c,#c13584);color:#fff}
 .pill-ads{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
-.toggle-row{display:flex;gap:8px;margin-bottom:24px;justify-content:center}
+.toggle-row{display:flex;gap:8px;margin-bottom:24px}
 .toggle-btn{padding:8px 20px;border-radius:50px;border:1px solid #333;background:transparent;color:#888;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .3s}
 .toggle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border-color:transparent;box-shadow:0 4px 15px rgba(124,58,237,.4)}
 .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:32px}
@@ -61,8 +61,8 @@ footer{text-align:center;padding:24px 0;color:#555;font-size:.75rem;border-top:1
 </head>
 <body>
 <div class="container">
-  <h1>Mercy Me DC Paid Ad Dashboard</h1>
-  <p class="subtitle">Powered by <strong>OPN Agency</strong></p>
+  <h1>Mercy Me DC &mdash; Paid Ads Dashboard</h1>
+  <p class="subtitle">Meta Ads Performance Overview</p>
 
   <div class="pills">
     <a href="https://www.facebook.com/mercymedc" target="_blank" class="pill pill-fb">
@@ -121,24 +121,98 @@ footer{text-align:center;padding:24px 0;color:#555;font-size:.75rem;border-top:1
 <script>
 var campaignData = {
   "30": [
-    {"name":"iExcel-MercyMe-Brazilian Fusion-Opentable","id":"120229536144980408","status":"ACTIVE","spend":600,"impressions":114377,"clicks":4305,"ctr":"3.76","cpc":"0.14","reach":63727},
-    {"name":"iExcel-MercyMe-SambaNights","id":"120231416008300408","status":"ACTIVE","spend":299.45,"impressions":55767,"clicks":1190,"ctr":"2.13","cpc":"0.25","reach":28093},
-    {"name":"Mercy Me - Awareness","id":"120237817092790408","status":"ACTIVE","spend":292.10,"impressions":51565,"clicks":1509,"ctr":"2.93","cpc":"0.19","reach":31772},
-    {"name":"OPN_Vday Graphic_1","id":"120238418295470408","status":"ACTIVE","spend":116.46,"impressions":23055,"clicks":486,"ctr":"2.11","cpc":"0.24","reach":14603},
-    {"name":"OPN_Galentines Traffic Flyer_1","id":"120238534322250408","status":"ACTIVE","spend":154.75,"impressions":26008,"clicks":588,"ctr":"2.26","cpc":"0.26","reach":17542},
-    {"name":"OPN_Brazil Brothers_Wed_Feb","id":"120238947059620408","status":"ACTIVE","spend":28.31,"impressions":4578,"clicks":113,"ctr":"2.47","cpc":"0.25","reach":3846}
+    {
+      "name": "Mercy Me - Awareness",
+      "id": "120237817092790408",
+      "status": "ACTIVE",
+      "spend": 292.1,
+      "impressions": 51565,
+      "clicks": 1509,
+      "ctr": "2.93",
+      "cpc": "0.19",
+      "reach": 31772
+    },
+    {
+      "name": "OPN_Vday Graphic_1",
+      "id": "120238418295470408",
+      "status": "ACTIVE",
+      "spend": 116.46,
+      "impressions": 23055,
+      "clicks": 486,
+      "ctr": "2.11",
+      "cpc": "0.24",
+      "reach": 14603
+    },
+    {
+      "name": "OPN_Galentines Traffic Flyer_1",
+      "id": "120238534322250408",
+      "status": "ACTIVE",
+      "spend": 154.75,
+      "impressions": 26008,
+      "clicks": 588,
+      "ctr": "2.26",
+      "cpc": "0.26",
+      "reach": 17542
+    },
+    {
+      "name": "OPN_Brazil Brothers_Wed_Feb",
+      "id": "120238947059620408",
+      "status": "ACTIVE",
+      "spend": 28.31,
+      "impressions": 4578,
+      "clicks": 113,
+      "ctr": "2.47",
+      "cpc": "0.25",
+      "reach": 3846
+    }
   ],
   "14": [
-    {"name":"iExcel-MercyMe-Brazilian Fusion-Opentable","id":"120229536144980408","status":"ACTIVE","spend":278.96,"impressions":51285,"clicks":2607,"ctr":"5.08","cpc":"0.11","reach":32260},
-    {"name":"iExcel-MercyMe-SambaNights","id":"120231416008300408","status":"ACTIVE","spend":139.59,"impressions":24776,"clicks":625,"ctr":"2.52","cpc":"0.22","reach":14522},
-    {"name":"OPN_Vday Graphic_1","id":"120238418295470408","status":"ACTIVE","spend":53.63,"impressions":10391,"clicks":207,"ctr":"1.99","cpc":"0.26","reach":7157},
-    {"name":"OPN_Galentines Traffic Flyer_1","id":"120238534322250408","status":"ACTIVE","spend":154.75,"impressions":26008,"clicks":588,"ctr":"2.26","cpc":"0.26","reach":17542},
-    {"name":"OPN_Brazil Brothers_Wed_Feb","id":"120238947059620408","status":"ACTIVE","spend":28.31,"impressions":4578,"clicks":113,"ctr":"2.47","cpc":"0.25","reach":3846}
+    {
+      "name": "OPN_Vday Graphic_1",
+      "id": "120238418295470408",
+      "status": "ACTIVE",
+      "spend": 53.63,
+      "impressions": 10391,
+      "clicks": 207,
+      "ctr": "1.99",
+      "cpc": "0.26",
+      "reach": 7157
+    },
+    {
+      "name": "OPN_Galentines Traffic Flyer_1",
+      "id": "120238534322250408",
+      "status": "ACTIVE",
+      "spend": 154.75,
+      "impressions": 26008,
+      "clicks": 588,
+      "ctr": "2.26",
+      "cpc": "0.26",
+      "reach": 17542
+    },
+    {
+      "name": "OPN_Brazil Brothers_Wed_Feb",
+      "id": "120238947059620408",
+      "status": "ACTIVE",
+      "spend": 28.31,
+      "impressions": 4578,
+      "clicks": 113,
+      "ctr": "2.47",
+      "cpc": "0.25",
+      "reach": 3846
+    }
   ],
   "7": [
-    {"name":"iExcel-MercyMe-Brazilian Fusion-Opentable","id":"120229536144980408","status":"ACTIVE","spend":140.17,"impressions":24489,"clicks":1291,"ctr":"5.27","cpc":"0.11","reach":17498},
-    {"name":"iExcel-MercyMe-SambaNights","id":"120231416008300408","status":"ACTIVE","spend":69.32,"impressions":12194,"clicks":355,"ctr":"2.91","cpc":"0.20","reach":9176},
-    {"name":"OPN_Brazil Brothers_Wed_Feb","id":"120238947059620408","status":"ACTIVE","spend":28.31,"impressions":4578,"clicks":113,"ctr":"2.47","cpc":"0.25","reach":3846}
+    {
+      "name": "OPN_Brazil Brothers_Wed_Feb",
+      "id": "120238947059620408",
+      "status": "ACTIVE",
+      "spend": 28.31,
+      "impressions": 4578,
+      "clicks": 113,
+      "ctr": "2.47",
+      "cpc": "0.25",
+      "reach": 3846
+    }
   ]
 };
 
