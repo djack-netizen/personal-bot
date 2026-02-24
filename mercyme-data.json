@@ -1,0 +1,408 @@
+{
+  "account": "269770309012859",
+  "lastUpdated": "February 24, 2026",
+  "daily": [
+    {
+      "d": "Jan 25",
+      "spend": 77.47,
+      "imp": 16063,
+      "clicks": 398
+    },
+    {
+      "d": "Jan 26",
+      "spend": 73.65,
+      "imp": 13587,
+      "clicks": 358
+    },
+    {
+      "d": "Jan 27",
+      "spend": 69.21,
+      "imp": 11690,
+      "clicks": 325
+    },
+    {
+      "d": "Jan 28",
+      "spend": 67.94,
+      "imp": 11066,
+      "clicks": 351
+    },
+    {
+      "d": "Jan 29",
+      "spend": 70.52,
+      "imp": 11449,
+      "clicks": 377
+    },
+    {
+      "d": "Jan 30",
+      "spend": 67.4,
+      "imp": 10824,
+      "clicks": 310
+    },
+    {
+      "d": "Jan 31",
+      "spend": 38.58,
+      "imp": 7842,
+      "clicks": 170
+    },
+    {
+      "d": "Feb 1",
+      "spend": 34.11,
+      "imp": 7583,
+      "clicks": 155
+    },
+    {
+      "d": "Feb 2",
+      "spend": 30.47,
+      "imp": 6781,
+      "clicks": 142
+    },
+    {
+      "d": "Feb 3",
+      "spend": 29.87,
+      "imp": 6015,
+      "clicks": 134
+    },
+    {
+      "d": "Feb 4",
+      "spend": 28.6,
+      "imp": 5491,
+      "clicks": 147
+    },
+    {
+      "d": "Feb 5",
+      "spend": 30.12,
+      "imp": 6999,
+      "clicks": 138
+    },
+    {
+      "d": "Feb 6",
+      "spend": 47.73,
+      "imp": 9921,
+      "clicks": 236
+    },
+    {
+      "d": "Feb 7",
+      "spend": 48.87,
+      "imp": 8964,
+      "clicks": 222
+    },
+    {
+      "d": "Feb 8",
+      "spend": 55.8,
+      "imp": 10510,
+      "clicks": 249
+    },
+    {
+      "d": "Feb 9",
+      "spend": 64.58,
+      "imp": 13011,
+      "clicks": 297
+    },
+    {
+      "d": "Feb 10",
+      "spend": 69.89,
+      "imp": 12233,
+      "clicks": 301
+    },
+    {
+      "d": "Feb 11",
+      "spend": 65.47,
+      "imp": 11644,
+      "clicks": 428
+    },
+    {
+      "d": "Feb 12",
+      "spend": 71.1,
+      "imp": 12119,
+      "clicks": 438
+    },
+    {
+      "d": "Feb 13",
+      "spend": 69.67,
+      "imp": 12622,
+      "clicks": 411
+    },
+    {
+      "d": "Feb 14",
+      "spend": 44.49,
+      "imp": 8261,
+      "clicks": 269
+    },
+    {
+      "d": "Feb 15",
+      "spend": 32.24,
+      "imp": 5887,
+      "clicks": 237
+    },
+    {
+      "d": "Feb 16",
+      "spend": 32.47,
+      "imp": 6084,
+      "clicks": 248
+    },
+    {
+      "d": "Feb 17",
+      "spend": 27.31,
+      "imp": 5795,
+      "clicks": 185
+    },
+    {
+      "d": "Feb 18",
+      "spend": 30.14,
+      "imp": 5420,
+      "clicks": 264
+    },
+    {
+      "d": "Feb 19",
+      "spend": 30.06,
+      "imp": 4803,
+      "clicks": 259
+    },
+    {
+      "d": "Feb 20",
+      "spend": 28.67,
+      "imp": 4484,
+      "clicks": 217
+    },
+    {
+      "d": "Feb 21",
+      "spend": 32.74,
+      "imp": 5346,
+      "clicks": 230
+    },
+    {
+      "d": "Feb 22",
+      "spend": 56.41,
+      "imp": 9329,
+      "clicks": 356
+    },
+    {
+      "d": "Feb 23",
+      "spend": 63.95,
+      "imp": 10630,
+      "clicks": 388
+    },
+    {
+      "d": "Feb 24",
+      "spend": 34.35,
+      "imp": 4899,
+      "clicks": 228
+    }
+  ],
+  "kpi": {
+    "7": {
+      "period": "Feb 17 – Feb 24, 2026",
+      "spend": "$303.63",
+      "impressions": "50,706",
+      "reach": "33,874",
+      "clicks": "2,127",
+      "ctr": "4.19%",
+      "cpc": "$0.14",
+      "videoViews": "7,201",
+      "lpViews": "970",
+      "postSaves": "87",
+      "postReactions": "331"
+    },
+    "30": {
+      "period": "Jan 25 – Feb 24, 2026",
+      "spend": "$1,523.88",
+      "impressions": "277,352",
+      "reach": "134,796",
+      "clicks": "8,468",
+      "ctr": "3.05%",
+      "cpc": "$0.18",
+      "videoViews": "40,590",
+      "lpViews": "2,916",
+      "postSaves": "234",
+      "postReactions": "985"
+    }
+  },
+  "campaigns": {
+    "7": [
+      {
+        "name": "Brazilian Fusion-OpenTable",
+        "id": "120229536144980408",
+        "status": "Active",
+        "spend": "$148.44",
+        "imp": "25,555",
+        "reach": "17,765",
+        "clicks": "1,337",
+        "ctr": "5.23%",
+        "cpc": "$0.11",
+        "video": "4,105",
+        "lp": "491"
+      },
+      {
+        "name": "SambaNights",
+        "id": "120231416008300408",
+        "status": "Active",
+        "spend": "$74.10",
+        "imp": "12,533",
+        "reach": "9,671",
+        "clicks": "410",
+        "ctr": "3.27%",
+        "cpc": "$0.18",
+        "video": "2,441",
+        "lp": "234"
+      },
+      {
+        "name": "Brazil Brothers Wed Feb",
+        "id": "120238947059620408",
+        "status": "Active",
+        "spend": "$66.78",
+        "imp": "10,869",
+        "reach": "7,799",
+        "clicks": "276",
+        "ctr": "2.54%",
+        "cpc": "$0.24",
+        "video": "9",
+        "lp": "172"
+      },
+      {
+        "name": "Dinner Focus Feb 23",
+        "id": "120239060302450408",
+        "status": "Active",
+        "spend": "$14.31",
+        "imp": "1,749",
+        "reach": "1,580",
+        "clicks": "104",
+        "ctr": "5.95%",
+        "cpc": "$0.14",
+        "video": "646",
+        "lp": "73"
+      },
+      {
+        "name": "Mercy Me Awareness",
+        "id": "120237817092790408",
+        "status": "Paused",
+        "spend": "$0.00",
+        "imp": "—",
+        "reach": "—",
+        "clicks": "—",
+        "ctr": "—",
+        "cpc": "—",
+        "video": "—",
+        "lp": "—"
+      },
+      {
+        "name": "Galentines Traffic Flyer",
+        "id": "120238534322250408",
+        "status": "Paused",
+        "spend": "$0.00",
+        "imp": "—",
+        "reach": "—",
+        "clicks": "—",
+        "ctr": "—",
+        "cpc": "—",
+        "video": "—",
+        "lp": "—"
+      },
+      {
+        "name": "Vday Graphic",
+        "id": "120238418295470408",
+        "status": "Paused",
+        "spend": "$0.00",
+        "imp": "—",
+        "reach": "—",
+        "clicks": "—",
+        "ctr": "—",
+        "cpc": "—",
+        "video": "—",
+        "lp": "—"
+      }
+    ],
+    "30": [
+      {
+        "name": "Brazilian Fusion-OpenTable",
+        "id": "120229536144980408",
+        "status": "Active",
+        "spend": "$610.72",
+        "imp": "115,892",
+        "reach": "63,699",
+        "clicks": "4,469",
+        "ctr": "3.86%",
+        "cpc": "$0.14",
+        "video": "14,851",
+        "lp": "884"
+      },
+      {
+        "name": "SambaNights",
+        "id": "120231416008300408",
+        "status": "Active",
+        "spend": "$305.95",
+        "imp": "55,048",
+        "reach": "27,796",
+        "clicks": "1,242",
+        "ctr": "2.26%",
+        "cpc": "$0.25",
+        "video": "16,286",
+        "lp": "605"
+      },
+      {
+        "name": "Mercy Me Awareness",
+        "id": "120237817092790408",
+        "status": "Paused",
+        "spend": "$254.91",
+        "imp": "44,731",
+        "reach": "28,371",
+        "clicks": "1,303",
+        "ctr": "2.91%",
+        "cpc": "$0.20",
+        "video": "3,799",
+        "lp": "637"
+      },
+      {
+        "name": "Galentines Traffic Flyer",
+        "id": "120238534322250408",
+        "status": "Paused",
+        "spend": "$154.75",
+        "imp": "26,008",
+        "reach": "17,542",
+        "clicks": "588",
+        "ctr": "2.26%",
+        "cpc": "$0.26",
+        "video": "3,107",
+        "lp": "313"
+      },
+      {
+        "name": "Vday Graphic",
+        "id": "120238418295470408",
+        "status": "Paused",
+        "spend": "$116.46",
+        "imp": "23,055",
+        "reach": "14,603",
+        "clicks": "486",
+        "ctr": "2.11%",
+        "cpc": "$0.24",
+        "video": "1,892",
+        "lp": "232"
+      },
+      {
+        "name": "Brazil Brothers Wed Feb",
+        "id": "120238947059620408",
+        "status": "Active",
+        "spend": "$66.78",
+        "imp": "10,869",
+        "reach": "7,799",
+        "clicks": "276",
+        "ctr": "2.54%",
+        "cpc": "$0.24",
+        "video": "9",
+        "lp": "172"
+      },
+      {
+        "name": "Dinner Focus Feb 23",
+        "id": "120239060302450408",
+        "status": "Active",
+        "spend": "$14.31",
+        "imp": "1,749",
+        "reach": "1,580",
+        "clicks": "104",
+        "ctr": "5.95%",
+        "cpc": "$0.14",
+        "video": "646",
+        "lp": "73"
+      }
+    ]
+  }
+}
