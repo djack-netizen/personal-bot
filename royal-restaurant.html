@@ -189,9 +189,9 @@ function render(r) {
   var impData = [];
   var clickData = [];
   for (var j = 0; j < sliced.length; j++) {
-    labels.push(sliced[j].d);
+    labels.push(sliced[j].d || sliced[j].date || '');
     spendData.push(sliced[j].spend);
-    impData.push(sliced[j].imp);
+    impData.push(sliced[j].imp || sliced[j].impressions || 0);
     clickData.push(sliced[j].clicks);
   }
 
