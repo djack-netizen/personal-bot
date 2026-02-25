@@ -224,12 +224,22 @@ function render(r) {
 function renderCampaigns(r) {
   var tbody = document.getElementById('campaignBody');
   var camps = CAMPAIGNS_BY_RANGE[r] || CAMPAIGNS_BY_RANGE["7"] || [];
-  var sorted = camps.slice().sort(function(a,b){return parseFloat(b.spend.replace(/[$,]/g,''))-parseFloat(a.spend.replace(/[$,]/g,''))});
+  if (camps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px">No campaigns with spend in this period</td></tr>';
+    return;
+  }
+  function toNum(v){return typeof v==='number'?v:parseFloat(String(v).replace(/[$,%]/g,''))}
+  function toMoney(v){var n=toNum(v);return '$'+n.toFixed(2)}
+  function toComma(v){var n=toNum(v);return Math.round(n).toLocaleString('en-US')}
+  function toPct(v){var n=toNum(v);return n.toFixed(2)+'%'}
+  var sorted = camps.slice().sort(function(a,b){return toNum(b.spend)-toNum(a.spend)});
   var html = '';
   for (var c = 0; c < sorted.length; c++) {
     var camp = sorted[c];
     var adLink = ADS_MGR + '&selected_campaign_ids=' + camp.id;
-    html += '<tr><td style="font-weight:600">' + camp.name + '</td><td><span class="pill pill-active">Active</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td><td><a href="' + adLink + '" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td></tr>';
+    var imp = camp.imp || camp.impressions || 0;
+    var statusCls = (camp.status||'Active')==='Active'?'pill-active':'pill-paused';
+    html += '<tr><td style="font-weight:600">' + camp.name + '</td><td><span class="pill ' + statusCls + '">' + (camp.status||'Active') + '</span></td><td>' + toMoney(camp.spend) + '</td><td>' + toComma(imp) + '</td><td>' + toComma(camp.clicks) + '</td><td>' + toPct(camp.ctr) + '</td><td>' + toMoney(camp.cpc) + '</td><td><a href="' + adLink + '" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td></tr>';
   }
   tbody.innerHTML = html;
 }
