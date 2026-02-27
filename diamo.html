@@ -32,6 +32,10 @@ body{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif;background:var(-
 .kpi-card:hover::before{opacity:1}
 .kpi-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
 .kpi-value{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+.kpi-change{font-size:.78rem;font-weight:600;margin-top:4px}
+.kpi-change.up{color:#22c55e}
+.kpi-change.down{color:#ef4444}
+.kpi-change.neutral{color:var(--muted)}
 .section-title{font-size:1.15rem;font-weight:700;margin-bottom:16px}
 .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);overflow-x:auto;margin-bottom:36px}
 table{width:100%;border-collapse:collapse;min-width:700px}
@@ -39,31 +43,20 @@ th{text-align:left;padding:14px 16px;font-size:.7rem;color:var(--muted);text-tra
 td{padding:14px 16px;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,0.03)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,0.02)}
-td a{color:var(--text);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,0.2);transition:all .2s}
-td a:hover{color:#818cf8;border-bottom-color:#818cf8}
 .pill{display:inline-flex;align-items:center;border-radius:var(--pill);padding:3px 12px;font-size:.73rem;font-weight:600}
 .pill-active{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
-.pill-paused{background:rgba(234,179,8,.15);color:#eab308}
 .chart-grid-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
 .chart-area{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:24px;position:relative}
 .chart-title{font-size:1rem;font-weight:700;margin-bottom:16px}
-.chart-canvas-wrap{position:relative;width:100%;height:0;padding-bottom:38%}
-.chart-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
 .footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
 .footer strong{color:var(--text);font-weight:700}
 .data-container{transition:opacity .3s}
 .data-container.switching{opacity:0}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}}
 .view-link{display:inline-flex;align-items:center;gap:4px;color:#818cf8;font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s;white-space:nowrap}
 .view-link:hover{color:#a5b4fc;text-decoration:underline}
 .view-link svg{width:12px;height:12px;fill:currentColor}
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
-@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}.chart-canvas-wrap{padding-bottom:50%}}
-@media print{
-  body{background:#fff;color:#111}
-  .kpi-card,.table-wrap,.chart-area{background:#f8f8f8;border:1px solid #ddd;backdrop-filter:none;color:#111}
-  .kpi-value,.section-title,.chart-title{color:#111}
-  .kpi-label,.footer{color:#555}
-}
 </style>
 </head>
 <body>
@@ -73,10 +66,10 @@ td a:hover{color:#818cf8;border-bottom-color:#818cf8}
     <h1>DIAMO B2B — Ad Performance Dashboard</h1>
     <div class="powered">Powered by <strong>OPN Agency</strong></div>
     <div class="social-pills">
-      <a href="https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1423348345499145" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ads Manager</a>
+      <a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&search_type=keyword_unordered&q=DIAMO" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ad Library</a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
-      <div class="period-badge" id="periodBadge">Feb 17 – Feb 24, 2026</div>
+      <div class="period-badge" id="periodBadge">Feb 20 – Feb 26, 2026</div>
       <div class="date-pills">
         <div class="date-pill active" onclick="setRange(7)">7 Days</div>
         <div class="date-pill" onclick="setRange(30)">30 Days</div>
@@ -91,7 +84,7 @@ td a:hover{color:#818cf8;border-bottom-color:#818cf8}
     <div class="table-wrap fade-in">
       <table>
         <thead>
-          <tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Ad Link</th></tr>
+          <tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th><th>Ad Preview</th></tr>
         </thead>
         <tbody id="campaignBody"></tbody>
       </table>
@@ -99,108 +92,742 @@ td a:hover{color:#818cf8;border-bottom-color:#818cf8}
 
     <div class="chart-grid-row fade-in">
       <div class="chart-area">
-        <div class="chart-title">Daily Ad Spend</div>
-        <div class="chart-canvas-wrap"><canvas id="spendChart"></canvas></div>
+        <div class="chart-title">Daily Ad Spend & Leads</div>
+        <canvas id="performanceChart" height="200"></canvas>
       </div>
       <div class="chart-area">
-        <div class="chart-title">Impressions Trend</div>
-        <div class="chart-canvas-wrap"><canvas id="impChart"></canvas></div>
+        <div class="chart-title">Daily Reach</div>
+        <canvas id="reachChart" height="200"></canvas>
       </div>
     </div>
   </div>
 </div>
 
 <div class="footer">
-  Dashboard generated by <strong>OPN Agency</strong> · Data from Meta Ads API · Last updated: 2026-02-25 05:24:00 UTC
+  <div>Last Updated: <strong>Feb 27, 2026 5:00 PM UTC</strong></div>
+  <div>Powered by <strong>OPN Agency</strong></div>
 </div>
 
 <script>
-const ADS_MGR = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1423348345499145";
+// Data from Meta Ads API
+const KPI_DATA = {
+  "7": {
+    "spend": 411.1,
+    "impressions": 10375,
+    "clicks": 208,
+    "ctr": 2.004819,
+    "cpc": 1.976442,
+    "reach": 5989,
+    "leads": 34,
+    "video_views": 1805,
+    "prev": {
+      "spend": 430.81,
+      "impressions": 12493,
+      "clicks": 255,
+      "ctr": 2.041143,
+      "cpc": 1.689451,
+      "reach": 7851
+    }
+  },
+  "14": {
+    "spend": 841.91,
+    "impressions": 22868,
+    "clicks": 463,
+    "ctr": 2.024663,
+    "cpc": 1.81838,
+    "reach": 12182,
+    "leads": 84,
+    "video_views": 3844,
+    "prev": {
+      "spend": 787.93,
+      "impressions": 19777,
+      "clicks": 363,
+      "ctr": 1.835465,
+      "cpc": 2.170606,
+      "reach": 13920
+    }
+  },
+  "30": {
+    "spend": 1711.96,
+    "impressions": 43939,
+    "clicks": 863,
+    "ctr": 1.964087,
+    "cpc": 1.983731,
+    "reach": 24197,
+    "leads": 154,
+    "video_views": 7593,
+    "prev": {
+      "spend": 1472.2,
+      "impressions": 57861,
+      "clicks": 1009,
+      "ctr": 1.743834,
+      "cpc": 1.459068,
+      "reach": 28214
+    }
+  }
+};
 
-const DAILY = [{"date":"2026-01-26","spend":59.09,"impressions":1957,"clicks":37,"reach":1684},{"date":"2026-01-27","spend":40.04,"impressions":686,"clicks":16,"reach":567},{"date":"2026-01-28","spend":41.1,"impressions":593,"clicks":23,"reach":517},{"date":"2026-01-29","spend":41.02,"impressions":701,"clicks":14,"reach":605},{"date":"2026-01-30","spend":39.43,"impressions":549,"clicks":13,"reach":512},{"date":"2026-01-31","spend":32.38,"impressions":587,"clicks":9,"reach":548},{"date":"2026-02-01","spend":54.31,"impressions":836,"clicks":15,"reach":770},{"date":"2026-02-02","spend":47.67,"impressions":1537,"clicks":23,"reach":1454},{"date":"2026-02-03","spend":46.95,"impressions":846,"clicks":12,"reach":764},{"date":"2026-02-04","spend":37.47,"impressions":710,"clicks":12,"reach":662},{"date":"2026-02-05","spend":40.32,"impressions":753,"clicks":18,"reach":707},{"date":"2026-02-06","spend":93.53,"impressions":1862,"clicks":34,"reach":1702},{"date":"2026-02-07","spend":79.78,"impressions":2147,"clicks":45,"reach":1899},{"date":"2026-02-08","spend":65.56,"impressions":1971,"clicks":27,"reach":1718},{"date":"2026-02-09","spend":68.76,"impressions":2053,"clicks":35,"reach":1784},{"date":"2026-02-10","spend":66.52,"impressions":2004,"clicks":52,"reach":1723},{"date":"2026-02-11","spend":59.37,"impressions":2064,"clicks":39,"reach":1704},{"date":"2026-02-12","spend":55.88,"impressions":1858,"clicks":29,"reach":1565},{"date":"2026-02-13","spend":58.6,"impressions":1772,"clicks":37,"reach":1545},{"date":"2026-02-14","spend":50.4,"impressions":1993,"clicks":37,"reach":1725},{"date":"2026-02-15","spend":68.81,"impressions":2380,"clicks":46,"reach":1949},{"date":"2026-02-16","spend":66.8,"impressions":2513,"clicks":51,"reach":2201},{"date":"2026-02-17","spend":64.38,"impressions":1463,"clicks":30,"reach":1207},{"date":"2026-02-18","spend":60.2,"impressions":1132,"clicks":27,"reach":883},{"date":"2026-02-19","spend":61.62,"impressions":1240,"clicks":27,"reach":979},{"date":"2026-02-20","spend":56.37,"impressions":1481,"clicks":27,"reach":1177},{"date":"2026-02-21","spend":45.62,"impressions":1142,"clicks":22,"reach":982},{"date":"2026-02-22","spend":66.87,"impressions":1710,"clicks":45,"reach":1440},{"date":"2026-02-23","spend":60.14,"impressions":1620,"clicks":24,"reach":1372},{"date":"2026-02-24","spend":60.22,"impressions":1354,"clicks":41,"reach":1081}];
+const CAMPAIGNS_BY_RANGE = {
+  "7": [
+    {
+      "campaign_name": "Leads_Boutique_Owners_Leads",
+      "campaign_id": "120233983479590732",
+      "spend": 172.54,
+      "impressions": 4527,
+      "clicks": 94,
+      "ctr": 2.07643,
+      "cpc": 1.835532,
+      "reach": 2491,
+      "leads": 22,
+      "video_views": 708
+    },
+    {
+      "campaign_name": "OPN_Orli_30 second_leadform_lookalike",
+      "campaign_id": "120237973663580732",
+      "spend": 69.34,
+      "impressions": 986,
+      "clicks": 22,
+      "ctr": 2.231237,
+      "cpc": 3.151818,
+      "reach": 730,
+      "leads": 2,
+      "video_views": 296
+    },
+    {
+      "campaign_name": "OPN_Orli_30 second_typeform",
+      "campaign_id": "120238004342290732",
+      "spend": 74.42,
+      "impressions": 2927,
+      "clicks": 61,
+      "ctr": 2.084045,
+      "cpc": 1.22,
+      "reach": 2418,
+      "leads": 0,
+      "video_views": 436
+    },
+    {
+      "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026",
+      "campaign_id": "120241916435890732",
+      "spend": 94.8,
+      "impressions": 1935,
+      "clicks": 31,
+      "ctr": 1.602067,
+      "cpc": 3.058065,
+      "reach": 1311,
+      "leads": 10,
+      "video_views": 365
+    }
+  ],
+  "14": [
+    {
+      "campaign_name": "Leads_Boutique_Owners_Leads",
+      "campaign_id": "120233983479590732",
+      "spend": 343.63,
+      "impressions": 10660,
+      "clicks": 239,
+      "ctr": 2.242026,
+      "cpc": 1.437782,
+      "reach": 5871,
+      "leads": 56,
+      "video_views": 1541
+    },
+    {
+      "campaign_name": "OPN_Orli_30 second_leadform_lookalike",
+      "campaign_id": "120237973663580732",
+      "spend": 139.35,
+      "impressions": 2229,
+      "clicks": 53,
+      "ctr": 2.377748,
+      "cpc": 2.629245,
+      "reach": 1412,
+      "leads": 8,
+      "video_views": 596
+    },
+    {
+      "campaign_name": "OPN_Orli_30 second_typeform",
+      "campaign_id": "120238004342290732",
+      "spend": 152.51,
+      "impressions": 5638,
+      "clicks": 96,
+      "ctr": 1.702731,
+      "cpc": 1.588646,
+      "reach": 4314,
+      "leads": 0,
+      "video_views": 880
+    },
+    {
+      "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026",
+      "campaign_id": "120241916435890732",
+      "spend": 206.42,
+      "impressions": 4341,
+      "clicks": 75,
+      "ctr": 1.727713,
+      "cpc": 2.752267,
+      "reach": 2438,
+      "leads": 20,
+      "video_views": 827
+    }
+  ],
+  "30": [
+    {
+      "campaign_name": "Leads_Boutique_Owners_Leads",
+      "campaign_id": "120233983479590732",
+      "spend": 559.66,
+      "impressions": 17947,
+      "clicks": 380,
+      "ctr": 2.117346,
+      "cpc": 1.472789,
+      "reach": 9582,
+      "leads": 94,
+      "video_views": 2472
+    },
+    {
+      "campaign_name": "OPN_Orli_30 second_leadform_lookalike",
+      "campaign_id": "120237973663580732",
+      "spend": 297.08,
+      "impressions": 5076,
+      "clicks": 128,
+      "ctr": 2.521671,
+      "cpc": 2.320938,
+      "reach": 2303,
+      "leads": 16,
+      "video_views": 1309
+    },
+    {
+      "campaign_name": "OPN_Orli_30 second_typeform",
+      "campaign_id": "120238004342290732",
+      "spend": 322.19,
+      "impressions": 12670,
+      "clicks": 182,
+      "ctr": 1.436464,
+      "cpc": 1.770275,
+      "reach": 9633,
+      "leads": 0,
+      "video_views": 2007
+    },
+    {
+      "campaign_name": "OPN_IV_Top 3_Leads_Lookalike",
+      "campaign_id": "120241699280950732",
+      "spend": 203.93,
+      "impressions": 1617,
+      "clicks": 50,
+      "ctr": 3.092146,
+      "cpc": 4.0786,
+      "reach": 1182,
+      "leads": 10,
+      "video_views": 470
+    },
+    {
+      "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026",
+      "campaign_id": "120241916435890732",
+      "spend": 329.1,
+      "impressions": 6629,
+      "clicks": 123,
+      "ctr": 1.855483,
+      "cpc": 2.67561,
+      "reach": 3565,
+      "leads": 34,
+      "video_views": 1335
+    }
+  ]
+};
 
-const KPI = {"7":{"spend":411.04,"impressions":9679,"clicks":213,"ctr":2.200641,"cpc":1.929765,"reach":5577,"leads":15,"video_views":1752,"prev":{"spend":424.24,"impressions":14043,"clicks":269,"ctr":1.915545,"cpc":1.5771,"reach":8650,"leads":31,"video_views":2195}},"30":{"spend":1689.21,"impressions":43514,"clicks":867,"ctr":1.992462,"cpc":1.948339,"reach":24256,"leads":74,"video_views":7571,"prev":{"spend":1465.75,"impressions":58929,"clicks":1020,"ctr":1.730897,"cpc":1.43701,"reach":28860,"leads":79,"video_views":7330}}};
-
-const CAMPAIGNS = {"7":[{"name":"Leads_Boutique_Owners_Leads","id":"120233983479590732","spend":171.29,"impressions":4035,"clicks":96,"ctr":2.379182,"cpc":1.784271,"reach":2261,"leads":10,"video_views":676,"status":"Active"},{"name":"OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026","id":"120241916435890732","spend":99.41,"impressions":1915,"clicks":37,"ctr":1.932115,"cpc":2.686757,"reach":1184,"leads":5,"video_views":383,"status":"Active"},{"name":"OPN_Orli_30 second_typeform","id":"120238004342290732","spend":73.54,"impressions":2765,"clicks":60,"ctr":2.169982,"cpc":1.225667,"reach":2212,"leads":0,"video_views":412,"status":"Active"},{"name":"OPN_Orli_30 second_leadform_lookalike","id":"120237973663580732","spend":66.8,"impressions":964,"clicks":20,"ctr":2.074689,"cpc":3.34,"reach":746,"leads":0,"video_views":281,"status":"Active"}],"14":[{"name":"Leads_Boutique_Owners_Leads","id":"120233983479590732","spend":339.45,"impressions":11419,"clicks":252,"ctr":2.206848,"cpc":1.347024,"reach":6355,"leads":31,"video_views":1601,"status":"Active"},{"name":"OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026","id":"120241916435890732","spend":205.56,"impressions":4377,"clicks":81,"ctr":1.850583,"cpc":2.537778,"reach":2387,"leads":11,"video_views":861,"status":"Active"},{"name":"OPN_Orli_30 second_typeform","id":"120238004342290732","spend":153.81,"impressions":5696,"clicks":94,"ctr":1.650281,"cpc":1.636277,"reach":4328,"leads":0,"video_views":895,"status":"Active"},{"name":"OPN_Orli_30 second_leadform_lookalike","id":"120237973663580732","spend":136.46,"impressions":2230,"clicks":55,"ctr":2.466368,"cpc":2.481091,"reach":1416,"leads":4,"video_views":590,"status":"Active"}],"30":[{"name":"Leads_Boutique_Owners_Leads","id":"120233983479590732","spend":525.36,"impressions":17534,"clicks":367,"ctr":2.093076,"cpc":1.431499,"reach":9696,"leads":44,"video_views":2382,"status":"Active"},{"name":"OPN_Orli_30 second_typeform","id":"120238004342290732","spend":328.06,"impressions":12889,"clicks":191,"ctr":1.481884,"cpc":1.717592,"reach":9872,"leads":0,"video_views":2079,"status":"Active"},{"name":"OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026","id":"120241916435890732","spend":300.86,"impressions":5996,"clicks":118,"ctr":1.967979,"cpc":2.549661,"reach":3323,"leads":16,"video_views":1245,"status":"Active"},{"name":"OPN_Orli_30 second_leadform_lookalike","id":"120237973663580732","spend":298.15,"impressions":5103,"clicks":132,"ctr":2.586714,"cpc":2.258712,"reach":2317,"leads":8,"video_views":1313,"status":"Active"},{"name":"OPN_IV_Top 3_Leads_Lookalike","id":"120241699280950732","spend":236.78,"impressions":1992,"clicks":59,"ctr":2.961847,"cpc":4.01322,"reach":1331,"leads":6,"video_views":552,"status":"Active"}]};
+const DAILY_7 = [
+  {
+    "date_start": "2026-02-20",
+    "date_stop": "2026-02-20",
+    "spend": 56.37,
+    "impressions": 1481,
+    "clicks": 27,
+    "reach": 1177
+  },
+  {
+    "date_start": "2026-02-21",
+    "date_stop": "2026-02-21",
+    "spend": 45.62,
+    "impressions": 1142,
+    "clicks": 22,
+    "reach": 982
+  },
+  {
+    "date_start": "2026-02-22",
+    "date_stop": "2026-02-22",
+    "spend": 66.87,
+    "impressions": 1710,
+    "clicks": 45,
+    "reach": 1440
+  },
+  {
+    "date_start": "2026-02-23",
+    "date_stop": "2026-02-23",
+    "spend": 60.42,
+    "impressions": 1621,
+    "clicks": 24,
+    "reach": 1374
+  },
+  {
+    "date_start": "2026-02-24",
+    "date_stop": "2026-02-24",
+    "spend": 60.22,
+    "impressions": 1354,
+    "clicks": 41,
+    "reach": 1081
+  },
+  {
+    "date_start": "2026-02-25",
+    "date_stop": "2026-02-25",
+    "spend": 57.46,
+    "impressions": 1611,
+    "clicks": 25,
+    "reach": 1307
+  },
+  {
+    "date_start": "2026-02-26",
+    "date_stop": "2026-02-26",
+    "spend": 64.14,
+    "impressions": 1456,
+    "clicks": 24,
+    "reach": 1175
+  }
+];
+const DAILY_30 = [
+  {
+    "date_start": "2026-01-28",
+    "date_stop": "2026-01-28",
+    "spend": 41.1,
+    "impressions": 593,
+    "clicks": 23,
+    "reach": 517
+  },
+  {
+    "date_start": "2026-01-29",
+    "date_stop": "2026-01-29",
+    "spend": 41.02,
+    "impressions": 701,
+    "clicks": 14,
+    "reach": 605
+  },
+  {
+    "date_start": "2026-01-30",
+    "date_stop": "2026-01-30",
+    "spend": 39.43,
+    "impressions": 549,
+    "clicks": 13,
+    "reach": 512
+  },
+  {
+    "date_start": "2026-01-31",
+    "date_stop": "2026-01-31",
+    "spend": 32.38,
+    "impressions": 587,
+    "clicks": 9,
+    "reach": 548
+  },
+  {
+    "date_start": "2026-02-01",
+    "date_stop": "2026-02-01",
+    "spend": 54.31,
+    "impressions": 836,
+    "clicks": 15,
+    "reach": 770
+  },
+  {
+    "date_start": "2026-02-02",
+    "date_stop": "2026-02-02",
+    "spend": 47.67,
+    "impressions": 1537,
+    "clicks": 23,
+    "reach": 1454
+  },
+  {
+    "date_start": "2026-02-03",
+    "date_stop": "2026-02-03",
+    "spend": 46.95,
+    "impressions": 846,
+    "clicks": 12,
+    "reach": 764
+  },
+  {
+    "date_start": "2026-02-04",
+    "date_stop": "2026-02-04",
+    "spend": 37.47,
+    "impressions": 710,
+    "clicks": 12,
+    "reach": 662
+  },
+  {
+    "date_start": "2026-02-05",
+    "date_stop": "2026-02-05",
+    "spend": 40.32,
+    "impressions": 753,
+    "clicks": 18,
+    "reach": 707
+  },
+  {
+    "date_start": "2026-02-06",
+    "date_stop": "2026-02-06",
+    "spend": 93.53,
+    "impressions": 1862,
+    "clicks": 34,
+    "reach": 1702
+  },
+  {
+    "date_start": "2026-02-07",
+    "date_stop": "2026-02-07",
+    "spend": 79.78,
+    "impressions": 2147,
+    "clicks": 45,
+    "reach": 1899
+  },
+  {
+    "date_start": "2026-02-08",
+    "date_stop": "2026-02-08",
+    "spend": 65.56,
+    "impressions": 1971,
+    "clicks": 27,
+    "reach": 1718
+  },
+  {
+    "date_start": "2026-02-09",
+    "date_stop": "2026-02-09",
+    "spend": 68.76,
+    "impressions": 2053,
+    "clicks": 35,
+    "reach": 1784
+  },
+  {
+    "date_start": "2026-02-10",
+    "date_stop": "2026-02-10",
+    "spend": 66.52,
+    "impressions": 2004,
+    "clicks": 52,
+    "reach": 1723
+  },
+  {
+    "date_start": "2026-02-11",
+    "date_stop": "2026-02-11",
+    "spend": 59.37,
+    "impressions": 2064,
+    "clicks": 39,
+    "reach": 1704
+  },
+  {
+    "date_start": "2026-02-12",
+    "date_stop": "2026-02-12",
+    "spend": 55.88,
+    "impressions": 1858,
+    "clicks": 29,
+    "reach": 1565
+  },
+  {
+    "date_start": "2026-02-13",
+    "date_stop": "2026-02-13",
+    "spend": 58.6,
+    "impressions": 1772,
+    "clicks": 37,
+    "reach": 1545
+  },
+  {
+    "date_start": "2026-02-14",
+    "date_stop": "2026-02-14",
+    "spend": 50.4,
+    "impressions": 1993,
+    "clicks": 37,
+    "reach": 1725
+  },
+  {
+    "date_start": "2026-02-15",
+    "date_stop": "2026-02-15",
+    "spend": 68.81,
+    "impressions": 2380,
+    "clicks": 46,
+    "reach": 1949
+  },
+  {
+    "date_start": "2026-02-16",
+    "date_stop": "2026-02-16",
+    "spend": 66.8,
+    "impressions": 2513,
+    "clicks": 51,
+    "reach": 2201
+  },
+  {
+    "date_start": "2026-02-17",
+    "date_stop": "2026-02-17",
+    "spend": 64.38,
+    "impressions": 1463,
+    "clicks": 30,
+    "reach": 1207
+  },
+  {
+    "date_start": "2026-02-18",
+    "date_stop": "2026-02-18",
+    "spend": 60.2,
+    "impressions": 1132,
+    "clicks": 27,
+    "reach": 883
+  },
+  {
+    "date_start": "2026-02-19",
+    "date_stop": "2026-02-19",
+    "spend": 61.62,
+    "impressions": 1240,
+    "clicks": 27,
+    "reach": 979
+  },
+  {
+    "date_start": "2026-02-20",
+    "date_stop": "2026-02-20",
+    "spend": 56.37,
+    "impressions": 1481,
+    "clicks": 27,
+    "reach": 1177
+  },
+  {
+    "date_start": "2026-02-21",
+    "date_stop": "2026-02-21",
+    "spend": 45.62,
+    "impressions": 1142,
+    "clicks": 22,
+    "reach": 982
+  },
+  {
+    "date_start": "2026-02-22",
+    "date_stop": "2026-02-22",
+    "spend": 66.87,
+    "impressions": 1710,
+    "clicks": 45,
+    "reach": 1440
+  },
+  {
+    "date_start": "2026-02-23",
+    "date_stop": "2026-02-23",
+    "spend": 60.42,
+    "impressions": 1621,
+    "clicks": 24,
+    "reach": 1374
+  },
+  {
+    "date_start": "2026-02-24",
+    "date_stop": "2026-02-24",
+    "spend": 60.22,
+    "impressions": 1354,
+    "clicks": 41,
+    "reach": 1081
+  },
+  {
+    "date_start": "2026-02-25",
+    "date_stop": "2026-02-25",
+    "spend": 57.46,
+    "impressions": 1611,
+    "clicks": 25,
+    "reach": 1307
+  },
+  {
+    "date_start": "2026-02-26",
+    "date_stop": "2026-02-26",
+    "spend": 64.14,
+    "impressions": 1456,
+    "clicks": 24,
+    "reach": 1175
+  }
+];
 
 let currentRange = 7;
-let spendChart, impChart;
+let performanceChart, reachChart;
 
-function fmt(n){return n.toLocaleString('en-US')}
-
-function setRange(r) {
-  if (r === currentRange) return;
-  currentRange = r;
-  document.querySelectorAll('.date-pill').forEach(function(p) {
-    p.classList.toggle('active', parseInt(p.textContent) === r);
-  });
-  var dc = document.getElementById('dataContainer');
-  dc.classList.add('switching');
-  setTimeout(function() { render(r); dc.classList.remove('switching'); }, 300);
+function formatNumber(num) {
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+  return num.toLocaleString();
 }
 
-function render(r) {
-  var k = KPI[r];
-  document.getElementById('periodBadge').textContent = k.period;
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  }).format(amount);
+}
 
-  var kpis = [
-    {label:'Total Spend',value:k.spend},
-    {label:'Impressions',value:k.impressions},
-    {label:'Reach',value:k.reach},
-    {label:'Clicks',value:k.clicks},
-    {label:'CTR',value:k.ctr},
-    {label:'CPC',value:k.cpc},
-    {label:'Leads',value:k.leads},
-    {label:'Cost / Lead',value:k.costPerLead},
-    {label:'Video Views',value:k.videoViews}
+function getChangeClass(current, previous) {
+  if (current > previous) return 'up';
+  if (current < previous) return 'down';
+  return 'neutral';
+}
+
+function getChangeText(current, previous) {
+  if (previous === 0) return current > 0 ? '+100%' : '0%';
+  const change = ((current - previous) / previous * 100);
+  return (change >= 0 ? '+' : '') + change.toFixed(1) + '%';
+}
+
+function updateKPIs() {
+  const data = KPI_DATA[currentRange];
+  const prev = data.prev;
+
+  const kpis = [
+    {
+      label: 'Total Spend',
+      value: formatCurrency(data.spend),
+      change: getChangeText(data.spend, prev.spend),
+      changeClass: getChangeClass(data.spend, prev.spend)
+    },
+    {
+      label: 'Leads Generated',
+      value: formatNumber(data.leads),
+      change: getChangeText(data.leads, 0),
+      changeClass: 'up'
+    },
+    {
+      label: 'Cost Per Lead',
+      value: data.leads > 0 ? formatCurrency(data.spend / data.leads) : '$0.00',
+      change: 'Lead gen campaign',
+      changeClass: 'neutral'
+    }
   ];
-  var kpiHTML = '';
-  for (var i = 0; i < kpis.length; i++) {
-    kpiHTML += '<div class="kpi-card"><div class="kpi-label">' + kpis[i].label + '</div><div class="kpi-value">' + kpis[i].value + '</div></div>';
-  }
-  document.getElementById('kpiRow').innerHTML = kpiHTML;
 
-  // Campaigns table
-  var camps = CAMPAIGNS[r];
-  var tbody = document.getElementById('campaignBody');
-  var html = '';
-  for (var c = 0; c < camps.length; c++) {
-    var camp = camps[c];
-    var adLink = ADS_MGR + '&selected_campaign_ids=' + camp.id;
-    var statusPill = camp.status === 'Active' ? 'pill-active' : 'pill-paused';
-    html += '<tr><td style="font-weight:600">' + camp.name + '</td><td><span class="pill ' + statusPill + '">' + camp.status + '</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.reach + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td><td><a href="' + adLink + '" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td></tr>';
-  }
-  tbody.innerHTML = html;
+  document.getElementById('kpiRow').innerHTML = kpis.map(kpi => `
+    <div class="kpi-card">
+      <div class="kpi-label">${kpi.label}</div>
+      <div class="kpi-value">${kpi.value}</div>
+      <div class="kpi-change ${kpi.changeClass}">${kpi.change}</div>
+    </div>
+  `).join('');
+}
 
-  // Charts
-  var sliced = r === 7 ? DAILY.slice(-7) : DAILY;
-  var labels = [], spendData = [], impData = [];
-  for (var j = 0; j < sliced.length; j++) {
-    labels.push(sliced[j].d);
-    spendData.push(sliced[j].spend);
-    impData.push(sliced[j].imp);
-  }
+function updateCampaigns() {
+  const campaigns = CAMPAIGNS_BY_RANGE[currentRange] || [];
 
-  if(spendChart) spendChart.destroy();
-  if(impChart) impChart.destroy();
+  document.getElementById('campaignBody').innerHTML = campaigns.map(campaign => `
+    <tr>
+      <td>${campaign.campaign_name}</td>
+      <td><span class="pill pill-active">Active</span></td>
+      <td>${formatCurrency(campaign.spend)}</td>
+      <td>${formatNumber(campaign.impressions)}</td>
+      <td>${formatNumber(campaign.reach)}</td>
+      <td>${formatNumber(campaign.clicks)}</td>
+      <td>${campaign.ctr.toFixed(2)}%</td>
+      <td>${formatCurrency(campaign.cpc)}</td>
+      <td>${campaign.leads}</td>
+      <td><a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&search_type=keyword_unordered&q=${encodeURIComponent(campaign.campaign_name)}" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td>
+    </tr>
+  `).join('');
+}
 
-  var gridColor = 'rgba(255,255,255,0.06)';
-  var tickColor = '#a1a1aa';
+function updateCharts() {
+  const dailyData = currentRange === 7 ? DAILY_7 : DAILY_30;
+  const labels = dailyData.map(day => new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
 
-  spendChart = new Chart(document.getElementById('spendChart'), {
-    type:'bar',
-    data:{labels:labels, datasets:[{label:'Spend ($)',data:spendData,backgroundColor:'rgba(99,102,241,0.7)',borderRadius:4,borderSkipped:false}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},y:{ticks:{color:tickColor,callback:function(v){return '$'+v}},grid:{color:gridColor}}}}
+  // Destroy existing charts
+  if (performanceChart) performanceChart.destroy();
+  if (reachChart) reachChart.destroy();
+
+  // Performance Chart (Spend + estimated leads)
+  performanceChart = new Chart(document.getElementById('performanceChart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Daily Spend',
+        data: dailyData.map(day => day.spend),
+        borderColor: '#6366f1',
+        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        tension: 0.4,
+        fill: true,
+        yAxisID: 'y'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true }
+      },
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          beginAtZero: true,
+          grid: { color: 'rgba(255,255,255,0.1)' },
+          ticks: {
+            color: '#a1a1aa',
+            callback: function(value) { return '$' + value; }
+          }
+        },
+        x: {
+          grid: { color: 'rgba(255,255,255,0.1)' },
+          ticks: { color: '#a1a1aa' }
+        }
+      }
+    }
   });
 
-  impChart = new Chart(document.getElementById('impChart'), {
-    type:'line',
-    data:{labels:labels, datasets:[{label:'Impressions',data:impData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',fill:true,tension:.3,pointRadius:2}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tickColor,font:{size:10},maxRotation:45},grid:{display:false}},y:{ticks:{color:tickColor,callback:function(v){return fmt(v)}},grid:{color:gridColor}}}}
+  // Reach Chart
+  reachChart = new Chart(document.getElementById('reachChart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Daily Reach',
+        data: dailyData.map(day => day.reach),
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(255,255,255,0.1)' },
+          ticks: {
+            color: '#a1a1aa',
+            callback: function(value) { return formatNumber(value); }
+          }
+        },
+        x: {
+          grid: { color: 'rgba(255,255,255,0.1)' },
+          ticks: { color: '#a1a1aa' }
+        }
+      }
+    }
   });
 }
 
-render(7);
+function updatePeriodBadge() {
+  const badges = {
+    7: 'Feb 20 – Feb 26, 2026',
+    30: 'Jan 28 – Feb 26, 2026'
+  };
+  document.getElementById('periodBadge').textContent = badges[currentRange];
+}
+
+function setRange(range) {
+  currentRange = range;
+
+  // Update active pill
+  document.querySelectorAll('.date-pill').forEach(pill => pill.classList.remove('active'));
+  document.querySelector(`[onclick="setRange(${range})"]`).classList.add('active');
+
+  // Update data
+  updatePeriodBadge();
+  updateKPIs();
+  updateCampaigns();
+  updateCharts();
+}
+
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', function() {
+  setRange(7);
+});
 </script>
 </body>
 </html>
