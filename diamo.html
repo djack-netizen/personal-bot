@@ -66,7 +66,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <h1>DIAMO B2B — Ad Performance Dashboard</h1>
     <div class="powered">Powered by <strong>OPN Agency</strong></div>
     <div class="social-pills">
-      <a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&search_type=keyword_unordered&q=DIAMO" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ad Library</a>
+      <a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&view_all_page_id=718379001356744" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ad Library</a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
       <div class="period-badge" id="periodBadge">Feb 20 – Feb 26, 2026</div>
@@ -699,7 +699,7 @@ function updateKPIs() {
 function updateCampaigns() {
   const campaigns = CAMPAIGNS_BY_RANGE[currentRange] || [];
 
-  document.getElementById('campaignBody').innerHTML = campaigns.map(campaign => `
+  document.getElementById('campaignBody').innerHTML = campaigns.filter(campaign => campaign.spend > 0).map(campaign => `
     <tr>
       <td>${campaign.campaign_name}</td>
       <td><span class="pill pill-active">Active</span></td>
@@ -710,7 +710,7 @@ function updateCampaigns() {
       <td>${campaign.ctr.toFixed(2)}%</td>
       <td>${formatCurrency(campaign.cpc)}</td>
       <td>${campaign.leads}</td>
-      <td><a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&search_type=keyword_unordered&q=${encodeURIComponent(campaign.campaign_name)}" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td>
+      <td><a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&view_all_page_id=718379001356744" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td>
     </tr>
   `).join('');
 }
