@@ -71,7 +71,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&search_type=keyword_unordered&q=Royal+Restaurant+Alexandria" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ad Library</a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
-      <div class="period-badge" id="periodBadge">Feb 20 – Feb 26, 2026</div>
+      <div class="period-badge" id="periodBadge">Feb 23 – Mar 1, 2026</div>
       <div class="date-pills">
         <div class="date-pill active" onclick="setRange(7)">7 Days</div>
         <div class="date-pill" onclick="setRange(14)">14 Days</div>
@@ -115,60 +115,57 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 // Data from Meta Ads API
 const KPI_DATA = {
   "7": {
-    "spend": 230.66,
-    "impressions": 35680,
-    "clicks": 2233,
-    "ctr": 6.258408,
-    "cpc": 0.103296,
-    "reach": 26072,
+    "spend": 306.73,
+    "impressions": 47233,
+    "clicks": 3336,
+    "ctr": 7.0629,
+    "cpc": 0.0919,
+    "reach": 34269,
     "leads": 0,
-    "video_views": 7058,
-    "video_avg_time_watched": 4.0,
+    "video_views": 12465,
     "prev": {
-      "spend": 165.78,
-      "impressions": 25336,
-      "clicks": 1095,
-      "ctr": 4.321913,
-      "cpc": 0.151397,
-      "reach": 18609
+      "spend": 160.44,
+      "impressions": 24343,
+      "clicks": 1166,
+      "ctr": 4.7899,
+      "cpc": 0.1376,
+      "reach": 18530
     }
   },
   "14": {
-    "spend": 396.44,
-    "impressions": 61016,
-    "clicks": 3328,
-    "ctr": 5.454307,
-    "cpc": 0.119123,
-    "reach": 39071,
+    "spend": 467.17,
+    "impressions": 71576,
+    "clicks": 4502,
+    "ctr": 6.2898,
+    "cpc": 0.1038,
+    "reach": 46196,
     "leads": 0,
-    "video_views": 9988,
-    "video_avg_time_watched": 4.0,
+    "video_views": 15055,
     "prev": {
-      "spend": 605.12,
-      "impressions": 93722,
-      "clicks": 5923,
-      "ctr": 6.319754,
-      "cpc": 0.102164,
-      "reach": 60181
+      "spend": 598.92,
+      "impressions": 91434,
+      "clicks": 5477,
+      "ctr": 5.9901,
+      "cpc": 0.1094,
+      "reach": 58326
     }
   },
   "30": {
-    "spend": 1052.53,
-    "impressions": 162389,
-    "clicks": 9776,
-    "ctr": 6.020112,
-    "cpc": 0.107665,
-    "reach": 92839,
+    "spend": 1119.55,
+    "impressions": 172497,
+    "clicks": 10590,
+    "ctr": 6.1392,
+    "cpc": 0.1057,
+    "reach": 96902,
     "leads": 0,
-    "video_views": 40406,
-    "video_avg_time_watched": 5.0,
+    "video_views": 43178,
     "prev": {
-      "spend": 794.74,
-      "impressions": 128990,
-      "clicks": 9292,
-      "ctr": 7.203659,
-      "cpc": 0.085529,
-      "reach": 71367
+      "spend": 776.88,
+      "impressions": 125959,
+      "clicks": 9418,
+      "ctr": 7.477,
+      "cpc": 0.0825,
+      "reach": 69806
     }
   }
 };
@@ -176,513 +173,519 @@ const KPI_DATA = {
 const CAMPAIGNS_BY_RANGE = {
   "7": [
     {
-        "campaign_name": "OPN_RoyalRestaurant_DateNight",
-        "campaign_id": "6863325609182",
-        "spend": 24.39,
-        "impressions": 3757,
-        "clicks": 277,
-        "ctr": 7.372904,
-        "cpc": 0.088051,
-        "reach": 3309,
-        "leads": 0,
-        "video_views": 1136
+      "campaign_name": "OPN_Cozy Decor_Reel 1",
+      "campaign_id": "6991897872382",
+      "spend": 104.29,
+      "impressions": 15741,
+      "clicks": 1284,
+      "ctr": 8.16,
+      "cpc": 0.0812,
+      "reach": 12942,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_PAIDAD_Happy Hour",
-        "campaign_id": "6917226822982",
-        "spend": 34.8,
-        "impressions": 5977,
-        "clicks": 400,
-        "ctr": 6.692321,
-        "cpc": 0.087,
-        "reach": 5066,
-        "leads": 0,
-        "video_views": 0
+      "campaign_name": "OPN_Dinner Focus_Reels",
+      "campaign_id": "6991904609582",
+      "spend": 103.93,
+      "impressions": 15234,
+      "clicks": 1296,
+      "ctr": 8.51,
+      "cpc": 0.0802,
+      "reach": 13277,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Catering Jan-Feb Offer_Static",
-        "campaign_id": "6980676091382",
-        "spend": 69.27,
-        "impressions": 10810,
-        "clicks": 321,
-        "ctr": 2.969473,
-        "cpc": 0.215794,
-        "reach": 7375,
-        "leads": 0,
-        "video_views": 0
+      "campaign_name": "OPN_Catering Jan-Feb Offer_Static",
+      "campaign_id": "6980676091382",
+      "spend": 61.94,
+      "impressions": 10143,
+      "clicks": 347,
+      "ctr": 3.42,
+      "cpc": 0.1785,
+      "reach": 6737,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Cozy Decor_Reel 1",
-        "campaign_id": "6991897872382",
-        "spend": 51.78,
-        "impressions": 7972,
-        "clicks": 654,
-        "ctr": 8.203713,
-        "cpc": 0.079174,
-        "reach": 7355,
-        "leads": 0,
-        "video_views": 2652
+      "campaign_name": "OPN_PAIDAD_Happy Hour",
+      "campaign_id": "6917226822982",
+      "spend": 35.02,
+      "impressions": 5896,
+      "clicks": 398,
+      "ctr": 6.75,
+      "cpc": 0.088,
+      "reach": 4914,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Dinner Focus_Reels",
-        "campaign_id": "6991904609582",
-        "spend": 50.42,
-        "impressions": 7164,
-        "clicks": 581,
-        "ctr": 8.109994,
-        "cpc": 0.086781,
-        "reach": 6749,
-        "leads": 0,
-        "video_views": 3270
+      "campaign_name": "OPN_RoyalRestaurant_DateNight",
+      "campaign_id": "6863325609182",
+      "spend": 1.55,
+      "impressions": 219,
+      "clicks": 11,
+      "ctr": 5.02,
+      "cpc": 0.1409,
+      "reach": 215,
+      "leads": 0
     }
-],
+  ],
   "14": [
     {
-        "campaign_name": "OPN_RoyalRestaurant_DateNight",
-        "campaign_id": "6863325609182",
-        "spend": 81.66,
-        "impressions": 13320,
-        "clicks": 790,
-        "ctr": 5.930931,
-        "cpc": 0.103367,
-        "reach": 10287,
-        "leads": 0,
-        "video_views": 3947
+      "campaign_name": "OPN_Catering Jan-Feb Offer_Static",
+      "campaign_id": "6980676091382",
+      "spend": 131.65,
+      "impressions": 20289,
+      "clicks": 573,
+      "ctr": 2.82,
+      "cpc": 0.2298,
+      "reach": 11879,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_PAIDAD_Happy Hour",
-        "campaign_id": "6917226822982",
-        "spend": 70.17,
-        "impressions": 11330,
-        "clicks": 735,
-        "ctr": 6.487202,
-        "cpc": 0.095469,
-        "reach": 8877,
-        "leads": 0,
-        "video_views": 0
+      "campaign_name": "OPN_Cozy Decor_Reel 1",
+      "campaign_id": "6991897872382",
+      "spend": 104.29,
+      "impressions": 15741,
+      "clicks": 1284,
+      "ctr": 8.16,
+      "cpc": 0.0812,
+      "reach": 12942,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Private Events_Reel_Jan 14_Top",
-        "campaign_id": "6971168409582",
-        "spend": 3.16,
-        "impressions": 577,
-        "clicks": 24,
-        "ctr": 4.159445,
-        "cpc": 0.131667,
-        "reach": 548,
-        "leads": 0,
-        "video_views": 119
+      "campaign_name": "OPN_Dinner Focus_Reels",
+      "campaign_id": "6991904609582",
+      "spend": 103.93,
+      "impressions": 15234,
+      "clicks": 1296,
+      "ctr": 8.51,
+      "cpc": 0.0802,
+      "reach": 13277,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Catering Jan-Feb Offer_Static",
-        "campaign_id": "6980676091382",
-        "spend": 139.25,
-        "impressions": 20653,
-        "clicks": 544,
-        "ctr": 2.634,
-        "cpc": 0.255974,
-        "reach": 11566,
-        "leads": 0,
-        "video_views": 0
+      "campaign_name": "OPN_PAIDAD_Happy Hour",
+      "campaign_id": "6917226822982",
+      "spend": 69.91,
+      "impressions": 11447,
+      "clicks": 764,
+      "ctr": 6.67,
+      "cpc": 0.0915,
+      "reach": 9198,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Cozy Decor_Reel 1",
-        "campaign_id": "6991897872382",
-        "spend": 51.78,
-        "impressions": 7972,
-        "clicks": 654,
-        "ctr": 8.203713,
-        "cpc": 0.079174,
-        "reach": 7355,
-        "leads": 0,
-        "video_views": 2652
-    },
-    {
-        "campaign_name": "OPN_Dinner Focus_Reels",
-        "campaign_id": "6991904609582",
-        "spend": 50.42,
-        "impressions": 7164,
-        "clicks": 581,
-        "ctr": 8.109994,
-        "cpc": 0.086781,
-        "reach": 6749,
-        "leads": 0,
-        "video_views": 3270
+      "campaign_name": "OPN_RoyalRestaurant_DateNight",
+      "campaign_id": "6863325609182",
+      "spend": 57.39,
+      "impressions": 8865,
+      "clicks": 585,
+      "ctr": 6.6,
+      "cpc": 0.0981,
+      "reach": 7390,
+      "leads": 0
     }
-],
+  ],
   "30": [
     {
-        "campaign_name": "OPN_RoyalRestaurant_DateNight",
-        "campaign_id": "6863325609182",
-        "spend": 209.1,
-        "impressions": 34444,
-        "clicks": 1964,
-        "ctr": 5.702009,
-        "cpc": 0.106466,
-        "reach": 23443,
-        "leads": 0,
-        "video_views": 10716
+      "campaign_name": "OPN_Catering Jan-Feb Offer_Static",
+      "campaign_id": "6980676091382",
+      "spend": 239.51,
+      "impressions": 35787,
+      "clicks": 923,
+      "ctr": 2.58,
+      "cpc": 0.2595,
+      "reach": 17333,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_PAIDAD_Happy Hour",
-        "campaign_id": "6917226822982",
-        "spend": 149.47,
-        "impressions": 23167,
-        "clicks": 1519,
-        "ctr": 6.55674,
-        "cpc": 0.0984,
-        "reach": 15506,
-        "leads": 0,
-        "video_views": 0
+      "campaign_name": "OPN_RoyalRestaurant_DateNight",
+      "campaign_id": "6863325609182",
+      "spend": 185.66,
+      "impressions": 30645,
+      "clicks": 1730,
+      "ctr": 5.65,
+      "cpc": 0.1073,
+      "reach": 21494,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Music Mondays_Reel_Jan 2",
-        "campaign_id": "6969176309182",
-        "spend": 105.22,
-        "impressions": 16454,
-        "clicks": 1341,
-        "ctr": 8.149994,
-        "cpc": 0.078464,
-        "reach": 12900,
-        "leads": 0,
-        "video_views": 8150
+      "campaign_name": "OPN_PAIDAD_Happy Hour",
+      "campaign_id": "6917226822982",
+      "spend": 150.05,
+      "impressions": 23414,
+      "clicks": 1528,
+      "ctr": 6.53,
+      "cpc": 0.0982,
+      "reach": 16158,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Private Events_Reel_Jan 14_Top",
-        "campaign_id": "6971168409582",
-        "spend": 53.1,
-        "impressions": 9323,
-        "clicks": 370,
-        "ctr": 3.96868,
-        "cpc": 0.143514,
-        "reach": 7077,
-        "leads": 0,
-        "video_views": 2028
+      "campaign_name": "OPN_Vday Pre-Fixe Menu",
+      "campaign_id": "6978982483182",
+      "spend": 140.85,
+      "impressions": 22601,
+      "clicks": 1737,
+      "ctr": 7.69,
+      "cpc": 0.0811,
+      "reach": 15055,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Vday Pre-Fixe Menu",
-        "campaign_id": "6978982483182",
-        "spend": 140.85,
-        "impressions": 22601,
-        "clicks": 1737,
-        "ctr": 7.685501,
-        "cpc": 0.081088,
-        "reach": 15055,
-        "leads": 0,
-        "video_views": 9082
+      "campaign_name": "OPN_Cozy Decor_Reel 1",
+      "campaign_id": "6991897872382",
+      "spend": 104.29,
+      "impressions": 15741,
+      "clicks": 1284,
+      "ctr": 8.16,
+      "cpc": 0.0812,
+      "reach": 12942,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Catering Jan-Feb Offer_Static",
-        "campaign_id": "6980676091382",
-        "spend": 216.68,
-        "impressions": 32048,
-        "clicks": 803,
-        "ctr": 2.505617,
-        "cpc": 0.269838,
-        "reach": 15610,
-        "leads": 0,
-        "video_views": 4
+      "campaign_name": "OPN_Dinner Focus_Reels",
+      "campaign_id": "6991904609582",
+      "spend": 103.93,
+      "impressions": 15234,
+      "clicks": 1296,
+      "ctr": 8.51,
+      "cpc": 0.0802,
+      "reach": 13277,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_VDay_Reel 1",
-        "campaign_id": "6980797845182",
-        "spend": 75.91,
-        "impressions": 9216,
-        "clicks": 807,
-        "ctr": 8.75651,
-        "cpc": 0.094064,
-        "reach": 7704,
-        "leads": 0,
-        "video_views": 4504
+      "campaign_name": "OPN_Music Mondays_Reel_Jan 2",
+      "campaign_id": "6969176309182",
+      "spend": 75.93,
+      "impressions": 12057,
+      "clicks": 985,
+      "ctr": 8.17,
+      "cpc": 0.0771,
+      "reach": 9783,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Cozy Decor_Reel 1",
-        "campaign_id": "6991897872382",
-        "spend": 51.78,
-        "impressions": 7972,
-        "clicks": 654,
-        "ctr": 8.203713,
-        "cpc": 0.079174,
-        "reach": 7355,
-        "leads": 0,
-        "video_views": 2652
+      "campaign_name": "OPN_VDay_Reel 1",
+      "campaign_id": "6980797845182",
+      "spend": 75.91,
+      "impressions": 9216,
+      "clicks": 807,
+      "ctr": 8.76,
+      "cpc": 0.0941,
+      "reach": 7704,
+      "leads": 0
     },
     {
-        "campaign_name": "OPN_Dinner Focus_Reels",
-        "campaign_id": "6991904609582",
-        "spend": 50.42,
-        "impressions": 7164,
-        "clicks": 581,
-        "ctr": 8.109994,
-        "cpc": 0.086781,
-        "reach": 6749,
-        "leads": 0,
-        "video_views": 3270
+      "campaign_name": "OPN_Private Events_Reel_Jan 14_Top",
+      "campaign_id": "6971168409582",
+      "spend": 43.42,
+      "impressions": 7802,
+      "clicks": 300,
+      "ctr": 3.85,
+      "cpc": 0.1447,
+      "reach": 6084,
+      "leads": 0
     }
-]
+  ]
 };
 
 const DAILY_7 = [
-  {
-    "date": "2026-02-20",
-    "spend": 21.23,
-    "impressions": 3129,
-    "clicks": 171,
-    "reach": 3032
-  },
-  {
-    "date": "2026-02-21",
-    "spend": 20.86,
-    "impressions": 3186,
-    "clicks": 165,
-    "reach": 2916
-  },
-  {
-    "date": "2026-02-22",
-    "spend": 25.66,
-    "impressions": 4093,
-    "clicks": 186,
-    "reach": 3882
-  },
   {
     "date": "2026-02-23",
     "spend": 19.36,
     "impressions": 3738,
     "clicks": 150,
-    "reach": 3521
+    "reach": 3521,
+    "leads": 0
   },
   {
     "date": "2026-02-24",
     "spend": 33.88,
     "impressions": 4927,
     "clicks": 283,
-    "reach": 4613
+    "reach": 4613,
+    "leads": 0
   },
   {
     "date": "2026-02-25",
     "spend": 57.39,
     "impressions": 8682,
     "clicks": 623,
-    "reach": 8182
+    "reach": 8182,
+    "leads": 0
   },
   {
     "date": "2026-02-26",
-    "spend": 52.28,
-    "impressions": 7925,
+    "spend": 52.32,
+    "impressions": 7931,
     "clicks": 655,
-    "reach": 7393
+    "reach": 7395,
+    "leads": 0
+  },
+  {
+    "date": "2026-02-27",
+    "spend": 47.78,
+    "impressions": 7027,
+    "clicks": 524,
+    "reach": 6586,
+    "leads": 0
+  },
+  {
+    "date": "2026-02-28",
+    "spend": 48.83,
+    "impressions": 7594,
+    "clicks": 516,
+    "reach": 7201,
+    "leads": 0
+  },
+  {
+    "date": "2026-03-01",
+    "spend": 47.17,
+    "impressions": 7334,
+    "clicks": 585,
+    "reach": 7161,
+    "leads": 0
   }
 ];
 const DAILY_30 = [
-  {
-    "date": "2026-01-28",
-    "spend": 25.54,
-    "impressions": 3904,
-    "clicks": 269,
-    "reach": 3741
-  },
-  {
-    "date": "2026-01-29",
-    "spend": 25.43,
-    "impressions": 3747,
-    "clicks": 256,
-    "reach": 3601
-  },
-  {
-    "date": "2026-01-30",
-    "spend": 25.83,
-    "impressions": 4202,
-    "clicks": 286,
-    "reach": 3972
-  },
   {
     "date": "2026-01-31",
     "spend": 25.14,
     "impressions": 4415,
     "clicks": 292,
-    "reach": 4178
+    "reach": 4178,
+    "leads": 0
   },
   {
     "date": "2026-02-01",
     "spend": 28.32,
     "impressions": 5072,
     "clicks": 319,
-    "reach": 4693
+    "reach": 4693,
+    "leads": 0
   },
   {
     "date": "2026-02-02",
     "spend": 43.42,
     "impressions": 7680,
     "clicks": 509,
-    "reach": 7032
+    "reach": 7032,
+    "leads": 0
   },
   {
     "date": "2026-02-03",
     "spend": 45.19,
     "impressions": 7508,
     "clicks": 526,
-    "reach": 6823
+    "reach": 6823,
+    "leads": 0
   },
   {
     "date": "2026-02-04",
     "spend": 43.45,
     "impressions": 6841,
     "clicks": 556,
-    "reach": 6469
+    "reach": 6469,
+    "leads": 0
   },
   {
     "date": "2026-02-05",
     "spend": 59.84,
     "impressions": 8697,
     "clicks": 666,
-    "reach": 7996
+    "reach": 7996,
+    "leads": 0
   },
   {
     "date": "2026-02-06",
     "spend": 75.1,
     "impressions": 10828,
     "clicks": 773,
-    "reach": 9742
+    "reach": 9742,
+    "leads": 0
   },
   {
     "date": "2026-02-07",
     "spend": 68.67,
     "impressions": 10116,
     "clicks": 579,
-    "reach": 9251
+    "reach": 9251,
+    "leads": 0
   },
   {
     "date": "2026-02-08",
     "spend": 70.66,
     "impressions": 9893,
     "clicks": 584,
-    "reach": 9028
+    "reach": 9028,
+    "leads": 0
   },
   {
     "date": "2026-02-09",
     "spend": 43.13,
     "impressions": 6359,
     "clicks": 373,
-    "reach": 5922
+    "reach": 5922,
+    "leads": 0
   },
   {
     "date": "2026-02-10",
     "spend": 26.08,
     "impressions": 3798,
     "clicks": 166,
-    "reach": 3414
+    "reach": 3414,
+    "leads": 0
   },
   {
     "date": "2026-02-11",
     "spend": 24.94,
     "impressions": 3999,
     "clicks": 161,
-    "reach": 3640
+    "reach": 3640,
+    "leads": 0
   },
   {
     "date": "2026-02-12",
     "spend": 25.35,
     "impressions": 4314,
     "clicks": 133,
-    "reach": 3984
+    "reach": 3984,
+    "leads": 0
   },
   {
     "date": "2026-02-13",
     "spend": 24.75,
     "impressions": 3880,
     "clicks": 151,
-    "reach": 3501
+    "reach": 3501,
+    "leads": 0
   },
   {
     "date": "2026-02-14",
     "spend": 22.45,
     "impressions": 3707,
     "clicks": 131,
-    "reach": 3430
+    "reach": 3430,
+    "leads": 0
   },
   {
     "date": "2026-02-15",
     "spend": 25.89,
     "impressions": 3814,
     "clicks": 169,
-    "reach": 3513
+    "reach": 3513,
+    "leads": 0
   },
   {
     "date": "2026-02-16",
     "spend": 24.74,
     "impressions": 3779,
     "clicks": 158,
-    "reach": 3592
+    "reach": 3592,
+    "leads": 0
   },
   {
     "date": "2026-02-17",
     "spend": 22.18,
     "impressions": 3432,
     "clicks": 160,
-    "reach": 3245
+    "reach": 3245,
+    "leads": 0
   },
   {
     "date": "2026-02-18",
     "spend": 22.6,
     "impressions": 3256,
     "clicks": 150,
-    "reach": 3084
+    "reach": 3084,
+    "leads": 0
   },
   {
     "date": "2026-02-19",
     "spend": 23.17,
     "impressions": 3468,
     "clicks": 176,
-    "reach": 3337
+    "reach": 3337,
+    "leads": 0
   },
   {
     "date": "2026-02-20",
     "spend": 21.23,
     "impressions": 3129,
     "clicks": 171,
-    "reach": 3032
+    "reach": 3032,
+    "leads": 0
   },
   {
     "date": "2026-02-21",
     "spend": 20.86,
     "impressions": 3186,
     "clicks": 165,
-    "reach": 2916
+    "reach": 2916,
+    "leads": 0
   },
   {
     "date": "2026-02-22",
     "spend": 25.66,
     "impressions": 4093,
     "clicks": 186,
-    "reach": 3882
+    "reach": 3882,
+    "leads": 0
   },
   {
     "date": "2026-02-23",
     "spend": 19.36,
     "impressions": 3738,
     "clicks": 150,
-    "reach": 3521
+    "reach": 3521,
+    "leads": 0
   },
   {
     "date": "2026-02-24",
     "spend": 33.88,
     "impressions": 4927,
     "clicks": 283,
-    "reach": 4613
+    "reach": 4613,
+    "leads": 0
   },
   {
     "date": "2026-02-25",
     "spend": 57.39,
     "impressions": 8682,
     "clicks": 623,
-    "reach": 8182
+    "reach": 8182,
+    "leads": 0
   },
   {
     "date": "2026-02-26",
-    "spend": 52.28,
-    "impressions": 7925,
+    "spend": 52.32,
+    "impressions": 7931,
     "clicks": 655,
-    "reach": 7393
+    "reach": 7395,
+    "leads": 0
+  },
+  {
+    "date": "2026-02-27",
+    "spend": 47.78,
+    "impressions": 7027,
+    "clicks": 524,
+    "reach": 6586,
+    "leads": 0
+  },
+  {
+    "date": "2026-02-28",
+    "spend": 48.83,
+    "impressions": 7594,
+    "clicks": 516,
+    "reach": 7201,
+    "leads": 0
+  },
+  {
+    "date": "2026-03-01",
+    "spend": 47.17,
+    "impressions": 7334,
+    "clicks": 585,
+    "reach": 7161,
+    "leads": 0
   }
 ];
 
@@ -870,7 +873,7 @@ function updateCharts() {
 
 function updatePeriodBadge() {
   const badges = {
-    7: 'Feb 20 – Feb 26, 2026',
+    7: 'Feb 23 – Mar 1, 2026',
     14: 'Feb 13 – Feb 26, 2026',
     30: 'Jan 28 – Feb 26, 2026'
   };
