@@ -32,9 +32,12 @@ body{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif;background:var(-
 .kpi-card:hover::before{opacity:1}
 .kpi-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
 .kpi-value{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+.kpi-sub{font-size:.73rem;font-weight:600}
+.kpi-sub.up{color:#22c55e}
+.kpi-sub.down{color:#ef4444}
 .section-title{font-size:1.15rem;font-weight:700;margin-bottom:16px}
 .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);overflow-x:auto;margin-bottom:36px}
-table{width:100%;border-collapse:collapse;min-width:700px}
+table{width:100%;border-collapse:collapse;min-width:600px}
 th{text-align:left;padding:14px 16px;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-bottom:1px solid var(--border)}
 td{padding:14px 16px;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,0.03)}
 tr:last-child td{border-bottom:none}
@@ -54,7 +57,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .view-link{display:inline-flex;align-items:center;gap:4px;color:#818cf8;font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s;white-space:nowrap}
 .view-link:hover{color:#a5b4fc;text-decoration:underline}
 .view-link svg{width:12px;height:12px;fill:currentColor}
-.loading{text-align:center;padding:60px;color:var(--muted);font-size:.9rem}
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
 @media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}.chart-canvas-wrap{padding-bottom:50%}}
 @media print{
@@ -74,32 +76,32 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="social-pills">
       <a href="https://www.facebook.com/mercymedc" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</a>
       <a href="https://www.instagram.com/mercymedc" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
-      <a id="adsLink" href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&view_all_page_id=466721730562024" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ad Library</a>
+      <a href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&view_all_page_id=466721730562024" target="_blank" class="social-pill"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 17h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Ad Library</a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
-      <div class="period-badge" id="periodBadge">Loading...</div>
+      <div class="period-badge" id="periodBadge">Feb 28 – Mar 7, 2026</div>
       <div class="date-pills">
         <div class="date-pill active" onclick="setRange(7)">7 Days</div>
+        <div class="date-pill" onclick="setRange(14)">14 Days</div>
         <div class="date-pill" onclick="setRange(30)">30 Days</div>
       </div>
     </div>
   </div>
 
   <div class="data-container" id="dataContainer">
-    <div class="loading" id="loadingMsg">Loading dashboard data...</div>
     <div class="kpi-row fade-in" id="kpiRow"></div>
 
-    <div class="section-title fade-in" id="campaignTitle" style="display:none">Campaign Breakdown</div>
-    <div class="table-wrap fade-in" id="tableWrap" style="display:none">
+    <div class="section-title fade-in">Campaign Breakdown</div>
+    <div class="table-wrap fade-in">
       <table>
         <thead>
-          <tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Video Views</th><th>LP Views</th><th>Ad Link</th></tr>
+          <tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr>
         </thead>
         <tbody id="campaignBody"></tbody>
       </table>
     </div>
 
-    <div class="chart-grid-row fade-in" id="chartRow" style="display:none">
+    <div class="chart-grid-row fade-in" id="chartRow">
       <div class="chart-area">
         <div class="chart-title">Daily Ad Spend</div>
         <div class="chart-canvas-wrap"><canvas id="spendChart"></canvas></div>
@@ -112,14 +114,66 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </div>
 
-<div class="footer" id="footerEl">
-  Dashboard generated by <strong>OPN Agency</strong> &#183; Data from Meta Ads API &#183; Last updated: <span id="lastUpdated">...</span>
+<div class="footer">
+  Dashboard generated by <strong>OPN Agency</strong> &#183; Data from Meta Ads API &#183; Last updated: March 7, 2026
 </div>
 
 <script>
-var DATA_URL = 'mercyme-data.json';
-var DATA = null;
-var ADS_MGR = '';
+var DATA = {
+  kpi: {
+    7: {
+      period: 'Feb 28 – Mar 7, 2026',
+      spend: '$510.86', impressions: '75,362', clicks: '3,334',
+      ctr: '4.43%', cpc: '$0.15'
+    },
+    14: {
+      period: 'Feb 21 – Mar 7, 2026',
+      spend: '$903.63', impressions: '135,208', clicks: '5,940',
+      ctr: '4.39%', cpc: '$0.15'
+    },
+    30: {
+      period: 'Feb 5 – Mar 7, 2026',
+      spend: '$1,652.24', impressions: '273,965', clicks: '10,339',
+      ctr: '3.77%', cpc: '$0.16',
+      mom: {spend:'+24.3%', impressions:'+12.6%', clicks:'+65.4%', ctr:'+46.7%', cpc:'-'}
+    }
+  },
+  campaigns: {
+    7: [
+      {name:'Brazilian Fusion-OpenTable',status:'Active',spend:'$149.18',imp:'24,399',clicks:'1,173',ctr:'4.81%',cpc:'$0.13'},
+      {name:'Dinner Focus',status:'Active',spend:'$150.61',imp:'17,025',clicks:'989',ctr:'5.81%',cpc:'$0.15'},
+      {name:'Brazil Brothers Wed',status:'Active',spend:'$77.77',imp:'12,435',clicks:'459',ctr:'3.69%',cpc:'$0.17'},
+      {name:'SambaNights',status:'Active',spend:'$74.97',imp:'13,146',clicks:'424',ctr:'3.23%',cpc:'$0.18'},
+      {name:'Private Events Carousel',status:'Active',spend:'$58.33',imp:'8,357',clicks:'289',ctr:'3.46%',cpc:'$0.20'}
+    ],
+    14: [
+      {name:'Brazilian Fusion-OpenTable',status:'Active',spend:'$289.83',imp:'47,224',clicks:'2,381',ctr:'5.04%',cpc:'$0.12'},
+      {name:'Dinner Focus',status:'Active',spend:'$231.40',imp:'27,177',clicks:'1,533',ctr:'5.64%',cpc:'$0.15'},
+      {name:'Brazil Brothers Wed',status:'Active',spend:'$179.89',imp:'28,772',clicks:'892',ctr:'3.10%',cpc:'$0.20'},
+      {name:'SambaNights',status:'Active',spend:'$144.18',imp:'23,678',clicks:'845',ctr:'3.57%',cpc:'$0.17'},
+      {name:'Private Events Carousel',status:'Active',spend:'$58.33',imp:'8,357',clicks:'289',ctr:'3.46%',cpc:'$0.20'}
+    ],
+    30: [
+      {name:'Brazilian Fusion-OpenTable',status:'Active',spend:'$607.18',imp:'107,663',clicks:'5,061',ctr:'4.70%',cpc:'$0.12'},
+      {name:'SambaNights',status:'Active',spend:'$304.23',imp:'52,933',clicks:'1,490',ctr:'2.81%',cpc:'$0.20'},
+      {name:'Dinner Focus',status:'Active',spend:'$231.40',imp:'27,177',clicks:'1,533',ctr:'5.64%',cpc:'$0.15'},
+      {name:'Brazil Brothers Wed',status:'Active',spend:'$179.89',imp:'28,772',clicks:'892',ctr:'3.10%',cpc:'$0.20'},
+      {name:'Galentines Traffic Flyer',status:'Ended',spend:'$154.75',imp:'26,008',clicks:'588',ctr:'2.26%',cpc:'$0.26'},
+      {name:'Vday Graphic',status:'Ended',spend:'$116.46',imp:'23,055',clicks:'486',ctr:'2.11%',cpc:'$0.24'},
+      {name:'Private Events Carousel',status:'Active',spend:'$58.33',imp:'8,357',clicks:'289',ctr:'3.46%',cpc:'$0.20'}
+    ]
+  },
+  daily: [
+    {d:'Mar 1',spend:65.67,imp:9858,clicks:444},
+    {d:'Mar 2',spend:60.13,imp:10019,clicks:424},
+    {d:'Mar 3',spend:66.46,imp:10197,clicks:447},
+    {d:'Mar 4',spend:83.15,imp:12690,clicks:597},
+    {d:'Mar 5',spend:88.10,imp:12842,clicks:513},
+    {d:'Mar 6',spend:75.39,imp:10617,clicks:452},
+    {d:'Mar 7',spend:41.28,imp:5684,clicks:209}
+  ]
+};
+
 var currentRange = 7;
 var spendChart, impClickChart;
 
@@ -137,25 +191,28 @@ function setRange(r) {
 }
 
 function render(r) {
-  if (!DATA) return;
   var k = DATA.kpi[r];
   document.getElementById('periodBadge').textContent = k.period;
 
   var kpis = [
     {label:'Total Spend',value:k.spend},
     {label:'Impressions',value:k.impressions},
-    {label:'Reach',value:k.reach},
     {label:'Clicks',value:k.clicks},
     {label:'CTR',value:k.ctr},
-    {label:'CPC',value:k.cpc},
-    {label:'Video Views',value:k.videoViews},
-    {label:'Landing Page Views',value:k.lpViews},
-    {label:'Post Saves',value:k.postSaves},
-    {label:'Post Reactions',value:k.postReactions}
+    {label:'CPC',value:k.cpc}
   ];
+
   var kpiHTML = '';
   for (var i = 0; i < kpis.length; i++) {
-    kpiHTML += '<div class="kpi-card"><div class="kpi-label">' + kpis[i].label + '</div><div class="kpi-value">' + kpis[i].value + '</div></div>';
+    var sub = '';
+    if (r === 30 && k.mom && k.mom[['spend','impressions','clicks','ctr','cpc'][i]]) {
+      var mv = k.mom[['spend','impressions','clicks','ctr','cpc'][i]];
+      if (mv !== '-') {
+        var cls = mv.charAt(0) === '+' ? 'up' : 'down';
+        sub = '<div class="kpi-sub ' + cls + '">' + (cls==='up'?'▲':'▼') + ' ' + mv + ' vs prev 30d</div>';
+      }
+    }
+    kpiHTML += '<div class="kpi-card"><div class="kpi-label">' + kpis[i].label + '</div><div class="kpi-value">' + kpis[i].value + '</div>' + sub + '</div>';
   }
   document.getElementById('kpiRow').innerHTML = kpiHTML;
 
@@ -164,19 +221,16 @@ function render(r) {
   for (var c = 0; c < camps.length; c++) {
     var camp = camps[c];
     var statusPill = camp.status === 'Active' ? 'pill-active' : 'pill-paused';
-    if (camp.spend === '$0.00') continue;
-    var adLink = DATA.adLibraryUrl || 'https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&view_all_page_id=' + (DATA.pageId || '');
-    html += '<tr><td style="font-weight:600">' + camp.name + '</td><td><span class="pill ' + statusPill + '">' + camp.status + '</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.reach + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td><td>' + camp.video + '</td><td>' + camp.lp + '</td><td><a href="' + adLink + '" target="_blank" class="view-link"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/><path d="M5 5v14h14v-7h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h7v2H5z"/></svg>View</a></td></tr>';
+    html += '<tr><td style="font-weight:600">' + camp.name + '</td><td><span class="pill ' + statusPill + '">' + camp.status + '</span></td><td>' + camp.spend + '</td><td>' + camp.imp + '</td><td>' + camp.clicks + '</td><td>' + camp.ctr + '</td><td>' + camp.cpc + '</td></tr>';
   }
   document.getElementById('campaignBody').innerHTML = html;
 
-  var sliced = DATA.daily.slice(-r);
   var labels = [], spendData = [], impData = [], clickData = [];
-  for (var j = 0; j < sliced.length; j++) {
-    labels.push(sliced[j].d);
-    spendData.push(sliced[j].spend);
-    impData.push(sliced[j].imp);
-    clickData.push(sliced[j].clicks);
+  for (var j = 0; j < DATA.daily.length; j++) {
+    labels.push(DATA.daily[j].d);
+    spendData.push(DATA.daily[j].spend);
+    impData.push(DATA.daily[j].imp);
+    clickData.push(DATA.daily[j].clicks);
   }
 
   if (spendChart) spendChart.destroy();
@@ -205,21 +259,7 @@ function render(r) {
   });
 }
 
-fetch(DATA_URL + '?t=' + Date.now())
-  .then(function(r) { return r.json(); })
-  .then(function(d) {
-    DATA = d;
-    // Ad Library link already set in HTML - no override needed
-    document.getElementById('lastUpdated').textContent = d.lastUpdated;
-    document.getElementById('loadingMsg').style.display = 'none';
-    document.getElementById('campaignTitle').style.display = '';
-    document.getElementById('tableWrap').style.display = '';
-    document.getElementById('chartRow').style.display = '';
-    render(7);
-  })
-  .catch(function(e) {
-    document.getElementById('loadingMsg').textContent = 'Error loading data: ' + e.message;
-  });
+render(7);
 </script>
 </body>
 </html>
