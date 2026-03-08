@@ -1,1 +1,193 @@
-<!DOCTYPE html><html><body><p>test</p></body></html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DIAMO B2B — Meta Ads Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1117; color: #e0e0e0; }
+.header { background: linear-gradient(135deg, #1a1d29, #2a2d3a); padding: 24px 32px; border-bottom: 1px solid #333; display:flex; justify-content:space-between; align-items:center; }
+.header h1 { font-size: 22px; font-weight: 600; }
+.header .updated { font-size: 13px; color: #888; }
+.tabs { display:flex; gap:4px; padding: 12px 32px; background:#1a1d29; border-bottom:1px solid #333; flex-wrap:wrap; }
+.tab { padding: 8px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:500; background:#252830; color:#aaa; border:none; transition:all .2s; }
+.tab.active { background:#1a73e8; color:#fff; }
+.tab:hover:not(.active) { background:#333; color:#ccc; }
+.range-pills { display:flex; gap:6px; padding:12px 32px; }
+.pill { padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; background:#252830; color:#aaa; border:1px solid #333; }
+.pill.active { background:#1a73e8; color:#fff; border-color:#1a73e8; }
+.content { padding:24px 32px; }
+.kpi-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:16px; margin-bottom:24px; }
+.kpi-card { background:#1e2130; border-radius:12px; padding:18px; border:1px solid #2a2d3a; }
+.kpi-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+.kpi-value { font-size:24px; font-weight:700; color:#fff; }
+.kpi-change { font-size:12px; margin-top:4px; }
+.kpi-change.up { color:#4caf50; }
+.kpi-change.down { color:#f44336; }
+.section-title { font-size:16px; font-weight:600; margin:24px 0 12px; color:#ccc; }
+.campaign-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:24px; }
+.campaign-table th { text-align:left; padding:10px 12px; background:#1a1d29; color:#888; font-weight:500; border-bottom:1px solid #333; }
+.campaign-table td { padding:10px 12px; border-bottom:1px solid #222; }
+.campaign-table tr:hover td { background:#1e2130; }
+.chart-container { background:#1e2130; border-radius:12px; padding:20px; margin-bottom:24px; border:1px solid #2a2d3a; }
+.no-data { color:#666; font-style:italic; padding:12px 0; }
+.client-section { display:none; }
+.client-section.active { display:block; }
+@media(max-width:768px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } .content,.tabs,.range-pills { padding-left:16px; padding-right:16px; } }
+:root { --accent: #6f1ae8; }
+.pill.active { background:#6f1ae8; border-color:#6f1ae8; }
+</style></head><body>
+<div class="header">
+  <h1>💎 DIAMO B2B — Meta Ads Dashboard</h1>
+  <div class="updated">Last updated: March 8, 2026 11:00 AM UTC</div>
+</div>
+<div class="range-pills">
+  <button class="pill active" data-range="7" onclick="showRange('7')">7 Days</button>
+  <button class="pill" data-range="14" onclick="showRange('14')">14 Days</button>
+  <button class="pill" data-range="30" onclick="showRange('30')">30 Days</button>
+</div>
+<div class="content">
+  <h2 class="section-title">Key Metrics</h2>
+  <div class="kpi-grid" data-range="7"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$453.25</div>
+    <div class="kpi-change" data-cur="453.25" data-prev="424.36"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">11,501</div>
+    <div class="kpi-change" data-cur="11501" data-prev="10498"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">6,999</div>
+    <div class="kpi-change" data-cur="6999" data-prev="6036"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">269</div>
+    <div class="kpi-change" data-cur="269" data-prev="217"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">2.34%</div>
+    <div class="kpi-change" data-cur="2.338927" data-prev="2.06706"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$1.68</div>
+    <div class="kpi-change" data-cur="1.684944" data-prev="1.955576"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Leads</div>
+    <div class="kpi-value">21</div>
+    <div class="kpi-change" data-cur="21" data-prev="0"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">1,904</div>
+    <div class="kpi-change" data-cur="1904" data-prev="0"></div>
+  </div></div>
+<div class="kpi-grid" data-range="14"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$877.61</div>
+    <div class="kpi-change" data-cur="877.61" data-prev="848.89"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">21,999</div>
+    <div class="kpi-change" data-cur="21999" data-prev="25066"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">11,410</div>
+    <div class="kpi-change" data-cur="11410" data-prev="13645"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">486</div>
+    <div class="kpi-change" data-cur="486" data-prev="486"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">2.21%</div>
+    <div class="kpi-change" data-cur="2.209191" data-prev="1.938881"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$1.81</div>
+    <div class="kpi-change" data-cur="1.805782" data-prev="1.746687"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Leads</div>
+    <div class="kpi-value">36</div>
+    <div class="kpi-change" data-cur="36" data-prev="0"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">3,812</div>
+    <div class="kpi-change" data-cur="3812" data-prev="0"></div>
+  </div></div>
+<div class="kpi-grid" data-range="30"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$1,899.81</div>
+    <div class="kpi-change" data-cur="1899.81" data-prev="1437.77"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">51,074</div>
+    <div class="kpi-change" data-cur="51074" data-prev="45737"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">25,144</div>
+    <div class="kpi-change" data-cur="25144" data-prev="24795"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">1,051</div>
+    <div class="kpi-change" data-cur="1051" data-prev="868"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">2.06%</div>
+    <div class="kpi-change" data-cur="2.057798" data-prev="1.897807"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$1.81</div>
+    <div class="kpi-change" data-cur="1.807621" data-prev="1.656417"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Leads</div>
+    <div class="kpi-value">94</div>
+    <div class="kpi-change" data-cur="94" data-prev="0"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">8,520</div>
+    <div class="kpi-change" data-cur="8520" data-prev="0"></div>
+  </div></div>
+
+  <h2 class="section-title">Campaigns</h2>
+  <div class="campaign-table-wrap" data-range="7"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+<tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$170.96</td><td>4,608</td><td>2,941</td><td>114</td><td>2.47%</td><td>$1.50</td><td>11</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$104.90</td><td>2,149</td><td>1,456</td><td>39</td><td>1.81%</td><td>$2.69</td><td>8</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$76.69</td><td>3,215</td><td>2,506</td><td>79</td><td>2.46%</td><td>$0.97</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$68.86</td><td>1,078</td><td>816</td><td>31</td><td>2.88%</td><td>$2.22</td><td>2</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$31.84</td><td>451</td><td>285</td><td>6</td><td>1.33%</td><td>$5.31</td><td>0</td></tr></tbody></table></div>
+<div class="campaign-table-wrap" data-range="14"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+<tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$343.82</td><td>9,102</td><td>4,652</td><td>203</td><td>2.23%</td><td>$1.69</td><td>21</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$209.76</td><td>4,324</td><td>2,629</td><td>69</td><td>1.60%</td><td>$3.04</td><td>12</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$153.39</td><td>6,044</td><td>4,606</td><td>162</td><td>2.68%</td><td>$0.95</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$138.80</td><td>2,078</td><td>1,390</td><td>46</td><td>2.21%</td><td>$3.02</td><td>3</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$31.84</td><td>451</td><td>285</td><td>6</td><td>1.33%</td><td>$5.31</td><td>0</td></tr></tbody></table></div>
+<div class="campaign-table-wrap" data-range="30"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+<tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$776.72</td><td>23,664</td><td>11,537</td><td>516</td><td>2.18%</td><td>$1.51</td><td>61</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$465.14</td><td>9,439</td><td>4,908</td><td>169</td><td>1.79%</td><td>$2.75</td><td>25</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$320.80</td><td>12,609</td><td>9,169</td><td>239</td><td>1.90%</td><td>$1.34</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$293.40</td><td>4,816</td><td>2,532</td><td>117</td><td>2.43%</td><td>$2.51</td><td>8</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$31.84</td><td>451</td><td>285</td><td>6</td><td>1.33%</td><td>$5.31</td><td>0</td></tr><tr><td>OPN_IV_Top 3_Leads_Lookalike</td><td>$11.91</td><td>95</td><td>89</td><td>4</td><td>4.21%</td><td>$2.98</td><td>0</td></tr></tbody></table></div>
+
+  <h2 class="section-title">Daily Trend (30 Days)</h2>
+  <div class="chart-container"><canvas id="chart-diamo" height="200"></canvas></div>
+</div>
+<script>
+let curRange = "7";
+function pctChange() {
+  document.querySelectorAll('.kpi-change').forEach(el => {
+    const cur = parseFloat(el.dataset.cur), prev = parseFloat(el.dataset.prev);
+    if (!prev || isNaN(cur) || isNaN(prev)) { el.textContent = ''; return; }
+    const pct = ((cur - prev) / prev * 100).toFixed(1);
+    const up = cur >= prev;
+    el.textContent = (up ? '\u25B2 ' : '\u25BC ') + Math.abs(pct) + '%';
+    el.className = 'kpi-change ' + (up ? 'up' : 'down');
+  });
+}
+function showRange(r) {
+  curRange = r;
+  document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.range === r));
+  document.querySelectorAll('.kpi-grid').forEach(g => g.style.display = g.dataset.range === r ? 'grid' : 'none');
+  document.querySelectorAll('.campaign-table-wrap').forEach(g => g.style.display = g.dataset.range === r ? 'block' : 'none');
+  pctChange();
+}
+showRange('7');
+new Chart(document.getElementById('chart-diamo'), {
+  type:'line', data:{ labels:["02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07"], datasets:[
+    {label:'Spend ($)',data:[93.53, 79.78, 65.56, 68.76, 66.52, 59.37, 55.88, 58.6, 50.4, 68.81, 66.8, 64.38, 60.2, 61.62, 56.37, 45.62, 66.87, 60.42, 60.22, 57.46, 64.18, 57.57, 57.64, 70.52, 69.67, 70.76, 62.98, 67.02, 61.18, 51.12],borderColor:'#6f1ae8',backgroundColor:'rgba(111,26,232,0.1)',fill:true,tension:0.3,yAxisID:'y'},
+    {label:'Clicks',data:[34, 45, 27, 35, 52, 39, 29, 37, 37, 46, 51, 30, 27, 27, 27, 22, 45, 24, 41, 25, 24, 20, 38, 46, 41, 39, 40, 35, 23, 45],borderColor:'#4caf50',backgroundColor:'rgba(76,175,80,0.1)',fill:false,tension:0.3,yAxisID:'y1'}
+  ]}, options:{responsive:true,plugins:{legend:{labels:{color:'#aaa'}}},scales:{
+    x:{ticks:{color:'#666'},grid:{color:'#222'}},
+    y:{position:'left',ticks:{color:'#6f1ae8'},grid:{color:'#222'}},
+    y1:{position:'right',ticks:{color:'#4caf50'},grid:{display:false}}
+  }}
+});
+</script></body></html>
