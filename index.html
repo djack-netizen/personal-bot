@@ -1,349 +1,507 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPN Agency — Multi-Client Ad Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0a0a1a;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--text:#e4e4e7;--muted:#a1a1aa;--grad:linear-gradient(135deg,#6366f1,#3b82f6);--grad2:linear-gradient(135deg,#6366f1,#3b82f6,#00d4ff);--green:#22c55e;--red:#ef4444;--yellow:#eab308;--radius:16px;--pill:999px}
-body{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
-.fade-in{animation:fadeIn .5s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.container{max-width:1400px;margin:0 auto;padding:32px 24px}
-.title-area{margin-bottom:36px;text-align:center}
-.title-area h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
-.title-area .powered{color:var(--muted);font-size:.88rem;margin-bottom:14px}
-.social-pills{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
-.social-pill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--pill);padding:5px 14px;font-size:.78rem;font-weight:600;border:1px solid transparent;background-origin:border-box;background-clip:padding-box,border-box;background-image:linear-gradient(var(--bg),var(--bg)),var(--grad2);color:var(--text);text-decoration:none;transition:all .25s}
-.social-pill:hover{box-shadow:0 0 12px rgba(99,102,241,.3);transform:translateY(-1px)}
-.social-pill svg{width:14px;height:14px;fill:currentColor}
-.period-badge{display:inline-block;border-radius:var(--pill);padding:4px 14px;font-size:.75rem;color:var(--muted);border:1px solid var(--border);background:var(--card)}
-.date-pills{display:flex;gap:8px}
-.date-pill{border-radius:var(--pill);padding:6px 18px;font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .25s}
-.date-pill:hover{border-color:rgba(99,102,241,.4);color:var(--text)}
-.date-pill.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 0 16px rgba(99,102,241,.35)}
-.acct-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.acct-tab{border-radius:var(--pill);padding:6px 18px;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:transparent;color:var(--muted);transition:all .25s}
-.acct-tab:hover{border-color:rgba(99,102,241,.4);color:var(--text)}
-.acct-tab.active{border-color:var(--tab-color,#6366f1);color:#fff;background:rgba(255,255,255,0.06);box-shadow:0 0 12px rgba(99,102,241,.2)}
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:36px}
-.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:22px 20px;transition:all .3s;position:relative;overflow:hidden}
-.kpi-card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);opacity:0;transition:opacity .3s;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(59,130,246,.06))}
-.kpi-card:hover{transform:translateY(-3px);border-color:rgba(99,102,241,.25);box-shadow:0 8px 32px rgba(99,102,241,.12)}
-.kpi-card:hover::before{opacity:1}
-.kpi-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
-.kpi-value{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
-.section-title{font-size:1.15rem;font-weight:700;margin-bottom:16px}
-.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);overflow-x:auto;margin-bottom:36px}
-table{width:100%;border-collapse:collapse;min-width:700px}
-th{text-align:left;padding:14px 16px;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-bottom:1px solid var(--border)}
-td{padding:14px 16px;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,0.03)}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,0.02)}
-.pill{display:inline-flex;align-items:center;border-radius:var(--pill);padding:3px 12px;font-size:.73rem;font-weight:600}
-.pill-active{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
-.chart-area{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(10px);padding:24px;margin-bottom:36px}
-.chart-title{font-size:1rem;font-weight:700;margin-bottom:16px}
-.chart-grid-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
-.acct-color-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
-.footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
-.footer strong{color:var(--text);font-weight:700}
-.data-container{transition:opacity .3s}
-.data-container.switching{opacity:0}
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.chart-grid-row{grid-template-columns:1fr}}
-@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.container{padding:20px 14px}.title-area h1{font-size:1.4rem}}
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="title-area fade-in">
-    <h1>OPN Agency — Paid Ad Dashboard</h1>
-    <div class="powered">Powered by <strong>OPN Agency</strong> · 4 Ad Accounts</div>
-    <div class="social-pills">
-      <a href="#" class="social-pill"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Meta Ads</a>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
-      <div class="period-badge" id="periodBadge">Feb 20 – Feb 26, 2026</div>
-      <div class="date-pills">
-        <div class="date-pill active" onclick="setRange(7)">7 Days</div>
-        <div class="date-pill" onclick="setRange(30)">30 Days</div>
-      </div>
-    </div>
-    <div class="acct-tabs" id="acctTabs">
-      <div class="acct-tab active" style="--tab-color:#fff" onclick="setAcct('all')">All Accounts</div>
-      <div class="acct-tab" style="--tab-color:#6366f1" onclick="setAcct('Sonesta')"><span class="acct-color-dot" style="background:#6366f1"></span>Sonesta</div>
-      <div class="acct-tab" style="--tab-color:#22c55e" onclick="setAcct('SAX')"><span class="acct-color-dot" style="background:#22c55e"></span>SAX</div>
-      <div class="acct-tab" style="--tab-color:#ec4899" onclick="setAcct('Mercy Me')"><span class="acct-color-dot" style="background:#ec4899"></span>Mercy Me</div>
-      <div class="acct-tab" style="--tab-color:#eab308" onclick="setAcct('DIAMO B2B')"><span class="acct-color-dot" style="background:#eab308"></span>DIAMO B2B</div>
-    </div>
-  </div>
-
-  <div class="data-container" id="dataContainer">
-    <div class="kpi-row fade-in" id="kpiRow"></div>
-    <div class="section-title fade-in" id="campTitle">Campaign Performance <span style="font-size:.75rem;color:var(--muted);font-weight:400">(30 Days)</span></div>
-    <div class="table-wrap fade-in">
-      <table>
-        <thead>
-          <tr><th>Campaign</th><th>Account</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr>
-        </thead>
-        <tbody id="campaignBody"></tbody>
-      </table>
-    </div>
-    <div class="chart-grid-row fade-in">
-      <div class="chart-area">
-        <div class="chart-title">Daily Ad Spend (All Accounts)</div>
-        <canvas id="spendChart" height="260"></canvas>
-      </div>
-      <div class="chart-area">
-        <div class="chart-title">Daily Reach (All Accounts)</div>
-        <canvas id="reachChart" height="260"></canvas>
-      </div>
-    </div>
-  </div>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OPN Agency — Meta Ads Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1117; color: #e0e0e0; }
+.header { background: linear-gradient(135deg, #1a1d29, #2a2d3a); padding: 24px 32px; border-bottom: 1px solid #333; display:flex; justify-content:space-between; align-items:center; }
+.header h1 { font-size: 22px; font-weight: 600; }
+.header .updated { font-size: 13px; color: #888; }
+.tabs { display:flex; gap:4px; padding: 12px 32px; background:#1a1d29; border-bottom:1px solid #333; flex-wrap:wrap; }
+.tab { padding: 8px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:500; background:#252830; color:#aaa; border:none; transition:all .2s; }
+.tab.active { background:#1a73e8; color:#fff; }
+.tab:hover:not(.active) { background:#333; color:#ccc; }
+.range-pills { display:flex; gap:6px; padding:12px 32px; }
+.pill { padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; background:#252830; color:#aaa; border:1px solid #333; }
+.pill.active { background:#1a73e8; color:#fff; border-color:#1a73e8; }
+.content { padding:24px 32px; }
+.kpi-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:16px; margin-bottom:24px; }
+.kpi-card { background:#1e2130; border-radius:12px; padding:18px; border:1px solid #2a2d3a; }
+.kpi-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+.kpi-value { font-size:24px; font-weight:700; color:#fff; }
+.kpi-change { font-size:12px; margin-top:4px; }
+.kpi-change.up { color:#4caf50; }
+.kpi-change.down { color:#f44336; }
+.section-title { font-size:16px; font-weight:600; margin:24px 0 12px; color:#ccc; }
+.campaign-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:24px; }
+.campaign-table th { text-align:left; padding:10px 12px; background:#1a1d29; color:#888; font-weight:500; border-bottom:1px solid #333; }
+.campaign-table td { padding:10px 12px; border-bottom:1px solid #222; }
+.campaign-table tr:hover td { background:#1e2130; }
+.chart-container { background:#1e2130; border-radius:12px; padding:20px; margin-bottom:24px; border:1px solid #2a2d3a; }
+.no-data { color:#666; font-style:italic; padding:12px 0; }
+.client-section { display:none; }
+.client-section.active { display:block; }
+@media(max-width:768px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } .content,.tabs,.range-pills { padding-left:16px; padding-right:16px; } }</style></head><body>
+<div class="header">
+  <h1>📊 OPN Agency — Meta Ads Overview</h1>
+  <div class="updated">Last updated: March 8, 2026 11:00 AM UTC</div>
 </div>
-
-<div class="footer">
-  <div>Last Updated: <strong>Mar 7, 2026 11:00 AM UTC</strong></div>
-  <div>Powered by <strong>OPN Agency</strong></div>
+<div class="tabs"><button class="tab active" data-client="sonesta" onclick="showClient('sonesta')" style="background:#1a73e8">Sonesta</button><button class="tab" data-client="sax" onclick="showClient('sax')">SAX</button><button class="tab" data-client="mercyme" onclick="showClient('mercyme')">Mercy Me</button><button class="tab" data-client="diamo" onclick="showClient('diamo')">DIAMO B2B</button></div>
+<div class="range-pills">
+  <button class="pill active" data-range="7" onclick="showRange('7')">7 Days</button>
+  <button class="pill" data-range="14" onclick="showRange('14')">14 Days</button>
+  <button class="pill" data-range="30" onclick="showRange('30')">30 Days</button>
 </div>
-
+<div class="content"><div class="client-section active" id="section-sonesta">
+  <h2 class="section-title">Key Metrics</h2>
+  <div class="kpi-grid" data-range="7"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$267.11</div>
+    <div class="kpi-change" data-cur="267.11" data-prev="286.95"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">83,508</div>
+    <div class="kpi-change" data-cur="83508" data-prev="80307"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">69,906</div>
+    <div class="kpi-change" data-cur="69906" data-prev="64696"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">1,368</div>
+    <div class="kpi-change" data-cur="1368" data-prev="1306"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">1.64%</div>
+    <div class="kpi-change" data-cur="1.638166" data-prev="1.626259"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.20</div>
+    <div class="kpi-change" data-cur="0.195256" data-prev="0.219717"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">8,588</div>
+    <div class="kpi-change" data-cur="8588" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="14"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$554.06</div>
+    <div class="kpi-change" data-cur="554.06" data-prev="686.67"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">163,815</div>
+    <div class="kpi-change" data-cur="163815" data-prev="281174"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">128,257</div>
+    <div class="kpi-change" data-cur="128257" data-prev="185867"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">2,674</div>
+    <div class="kpi-change" data-cur="2674" data-prev="3665"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">1.63%</div>
+    <div class="kpi-change" data-cur="1.632329" data-prev="1.303463"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.21</div>
+    <div class="kpi-change" data-cur="0.207203" data-prev="0.187359"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">15,497</div>
+    <div class="kpi-change" data-cur="15497" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="30"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$1,338.11</div>
+    <div class="kpi-change" data-cur="1338.11" data-prev="1007.71"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">491,962</div>
+    <div class="kpi-change" data-cur="491962" data-prev="432158"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">329,278</div>
+    <div class="kpi-change" data-cur="329278" data-prev="305773"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">6,928</div>
+    <div class="kpi-change" data-cur="6928" data-prev="6503"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">1.41%</div>
+    <div class="kpi-change" data-cur="1.408239" data-prev="1.504774"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.19</div>
+    <div class="kpi-change" data-cur="0.193145" data-prev="0.154961"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">44,605</div>
+    <div class="kpi-change" data-cur="44605" data-prev="0"></div>
+  </div></div>
+  <h2 class="section-title">Campaigns</h2>
+  <div class="campaign-table-wrap" data-range="7"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>iExcel_RoyalSonesta_Businesstripgetaways</td><td>$111.94</td><td>35,518</td><td>29,642</td><td>728</td><td>2.05%</td><td>$0.15</td></tr><tr><td>OPN_Winter Escape_Static_2</td><td>$94.03</td><td>30,591</td><td>25,347</td><td>378</td><td>1.24%</td><td>$0.25</td></tr><tr><td>OPN_Three Nights_Static_1</td><td>$61.14</td><td>17,399</td><td>14,427</td><td>262</td><td>1.51%</td><td>$0.23</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="14"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>iExcel_RoyalSonesta_Businesstripgetaways</td><td>$223.94</td><td>65,124</td><td>49,063</td><td>1,392</td><td>2.14%</td><td>$0.16</td></tr><tr><td>OPN_Winter Escape_Static_2</td><td>$199.02</td><td>56,406</td><td>43,045</td><td>729</td><td>1.29%</td><td>$0.27</td></tr><tr><td>OPN_Three Nights_Static_1</td><td>$131.10</td><td>42,285</td><td>35,315</td><td>553</td><td>1.31%</td><td>$0.24</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="30"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>iExcel_RoyalSonesta_Businesstripgetaways</td><td>$478.73</td><td>235,012</td><td>132,468</td><td>3,548</td><td>1.51%</td><td>$0.13</td></tr><tr><td>OPN_Winter Escape_Static_2</td><td>$437.07</td><td>110,491</td><td>73,575</td><td>1,571</td><td>1.42%</td><td>$0.28</td></tr><tr><td>OPN_Three Nights_Static_1</td><td>$289.97</td><td>86,013</td><td>67,009</td><td>1,177</td><td>1.37%</td><td>$0.25</td></tr><tr><td>OPN_Winter Suite_Carrousel_1</td><td>$132.34</td><td>60,446</td><td>48,543</td><td>632</td><td>1.05%</td><td>$0.21</td></tr></tbody></table></div>
+  <h2 class="section-title">Daily Trend (30 Days)</h2>
+  <div class="chart-container"><canvas id="chart-sonesta" height="200"></canvas></div>
+</div>
+<div class="client-section" id="section-sax">
+  <h2 class="section-title">Key Metrics</h2>
+  <div class="kpi-grid" data-range="7"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$0.00</div>
+    <div class="kpi-change" data-cur="0.0" data-prev="4.25"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">0</div>
+    <div class="kpi-change" data-cur="0" data-prev="789"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">0</div>
+    <div class="kpi-change" data-cur="0" data-prev="772"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">0</div>
+    <div class="kpi-change" data-cur="0" data-prev="90"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">0.00%</div>
+    <div class="kpi-change" data-cur="0.0" data-prev="11.406844"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.00</div>
+    <div class="kpi-change" data-cur="0.0" data-prev="0.047222"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="14"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$4.25</div>
+    <div class="kpi-change" data-cur="4.25" data-prev="75.74"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">789</div>
+    <div class="kpi-change" data-cur="789" data-prev="14168"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">772</div>
+    <div class="kpi-change" data-cur="772" data-prev="11253"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">90</div>
+    <div class="kpi-change" data-cur="90" data-prev="1654"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">11.41%</div>
+    <div class="kpi-change" data-cur="11.406844" data-prev="11.674195"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.05</div>
+    <div class="kpi-change" data-cur="0.047222" data-prev="0.045792"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">330</div>
+    <div class="kpi-change" data-cur="330" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="30"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$91.23</div>
+    <div class="kpi-change" data-cur="91.23" data-prev="127.93"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">16,766</div>
+    <div class="kpi-change" data-cur="16766" data-prev="21994"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">12,789</div>
+    <div class="kpi-change" data-cur="12789" data-prev="16630"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">1,968</div>
+    <div class="kpi-change" data-cur="1968" data-prev="2379"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">11.74%</div>
+    <div class="kpi-change" data-cur="11.738041" data-prev="10.816586"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.05</div>
+    <div class="kpi-change" data-cur="0.046357" data-prev="0.053775"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">7,517</div>
+    <div class="kpi-change" data-cur="7517" data-prev="0"></div>
+  </div></div>
+  <h2 class="section-title">Campaigns</h2>
+  <div class="campaign-table-wrap" data-range="7"><p class="no-data">No active campaigns in this period.</p></div>
+  <div class="campaign-table-wrap" data-range="14"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>OPN_Sir Sunday_Jan 2026 Campaign</td><td>$4.25</td><td>789</td><td>772</td><td>90</td><td>11.41%</td><td>$0.05</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="30"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>OPN_Sir Sunday_Jan 2026 Campaign</td><td>$91.23</td><td>16,766</td><td>12,789</td><td>1,968</td><td>11.74%</td><td>$0.05</td></tr></tbody></table></div>
+  <h2 class="section-title">Daily Trend (30 Days)</h2>
+  <div class="chart-container"><canvas id="chart-sax" height="200"></canvas></div>
+</div>
+<div class="client-section" id="section-mercyme">
+  <h2 class="section-title">Key Metrics</h2>
+  <div class="kpi-grid" data-range="7"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$514.08</div>
+    <div class="kpi-change" data-cur="514.08" data-prev="409.92"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">75,866</div>
+    <div class="kpi-change" data-cur="75866" data-prev="61486"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">48,885</div>
+    <div class="kpi-change" data-cur="48885" data-prev="40541"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">3,327</div>
+    <div class="kpi-change" data-cur="3327" data-prev="2733"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">4.39%</div>
+    <div class="kpi-change" data-cur="4.385364" data-prev="4.444914"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.15</div>
+    <div class="kpi-change" data-cur="0.154518" data-prev="0.149989"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">11,182</div>
+    <div class="kpi-change" data-cur="11182" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="14"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$924.00</div>
+    <div class="kpi-change" data-cur="924.0" data-prev="654.63"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">137,352</div>
+    <div class="kpi-change" data-cur="137352" data-prev="118219"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">75,077</div>
+    <div class="kpi-change" data-cur="75077" data-prev="69242"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">6,060</div>
+    <div class="kpi-change" data-cur="6060" data-prev="4033"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">4.41%</div>
+    <div class="kpi-change" data-cur="4.412022" data-prev="3.411465"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.15</div>
+    <div class="kpi-change" data-cur="0.152475" data-prev="0.162318"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">20,602</div>
+    <div class="kpi-change" data-cur="20602" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="30"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$1,675.23</div>
+    <div class="kpi-change" data-cur="1675.23" data-prev="1298.91"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">274,456</div>
+    <div class="kpi-change" data-cur="274456" data-prev="238792"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">132,536</div>
+    <div class="kpi-change" data-cur="132536" data-prev="110588"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">10,551</div>
+    <div class="kpi-change" data-cur="10551" data-prev="6141"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">3.84%</div>
+    <div class="kpi-change" data-cur="3.844332" data-prev="2.571694"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$0.16</div>
+    <div class="kpi-change" data-cur="0.158775" data-prev="0.211514"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">42,430</div>
+    <div class="kpi-change" data-cur="42430" data-prev="0"></div>
+  </div></div>
+  <h2 class="section-title">Campaigns</h2>
+  <div class="campaign-table-wrap" data-range="7"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>iExcel-MercyMe-Brazilian Fusion-Opentable</td><td>$139.93</td><td>22,812</td><td>16,537</td><td>1,070</td><td>4.69%</td><td>$0.13</td></tr><tr><td>OPN_Dinner Focus_Feb 23</td><td>$139.90</td><td>15,739</td><td>11,213</td><td>910</td><td>5.78%</td><td>$0.15</td></tr><tr><td>OPN_Brazil Brothers_Wed_Feb</td><td>$95.96</td><td>14,913</td><td>10,219</td><td>606</td><td>4.06%</td><td>$0.16</td></tr><tr><td>iExcel-MercyMe-SambaNights</td><td>$69.89</td><td>12,635</td><td>9,591</td><td>404</td><td>3.20%</td><td>$0.17</td></tr><tr><td>OPN_Private Events Carrousel</td><td>$68.40</td><td>9,767</td><td>7,474</td><td>337</td><td>3.45%</td><td>$0.20</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="14"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>iExcel-MercyMe-Brazilian Fusion-Opentable</td><td>$279.77</td><td>45,517</td><td>28,465</td><td>2,283</td><td>5.02%</td><td>$0.12</td></tr><tr><td>OPN_Dinner Focus_Feb 23</td><td>$241.86</td><td>28,272</td><td>16,686</td><td>1,587</td><td>5.61%</td><td>$0.15</td></tr><tr><td>OPN_Brazil Brothers_Wed_Feb</td><td>$194.26</td><td>30,566</td><td>18,435</td><td>1,024</td><td>3.35%</td><td>$0.19</td></tr><tr><td>iExcel-MercyMe-SambaNights</td><td>$139.71</td><td>23,230</td><td>15,823</td><td>829</td><td>3.57%</td><td>$0.17</td></tr><tr><td>OPN_Private Events Carrousel</td><td>$68.40</td><td>9,767</td><td>7,474</td><td>337</td><td>3.45%</td><td>$0.20</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="30"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+<tbody><tr><td>iExcel-MercyMe-Brazilian Fusion-Opentable</td><td>$597.57</td><td>105,127</td><td>56,479</td><td>5,028</td><td>4.78%</td><td>$0.12</td></tr><tr><td>iExcel-MercyMe-SambaNights</td><td>$298.11</td><td>50,977</td><td>28,976</td><td>1,486</td><td>2.92%</td><td>$0.20</td></tr><tr><td>OPN_Dinner Focus_Feb 23</td><td>$241.86</td><td>28,272</td><td>16,686</td><td>1,587</td><td>5.61%</td><td>$0.15</td></tr><tr><td>OPN_Brazil Brothers_Wed_Feb</td><td>$198.08</td><td>31,250</td><td>18,919</td><td>1,039</td><td>3.32%</td><td>$0.19</td></tr><tr><td>OPN_Galentines Traffic Flyer_1</td><td>$154.75</td><td>26,008</td><td>17,542</td><td>588</td><td>2.26%</td><td>$0.26</td></tr><tr><td>OPN_Vday Graphic_1</td><td>$116.46</td><td>23,055</td><td>14,603</td><td>486</td><td>2.11%</td><td>$0.24</td></tr><tr><td>OPN_Private Events Carrousel</td><td>$68.40</td><td>9,767</td><td>7,474</td><td>337</td><td>3.45%</td><td>$0.20</td></tr></tbody></table></div>
+  <h2 class="section-title">Daily Trend (30 Days)</h2>
+  <div class="chart-container"><canvas id="chart-mercyme" height="200"></canvas></div>
+</div>
+<div class="client-section" id="section-diamo">
+  <h2 class="section-title">Key Metrics</h2>
+  <div class="kpi-grid" data-range="7"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$453.25</div>
+    <div class="kpi-change" data-cur="453.25" data-prev="424.36"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">11,501</div>
+    <div class="kpi-change" data-cur="11501" data-prev="10498"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">6,999</div>
+    <div class="kpi-change" data-cur="6999" data-prev="6036"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">269</div>
+    <div class="kpi-change" data-cur="269" data-prev="217"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">2.34%</div>
+    <div class="kpi-change" data-cur="2.338927" data-prev="2.06706"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$1.68</div>
+    <div class="kpi-change" data-cur="1.684944" data-prev="1.955576"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Leads</div>
+    <div class="kpi-value">21</div>
+    <div class="kpi-change" data-cur="21" data-prev="0"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">1,904</div>
+    <div class="kpi-change" data-cur="1904" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="14"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$877.61</div>
+    <div class="kpi-change" data-cur="877.61" data-prev="848.89"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">21,999</div>
+    <div class="kpi-change" data-cur="21999" data-prev="25066"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">11,410</div>
+    <div class="kpi-change" data-cur="11410" data-prev="13645"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">486</div>
+    <div class="kpi-change" data-cur="486" data-prev="486"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">2.21%</div>
+    <div class="kpi-change" data-cur="2.209191" data-prev="1.938881"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$1.81</div>
+    <div class="kpi-change" data-cur="1.805782" data-prev="1.746687"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Leads</div>
+    <div class="kpi-value">36</div>
+    <div class="kpi-change" data-cur="36" data-prev="0"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">3,812</div>
+    <div class="kpi-change" data-cur="3812" data-prev="0"></div>
+  </div></div>
+  <div class="kpi-grid" data-range="30"><div class="kpi-card">
+    <div class="kpi-label">Spend</div>
+    <div class="kpi-value">$1,899.81</div>
+    <div class="kpi-change" data-cur="1899.81" data-prev="1437.77"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Impressions</div>
+    <div class="kpi-value">51,074</div>
+    <div class="kpi-change" data-cur="51074" data-prev="45737"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Reach</div>
+    <div class="kpi-value">25,144</div>
+    <div class="kpi-change" data-cur="25144" data-prev="24795"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Clicks</div>
+    <div class="kpi-value">1,051</div>
+    <div class="kpi-change" data-cur="1051" data-prev="868"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CTR</div>
+    <div class="kpi-value">2.06%</div>
+    <div class="kpi-change" data-cur="2.057798" data-prev="1.897807"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">CPC</div>
+    <div class="kpi-value">$1.81</div>
+    <div class="kpi-change" data-cur="1.807621" data-prev="1.656417"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Leads</div>
+    <div class="kpi-value">94</div>
+    <div class="kpi-change" data-cur="94" data-prev="0"></div>
+  </div><div class="kpi-card">
+    <div class="kpi-label">Video Views</div>
+    <div class="kpi-value">8,520</div>
+    <div class="kpi-change" data-cur="8520" data-prev="0"></div>
+  </div></div>
+  <h2 class="section-title">Campaigns</h2>
+  <div class="campaign-table-wrap" data-range="7"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+<tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$170.96</td><td>4,608</td><td>2,941</td><td>114</td><td>2.47%</td><td>$1.50</td><td>11</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$104.90</td><td>2,149</td><td>1,456</td><td>39</td><td>1.81%</td><td>$2.69</td><td>8</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$76.69</td><td>3,215</td><td>2,506</td><td>79</td><td>2.46%</td><td>$0.97</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$68.86</td><td>1,078</td><td>816</td><td>31</td><td>2.88%</td><td>$2.22</td><td>2</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$31.84</td><td>451</td><td>285</td><td>6</td><td>1.33%</td><td>$5.31</td><td>0</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="14"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+<tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$343.82</td><td>9,102</td><td>4,652</td><td>203</td><td>2.23%</td><td>$1.69</td><td>21</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$209.76</td><td>4,324</td><td>2,629</td><td>69</td><td>1.60%</td><td>$3.04</td><td>12</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$153.39</td><td>6,044</td><td>4,606</td><td>162</td><td>2.68%</td><td>$0.95</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$138.80</td><td>2,078</td><td>1,390</td><td>46</td><td>2.21%</td><td>$3.02</td><td>3</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$31.84</td><td>451</td><td>285</td><td>6</td><td>1.33%</td><td>$5.31</td><td>0</td></tr></tbody></table></div>
+  <div class="campaign-table-wrap" data-range="30"><table class="campaign-table">
+<thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+<tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$776.72</td><td>23,664</td><td>11,537</td><td>516</td><td>2.18%</td><td>$1.51</td><td>61</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$465.14</td><td>9,439</td><td>4,908</td><td>169</td><td>1.79%</td><td>$2.75</td><td>25</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$320.80</td><td>12,609</td><td>9,169</td><td>239</td><td>1.90%</td><td>$1.34</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$293.40</td><td>4,816</td><td>2,532</td><td>117</td><td>2.43%</td><td>$2.51</td><td>8</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$31.84</td><td>451</td><td>285</td><td>6</td><td>1.33%</td><td>$5.31</td><td>0</td></tr><tr><td>OPN_IV_Top 3_Leads_Lookalike</td><td>$11.91</td><td>95</td><td>89</td><td>4</td><td>4.21%</td><td>$2.98</td><td>0</td></tr></tbody></table></div>
+  <h2 class="section-title">Daily Trend (30 Days)</h2>
+  <div class="chart-container"><canvas id="chart-diamo" height="200"></canvas></div>
+</div>
+</div>
 <script>
-// Data from Meta Ads API
-const ACCOUNT_DATA = {"act_7210159085728033": {"name": "Sonesta", "kpi": {"7": {"spend": 279.85, "impressions": 86062, "clicks": 1403, "ctr": 1.63, "cpc": 0.2, "reach": 72347, "leads": 0, "video_views": 8521, "prev": {"spend": 294.58, "impressions": 82707, "clicks": 1327, "ctr": 1.6, "cpc": 0.22, "reach": 66368, "leads": 0, "video_views": 6797}}, "14": {"spend": 574.43, "impressions": 168769, "clicks": 2730, "ctr": 1.62, "cpc": 0.21, "reach": 130136, "leads": 0, "video_views": 15318, "prev": {"spend": 695.47, "impressions": 293574, "clicks": 3795, "ctr": 1.29, "cpc": 0.18, "reach": 190504, "leads": 0, "video_views": 26221}}, "30": {"spend": 1369.37, "impressions": 510840, "clicks": 7162, "ctr": 1.4, "cpc": 0.19, "reach": 334367, "leads": 0, "video_views": 45720, "prev": {"spend": 972.85, "impressions": 411855, "clicks": 6276, "ctr": 1.52, "cpc": 0.16, "reach": 291488, "leads": 0, "video_views": 37818}}}, "campaigns": {"7": [{"spend": 113.97, "impressions": 35692, "clicks": 737, "ctr": 2.06, "cpc": 0.15, "reach": 29299, "leads": 0, "video_views": 8521, "campaign_name": "iExcel_RoyalSonesta_Businesstripgetaways", "campaign_id": "120229934408880678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 105.47, "impressions": 33077, "clicks": 404, "ctr": 1.22, "cpc": 0.26, "reach": 27074, "leads": 0, "video_views": 0, "campaign_name": "OPN_Winter Escape_Static_2", "campaign_id": "120237217575830678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 60.41, "impressions": 17293, "clicks": 262, "ctr": 1.52, "cpc": 0.23, "reach": 14417, "leads": 0, "video_views": 0, "campaign_name": "OPN_Three Nights_Static_1", "campaign_id": "120237217779420678", "account": "Sonesta", "account_color": "#6366f1"}], "14": [{"spend": 225.83, "impressions": 66006, "clicks": 1396, "ctr": 2.11, "cpc": 0.16, "reach": 49624, "leads": 0, "video_views": 15318, "campaign_name": "iExcel_RoyalSonesta_Businesstripgetaways", "campaign_id": "120229934408880678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 210.23, "impressions": 58743, "clicks": 756, "ctr": 1.29, "cpc": 0.28, "reach": 44363, "leads": 0, "video_views": 0, "campaign_name": "OPN_Winter Escape_Static_2", "campaign_id": "120237217575830678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 138.37, "impressions": 44020, "clicks": 578, "ctr": 1.31, "cpc": 0.24, "reach": 36564, "leads": 0, "video_views": 0, "campaign_name": "OPN_Three Nights_Static_1", "campaign_id": "120237217779420678", "account": "Sonesta", "account_color": "#6366f1"}], "30": [{"spend": 480.77, "impressions": 243942, "clicks": 3627, "ctr": 1.49, "cpc": 0.13, "reach": 133809, "leads": 0, "video_views": 44500, "campaign_name": "iExcel_RoyalSonesta_Businesstripgetaways", "campaign_id": "120229934408880678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 448.89, "impressions": 112088, "clicks": 1608, "ctr": 1.43, "cpc": 0.28, "reach": 73711, "leads": 0, "video_views": 0, "campaign_name": "OPN_Winter Escape_Static_2", "campaign_id": "120237217575830678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 297.49, "impressions": 87737, "clicks": 1215, "ctr": 1.38, "cpc": 0.24, "reach": 68483, "leads": 0, "video_views": 0, "campaign_name": "OPN_Three Nights_Static_1", "campaign_id": "120237217779420678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 142.22, "impressions": 67073, "clicks": 712, "ctr": 1.06, "cpc": 0.2, "reach": 53561, "leads": 0, "video_views": 1220, "campaign_name": "OPN_Winter Suite_Carrousel_1", "campaign_id": "120237218487160678", "account": "Sonesta", "account_color": "#6366f1"}]}, "daily": [{"date": "2026-02-05", "spend": 50.76, "impressions": 24724, "clicks": 335, "reach": 22257}, {"date": "2026-02-06", "spend": 48.71, "impressions": 23773, "clicks": 302, "reach": 21441}, {"date": "2026-02-07", "spend": 48.67, "impressions": 23200, "clicks": 287, "reach": 20813}, {"date": "2026-02-08", "spend": 54.71, "impressions": 26870, "clicks": 313, "reach": 24095}, {"date": "2026-02-09", "spend": 53.53, "impressions": 24295, "clicks": 333, "reach": 21358}, {"date": "2026-02-10", "spend": 50.42, "impressions": 22465, "clicks": 287, "reach": 19941}, {"date": "2026-02-11", "spend": 49.81, "impressions": 20670, "clicks": 243, "reach": 19396}, {"date": "2026-02-12", "spend": 49.71, "impressions": 19437, "clicks": 248, "reach": 17284}, {"date": "2026-02-13", "spend": 48.28, "impressions": 19950, "clicks": 296, "reach": 18289}, {"date": "2026-02-14", "spend": 50.47, "impressions": 22352, "clicks": 286, "reach": 20905}, {"date": "2026-02-15", "spend": 52.37, "impressions": 24441, "clicks": 289, "reach": 21010}, {"date": "2026-02-16", "spend": 52.13, "impressions": 22812, "clicks": 283, "reach": 20313}, {"date": "2026-02-17", "spend": 49.94, "impressions": 21804, "clicks": 275, "reach": 20232}, {"date": "2026-02-18", "spend": 48.29, "impressions": 19176, "clicks": 222, "reach": 17710}, {"date": "2026-02-19", "spend": 43.7, "impressions": 13895, "clicks": 204, "reach": 12214}, {"date": "2026-02-20", "spend": 43.44, "impressions": 12207, "clicks": 229, "reach": 11573}, {"date": "2026-02-21", "spend": 39.87, "impressions": 10800, "clicks": 157, "reach": 9746}, {"date": "2026-02-22", "spend": 42.15, "impressions": 9957, "clicks": 182, "reach": 9162}, {"date": "2026-02-23", "spend": 42.49, "impressions": 10689, "clicks": 187, "reach": 10270}, {"date": "2026-02-24", "spend": 47.51, "impressions": 13344, "clicks": 205, "reach": 12739}, {"date": "2026-02-25", "spend": 47.06, "impressions": 16129, "clicks": 241, "reach": 15370}, {"date": "2026-02-26", "spend": 37.61, "impressions": 11465, "clicks": 168, "reach": 10709}, {"date": "2026-02-27", "spend": 37.89, "impressions": 10323, "clicks": 187, "reach": 9742}, {"date": "2026-02-28", "spend": 32.24, "impressions": 8400, "clicks": 136, "reach": 8015}, {"date": "2026-03-01", "spend": 44.39, "impressions": 13987, "clicks": 261, "reach": 12899}, {"date": "2026-03-02", "spend": 42.27, "impressions": 13280, "clicks": 203, "reach": 12564}, {"date": "2026-03-03", "spend": 43.09, "impressions": 12938, "clicks": 221, "reach": 11936}, {"date": "2026-03-04", "spend": 38.01, "impressions": 12243, "clicks": 208, "reach": 11725}, {"date": "2026-03-05", "spend": 41.34, "impressions": 13155, "clicks": 199, "reach": 12658}, {"date": "2026-03-06", "spend": 38.51, "impressions": 12059, "clicks": 175, "reach": 11009}], "daily_7": [{"date": "2026-02-28", "spend": 32.24, "impressions": 8400, "clicks": 136, "reach": 8015}, {"date": "2026-03-01", "spend": 44.39, "impressions": 13987, "clicks": 261, "reach": 12899}, {"date": "2026-03-02", "spend": 42.27, "impressions": 13280, "clicks": 203, "reach": 12564}, {"date": "2026-03-03", "spend": 43.09, "impressions": 12938, "clicks": 221, "reach": 11936}, {"date": "2026-03-04", "spend": 38.01, "impressions": 12243, "clicks": 208, "reach": 11725}, {"date": "2026-03-05", "spend": 41.34, "impressions": 13155, "clicks": 199, "reach": 12658}, {"date": "2026-03-06", "spend": 38.51, "impressions": 12059, "clicks": 175, "reach": 11009}], "daily_30": [{"date": "2026-02-05", "spend": 50.76, "impressions": 24724, "clicks": 335, "reach": 22257}, {"date": "2026-02-06", "spend": 48.71, "impressions": 23773, "clicks": 302, "reach": 21441}, {"date": "2026-02-07", "spend": 48.67, "impressions": 23200, "clicks": 287, "reach": 20813}, {"date": "2026-02-08", "spend": 54.71, "impressions": 26870, "clicks": 313, "reach": 24095}, {"date": "2026-02-09", "spend": 53.53, "impressions": 24295, "clicks": 333, "reach": 21358}, {"date": "2026-02-10", "spend": 50.42, "impressions": 22465, "clicks": 287, "reach": 19941}, {"date": "2026-02-11", "spend": 49.81, "impressions": 20670, "clicks": 243, "reach": 19396}, {"date": "2026-02-12", "spend": 49.71, "impressions": 19437, "clicks": 248, "reach": 17284}, {"date": "2026-02-13", "spend": 48.28, "impressions": 19950, "clicks": 296, "reach": 18289}, {"date": "2026-02-14", "spend": 50.47, "impressions": 22352, "clicks": 286, "reach": 20905}, {"date": "2026-02-15", "spend": 52.37, "impressions": 24441, "clicks": 289, "reach": 21010}, {"date": "2026-02-16", "spend": 52.13, "impressions": 22812, "clicks": 283, "reach": 20313}, {"date": "2026-02-17", "spend": 49.94, "impressions": 21804, "clicks": 275, "reach": 20232}, {"date": "2026-02-18", "spend": 48.29, "impressions": 19176, "clicks": 222, "reach": 17710}, {"date": "2026-02-19", "spend": 43.7, "impressions": 13895, "clicks": 204, "reach": 12214}, {"date": "2026-02-20", "spend": 43.44, "impressions": 12207, "clicks": 229, "reach": 11573}, {"date": "2026-02-21", "spend": 39.87, "impressions": 10800, "clicks": 157, "reach": 9746}, {"date": "2026-02-22", "spend": 42.15, "impressions": 9957, "clicks": 182, "reach": 9162}, {"date": "2026-02-23", "spend": 42.49, "impressions": 10689, "clicks": 187, "reach": 10270}, {"date": "2026-02-24", "spend": 47.51, "impressions": 13344, "clicks": 205, "reach": 12739}, {"date": "2026-02-25", "spend": 47.06, "impressions": 16129, "clicks": 241, "reach": 15370}, {"date": "2026-02-26", "spend": 37.61, "impressions": 11465, "clicks": 168, "reach": 10709}, {"date": "2026-02-27", "spend": 37.89, "impressions": 10323, "clicks": 187, "reach": 9742}, {"date": "2026-02-28", "spend": 32.24, "impressions": 8400, "clicks": 136, "reach": 8015}, {"date": "2026-03-01", "spend": 44.39, "impressions": 13987, "clicks": 261, "reach": 12899}, {"date": "2026-03-02", "spend": 42.27, "impressions": 13280, "clicks": 203, "reach": 12564}, {"date": "2026-03-03", "spend": 43.09, "impressions": 12938, "clicks": 221, "reach": 11936}, {"date": "2026-03-04", "spend": 38.01, "impressions": 12243, "clicks": 208, "reach": 11725}, {"date": "2026-03-05", "spend": 41.34, "impressions": 13155, "clicks": 199, "reach": 12658}, {"date": "2026-03-06", "spend": 38.51, "impressions": 12059, "clicks": 175, "reach": 11009}]}, "act_265382959435127": {"name": "SAX", "kpi": {"7": {"spend": 0, "impressions": 0, "clicks": 0, "ctr": 0, "cpc": 0, "reach": 0, "leads": 0, "video_views": 0, "prev": {"spend": 9.36, "impressions": 1660, "clicks": 204, "ctr": 12.29, "cpc": 0.05, "reach": 1543, "leads": 0, "video_views": 745}}, "14": {"spend": 9.36, "impressions": 1660, "clicks": 204, "ctr": 12.29, "cpc": 0.05, "reach": 1543, "leads": 0, "video_views": 745, "prev": {"spend": 76.54, "impressions": 14233, "clicks": 1651, "ctr": 11.6, "cpc": 0.05, "reach": 11043, "leads": 0, "video_views": 6357}}, "30": {"spend": 96.61, "impressions": 17687, "clicks": 2089, "ctr": 11.81, "cpc": 0.05, "reach": 13292, "leads": 0, "video_views": 7947, "prev": {"spend": 122.55, "impressions": 21073, "clicks": 2258, "ctr": 10.72, "cpc": 0.05, "reach": 16109, "leads": 0, "video_views": 10080}}}, "campaigns": {"7": [], "14": [{"spend": 9.36, "impressions": 1660, "clicks": 204, "ctr": 12.29, "cpc": 0.05, "reach": 1543, "leads": 0, "video_views": 745, "campaign_name": "OPN_Sir Sunday_Jan 2026 Campaign", "campaign_id": "120240086970590515", "account": "SAX", "account_color": "#22c55e"}], "30": [{"spend": 96.61, "impressions": 17687, "clicks": 2089, "ctr": 11.81, "cpc": 0.05, "reach": 13292, "leads": 0, "video_views": 7947, "campaign_name": "OPN_Sir Sunday_Jan 2026 Campaign", "campaign_id": "120240086970590515", "account": "SAX", "account_color": "#22c55e"}]}, "daily": [{"date": "2026-02-05", "spend": 5.38, "impressions": 921, "clicks": 121, "reach": 858}, {"date": "2026-02-06", "spend": 5.33, "impressions": 873, "clicks": 113, "reach": 873}, {"date": "2026-02-07", "spend": 5.91, "impressions": 936, "clicks": 111, "reach": 889}, {"date": "2026-02-08", "spend": 6.36, "impressions": 1213, "clicks": 148, "reach": 1152}, {"date": "2026-02-09", "spend": 5.51, "impressions": 1100, "clicks": 117, "reach": 1098}, {"date": "2026-02-10", "spend": 5.29, "impressions": 1048, "clicks": 86, "reach": 993}, {"date": "2026-02-11", "spend": 5.41, "impressions": 995, "clicks": 125, "reach": 940}, {"date": "2026-02-12", "spend": 5.21, "impressions": 958, "clicks": 105, "reach": 875}, {"date": "2026-02-13", "spend": 5.16, "impressions": 884, "clicks": 112, "reach": 861}, {"date": "2026-02-14", "spend": 5.9, "impressions": 1074, "clicks": 128, "reach": 1001}, {"date": "2026-02-15", "spend": 5.93, "impressions": 1170, "clicks": 129, "reach": 1068}, {"date": "2026-02-16", "spend": 5.49, "impressions": 1102, "clicks": 127, "reach": 1061}, {"date": "2026-02-17", "spend": 5.21, "impressions": 986, "clicks": 123, "reach": 966}, {"date": "2026-02-18", "spend": 4.98, "impressions": 926, "clicks": 118, "reach": 890}, {"date": "2026-02-19", "spend": 5.12, "impressions": 911, "clicks": 108, "reach": 872}, {"date": "2026-02-20", "spend": 5.06, "impressions": 930, "clicks": 114, "reach": 870}, {"date": "2026-02-21", "spend": 5.11, "impressions": 871, "clicks": 114, "reach": 828}, {"date": "2026-02-22", "spend": 4.25, "impressions": 789, "clicks": 90, "reach": 772}], "daily_7": [{"date": "2026-02-16", "spend": 5.49, "impressions": 1102, "clicks": 127, "reach": 1061}, {"date": "2026-02-17", "spend": 5.21, "impressions": 986, "clicks": 123, "reach": 966}, {"date": "2026-02-18", "spend": 4.98, "impressions": 926, "clicks": 118, "reach": 890}, {"date": "2026-02-19", "spend": 5.12, "impressions": 911, "clicks": 108, "reach": 872}, {"date": "2026-02-20", "spend": 5.06, "impressions": 930, "clicks": 114, "reach": 870}, {"date": "2026-02-21", "spend": 5.11, "impressions": 871, "clicks": 114, "reach": 828}, {"date": "2026-02-22", "spend": 4.25, "impressions": 789, "clicks": 90, "reach": 772}], "daily_30": [{"date": "2026-02-05", "spend": 5.38, "impressions": 921, "clicks": 121, "reach": 858}, {"date": "2026-02-06", "spend": 5.33, "impressions": 873, "clicks": 113, "reach": 873}, {"date": "2026-02-07", "spend": 5.91, "impressions": 936, "clicks": 111, "reach": 889}, {"date": "2026-02-08", "spend": 6.36, "impressions": 1213, "clicks": 148, "reach": 1152}, {"date": "2026-02-09", "spend": 5.51, "impressions": 1100, "clicks": 117, "reach": 1098}, {"date": "2026-02-10", "spend": 5.29, "impressions": 1048, "clicks": 86, "reach": 993}, {"date": "2026-02-11", "spend": 5.41, "impressions": 995, "clicks": 125, "reach": 940}, {"date": "2026-02-12", "spend": 5.21, "impressions": 958, "clicks": 105, "reach": 875}, {"date": "2026-02-13", "spend": 5.16, "impressions": 884, "clicks": 112, "reach": 861}, {"date": "2026-02-14", "spend": 5.9, "impressions": 1074, "clicks": 128, "reach": 1001}, {"date": "2026-02-15", "spend": 5.93, "impressions": 1170, "clicks": 129, "reach": 1068}, {"date": "2026-02-16", "spend": 5.49, "impressions": 1102, "clicks": 127, "reach": 1061}, {"date": "2026-02-17", "spend": 5.21, "impressions": 986, "clicks": 123, "reach": 966}, {"date": "2026-02-18", "spend": 4.98, "impressions": 926, "clicks": 118, "reach": 890}, {"date": "2026-02-19", "spend": 5.12, "impressions": 911, "clicks": 108, "reach": 872}, {"date": "2026-02-20", "spend": 5.06, "impressions": 930, "clicks": 114, "reach": 870}, {"date": "2026-02-21", "spend": 5.11, "impressions": 871, "clicks": 114, "reach": 828}, {"date": "2026-02-22", "spend": 4.25, "impressions": 789, "clicks": 90, "reach": 772}]}, "act_269770309012859": {"name": "Mercy Me", "kpi": {"7": {"spend": 469.31, "impressions": 69630, "clicks": 3123, "ctr": 4.49, "cpc": 0.15, "reach": 45610, "leads": 0, "video_views": 10793, "prev": {"spend": 392.77, "impressions": 59846, "clicks": 2606, "ctr": 4.35, "cpc": 0.15, "reach": 39854, "leads": 0, "video_views": 8785}}, "14": {"spend": 862.08, "impressions": 129476, "clicks": 5729, "ctr": 4.42, "cpc": 0.15, "reach": 71134, "leads": 0, "video_views": 19578, "prev": {"spend": 670.76, "impressions": 121837, "clicks": 4025, "ctr": 3.3, "cpc": 0.17, "reach": 69944, "leads": 0, "video_views": 19557}}, "30": {"spend": 1610.69, "impressions": 268233, "clicks": 10128, "ctr": 3.78, "cpc": 0.16, "reach": 130996, "leads": 0, "video_views": 41429, "prev": {"spend": 1298.69, "impressions": 236381, "clicks": 6113, "ctr": 2.59, "cpc": 0.21, "reach": 109591, "leads": 0, "video_views": 29870}}}, "campaigns": {"7": [{"spend": 140.91, "impressions": 16013, "clicks": 928, "ctr": 5.8, "cpc": 0.15, "reach": 11158, "leads": 0, "video_views": 5738, "campaign_name": "OPN_Dinner Focus_Feb 23", "campaign_id": "120239060302450408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 140.26, "impressions": 23086, "clicks": 1116, "ctr": 4.83, "cpc": 0.13, "reach": 17036, "leads": 0, "video_views": 2979, "campaign_name": "iExcel-MercyMe-Brazilian Fusion-Opentable", "campaign_id": "120229536144980408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 69.81, "impressions": 12255, "clicks": 397, "ctr": 3.24, "cpc": 0.18, "reach": 9382, "leads": 0, "video_views": 1835, "campaign_name": "iExcel-MercyMe-SambaNights", "campaign_id": "120231416008300408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 67.98, "impressions": 10996, "clicks": 418, "ctr": 3.8, "cpc": 0.16, "reach": 7546, "leads": 0, "video_views": 74, "campaign_name": "OPN_Brazil Brothers_Wed_Feb", "campaign_id": "120238947059620408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 50.35, "impressions": 7280, "clicks": 264, "ctr": 3.63, "cpc": 0.19, "reach": 5873, "leads": 0, "video_views": 167, "campaign_name": "OPN_Private Events Carrousel", "campaign_id": "120239422731580408", "account": "Mercy Me", "account_color": "#ec4899"}], "14": [{"spend": 280.91, "impressions": 45911, "clicks": 2324, "ctr": 5.06, "cpc": 0.12, "reach": 29138, "leads": 0, "video_views": 6333, "campaign_name": "iExcel-MercyMe-Brazilian Fusion-Opentable", "campaign_id": "120229536144980408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 221.7, "impressions": 26165, "clicks": 1472, "ctr": 5.63, "cpc": 0.15, "reach": 15677, "leads": 0, "video_views": 9198, "campaign_name": "OPN_Dinner Focus_Feb 23", "campaign_id": "120239060302450408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 170.1, "impressions": 27333, "clicks": 851, "ctr": 3.11, "cpc": 0.2, "reach": 16503, "leads": 0, "video_views": 83, "campaign_name": "OPN_Brazil Brothers_Wed_Feb", "campaign_id": "120238947059620408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 139.02, "impressions": 22787, "clicks": 818, "ctr": 3.59, "cpc": 0.17, "reach": 15694, "leads": 0, "video_views": 3797, "campaign_name": "iExcel-MercyMe-SambaNights", "campaign_id": "120231416008300408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 50.35, "impressions": 7280, "clicks": 264, "ctr": 3.63, "cpc": 0.19, "reach": 5873, "leads": 0, "video_views": 167, "campaign_name": "OPN_Private Events Carrousel", "campaign_id": "120239422731580408", "account": "Mercy Me", "account_color": "#ec4899"}], "30": [{"spend": 598.26, "impressions": 106350, "clicks": 5004, "ctr": 4.71, "cpc": 0.12, "reach": 57697, "leads": 0, "video_views": 15172, "campaign_name": "iExcel-MercyMe-Brazilian Fusion-Opentable", "campaign_id": "120229536144980408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 299.07, "impressions": 52042, "clicks": 1463, "ctr": 2.81, "cpc": 0.2, "reach": 29854, "leads": 0, "video_views": 11810, "campaign_name": "iExcel-MercyMe-SambaNights", "campaign_id": "120231416008300408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 221.7, "impressions": 26165, "clicks": 1472, "ctr": 5.63, "cpc": 0.15, "reach": 15677, "leads": 0, "video_views": 9198, "campaign_name": "OPN_Dinner Focus_Feb 23", "campaign_id": "120239060302450408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 170.1, "impressions": 27333, "clicks": 851, "ctr": 3.11, "cpc": 0.2, "reach": 16503, "leads": 0, "video_views": 83, "campaign_name": "OPN_Brazil Brothers_Wed_Feb", "campaign_id": "120238947059620408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 154.75, "impressions": 26008, "clicks": 588, "ctr": 2.26, "cpc": 0.26, "reach": 17542, "leads": 0, "video_views": 3107, "campaign_name": "OPN_Galentines Traffic Flyer_1", "campaign_id": "120238534322250408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 116.46, "impressions": 23055, "clicks": 486, "ctr": 2.11, "cpc": 0.24, "reach": 14603, "leads": 0, "video_views": 1892, "campaign_name": "OPN_Vday Graphic_1", "campaign_id": "120238418295470408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 50.35, "impressions": 7280, "clicks": 264, "ctr": 3.63, "cpc": 0.19, "reach": 5873, "leads": 0, "video_views": 167, "campaign_name": "OPN_Private Events Carrousel", "campaign_id": "120239422731580408", "account": "Mercy Me", "account_color": "#ec4899"}]}, "daily": [{"date": "2026-02-05", "spend": 30.12, "impressions": 6999, "clicks": 138, "reach": 6101}, {"date": "2026-02-06", "spend": 47.73, "impressions": 9921, "clicks": 236, "reach": 8110}, {"date": "2026-02-07", "spend": 48.87, "impressions": 8964, "clicks": 222, "reach": 7373}, {"date": "2026-02-08", "spend": 55.8, "impressions": 10510, "clicks": 249, "reach": 8451}, {"date": "2026-02-09", "spend": 64.58, "impressions": 13011, "clicks": 297, "reach": 11048}, {"date": "2026-02-10", "spend": 69.89, "impressions": 12233, "clicks": 301, "reach": 10169}, {"date": "2026-02-11", "spend": 65.47, "impressions": 11644, "clicks": 428, "reach": 9727}, {"date": "2026-02-12", "spend": 71.1, "impressions": 12119, "clicks": 438, "reach": 9588}, {"date": "2026-02-13", "spend": 69.67, "impressions": 12622, "clicks": 411, "reach": 10088}, {"date": "2026-02-14", "spend": 44.49, "impressions": 8261, "clicks": 269, "reach": 7232}, {"date": "2026-02-15", "spend": 32.24, "impressions": 5887, "clicks": 237, "reach": 4741}, {"date": "2026-02-16", "spend": 32.47, "impressions": 6084, "clicks": 248, "reach": 5162}, {"date": "2026-02-17", "spend": 27.31, "impressions": 5795, "clicks": 185, "reach": 5084}, {"date": "2026-02-18", "spend": 30.14, "impressions": 5420, "clicks": 264, "reach": 4897}, {"date": "2026-02-19", "spend": 30.06, "impressions": 4803, "clicks": 259, "reach": 4291}, {"date": "2026-02-20", "spend": 28.67, "impressions": 4484, "clicks": 217, "reach": 4074}, {"date": "2026-02-21", "spend": 32.74, "impressions": 5346, "clicks": 230, "reach": 5002}, {"date": "2026-02-22", "spend": 56.41, "impressions": 9329, "clicks": 357, "reach": 8116}, {"date": "2026-02-23", "spend": 63.96, "impressions": 10632, "clicks": 388, "reach": 9177}, {"date": "2026-02-24", "spend": 85.01, "impressions": 12768, "clicks": 562, "reach": 11296}, {"date": "2026-02-25", "spend": 64.26, "impressions": 9458, "clicks": 400, "reach": 8327}, {"date": "2026-02-26", "spend": 46.61, "impressions": 6584, "clicks": 351, "reach": 5958}, {"date": "2026-02-27", "spend": 43.78, "impressions": 5729, "clicks": 318, "reach": 5313}, {"date": "2026-02-28", "spend": 49.89, "impressions": 6986, "clicks": 357, "reach": 6634}, {"date": "2026-03-01", "spend": 53.0, "impressions": 8087, "clicks": 379, "reach": 7188}, {"date": "2026-03-02", "spend": 53.44, "impressions": 8239, "clicks": 378, "reach": 7747}, {"date": "2026-03-03", "spend": 66.46, "impressions": 10197, "clicks": 447, "reach": 9060}, {"date": "2026-03-04", "spend": 83.15, "impressions": 12690, "clicks": 597, "reach": 10932}, {"date": "2026-03-05", "spend": 88.1, "impressions": 12842, "clicks": 513, "reach": 11357}, {"date": "2026-03-06", "spend": 75.27, "impressions": 10589, "clicks": 452, "reach": 9223}], "daily_7": [{"date": "2026-02-28", "spend": 49.89, "impressions": 6986, "clicks": 357, "reach": 6634}, {"date": "2026-03-01", "spend": 53.0, "impressions": 8087, "clicks": 379, "reach": 7188}, {"date": "2026-03-02", "spend": 53.44, "impressions": 8239, "clicks": 378, "reach": 7747}, {"date": "2026-03-03", "spend": 66.46, "impressions": 10197, "clicks": 447, "reach": 9060}, {"date": "2026-03-04", "spend": 83.15, "impressions": 12690, "clicks": 597, "reach": 10932}, {"date": "2026-03-05", "spend": 88.1, "impressions": 12842, "clicks": 513, "reach": 11357}, {"date": "2026-03-06", "spend": 75.27, "impressions": 10589, "clicks": 452, "reach": 9223}], "daily_30": [{"date": "2026-02-05", "spend": 30.12, "impressions": 6999, "clicks": 138, "reach": 6101}, {"date": "2026-02-06", "spend": 47.73, "impressions": 9921, "clicks": 236, "reach": 8110}, {"date": "2026-02-07", "spend": 48.87, "impressions": 8964, "clicks": 222, "reach": 7373}, {"date": "2026-02-08", "spend": 55.8, "impressions": 10510, "clicks": 249, "reach": 8451}, {"date": "2026-02-09", "spend": 64.58, "impressions": 13011, "clicks": 297, "reach": 11048}, {"date": "2026-02-10", "spend": 69.89, "impressions": 12233, "clicks": 301, "reach": 10169}, {"date": "2026-02-11", "spend": 65.47, "impressions": 11644, "clicks": 428, "reach": 9727}, {"date": "2026-02-12", "spend": 71.1, "impressions": 12119, "clicks": 438, "reach": 9588}, {"date": "2026-02-13", "spend": 69.67, "impressions": 12622, "clicks": 411, "reach": 10088}, {"date": "2026-02-14", "spend": 44.49, "impressions": 8261, "clicks": 269, "reach": 7232}, {"date": "2026-02-15", "spend": 32.24, "impressions": 5887, "clicks": 237, "reach": 4741}, {"date": "2026-02-16", "spend": 32.47, "impressions": 6084, "clicks": 248, "reach": 5162}, {"date": "2026-02-17", "spend": 27.31, "impressions": 5795, "clicks": 185, "reach": 5084}, {"date": "2026-02-18", "spend": 30.14, "impressions": 5420, "clicks": 264, "reach": 4897}, {"date": "2026-02-19", "spend": 30.06, "impressions": 4803, "clicks": 259, "reach": 4291}, {"date": "2026-02-20", "spend": 28.67, "impressions": 4484, "clicks": 217, "reach": 4074}, {"date": "2026-02-21", "spend": 32.74, "impressions": 5346, "clicks": 230, "reach": 5002}, {"date": "2026-02-22", "spend": 56.41, "impressions": 9329, "clicks": 357, "reach": 8116}, {"date": "2026-02-23", "spend": 63.96, "impressions": 10632, "clicks": 388, "reach": 9177}, {"date": "2026-02-24", "spend": 85.01, "impressions": 12768, "clicks": 562, "reach": 11296}, {"date": "2026-02-25", "spend": 64.26, "impressions": 9458, "clicks": 400, "reach": 8327}, {"date": "2026-02-26", "spend": 46.61, "impressions": 6584, "clicks": 351, "reach": 5958}, {"date": "2026-02-27", "spend": 43.78, "impressions": 5729, "clicks": 318, "reach": 5313}, {"date": "2026-02-28", "spend": 49.89, "impressions": 6986, "clicks": 357, "reach": 6634}, {"date": "2026-03-01", "spend": 53.0, "impressions": 8087, "clicks": 379, "reach": 7188}, {"date": "2026-03-02", "spend": 53.44, "impressions": 8239, "clicks": 378, "reach": 7747}, {"date": "2026-03-03", "spend": 66.46, "impressions": 10197, "clicks": 447, "reach": 9060}, {"date": "2026-03-04", "spend": 83.15, "impressions": 12690, "clicks": 597, "reach": 10932}, {"date": "2026-03-05", "spend": 88.1, "impressions": 12842, "clicks": 513, "reach": 11357}, {"date": "2026-03-06", "spend": 75.27, "impressions": 10589, "clicks": 452, "reach": 9223}]}, "act_1423348345499145": {"name": "DIAMO B2B", "kpi": {"7": {"spend": 459.0, "impressions": 11614, "clicks": 262, "ctr": 2.26, "cpc": 1.75, "reach": 7136, "leads": 18, "video_views": 1979, "prev": {"spend": 412.34, "impressions": 10129, "clicks": 201, "ctr": 1.98, "cpc": 2.05, "reach": 5881, "leads": 14, "video_views": 1775}}, "14": {"spend": 871.34, "impressions": 21743, "clicks": 463, "ctr": 2.13, "cpc": 1.88, "reach": 11373, "leads": 32, "video_views": 3754, "prev": {"spend": 883.05, "impressions": 26071, "clicks": 509, "ctr": 1.95, "cpc": 1.73, "reach": 14596, "leads": 54, "video_views": 4209}}, "30": {"spend": 1888.24, "impressions": 50429, "clicks": 1024, "ctr": 2.03, "cpc": 1.84, "reach": 24990, "leads": 89, "video_views": 8437, "prev": {"spend": 1444.36, "impressions": 47214, "clicks": 876, "ctr": 1.86, "cpc": 1.65, "reach": 24844, "leads": 62, "video_views": 6659}}}, "campaigns": {"7": [{"spend": 178.75, "impressions": 4843, "clicks": 113, "ctr": 2.33, "cpc": 1.58, "reach": 3055, "leads": 11, "video_views": 681, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 111.81, "impressions": 2318, "clicks": 32, "ctr": 1.38, "cpc": 3.49, "reach": 1575, "leads": 5, "video_views": 397, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 75.83, "impressions": 3083, "clicks": 85, "ctr": 2.76, "cpc": 0.89, "reach": 2412, "leads": 0, "video_views": 552, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 70.42, "impressions": 1117, "clicks": 28, "ctr": 2.51, "cpc": 2.52, "reach": 850, "leads": 2, "video_views": 349, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 22.19, "impressions": 253, "clicks": 4, "ctr": 1.58, "cpc": 5.55, "reach": 184, "leads": 0, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732", "account": "DIAMO B2B", "account_color": "#eab308"}], "14": [{"spend": 348.35, "impressions": 9215, "clicks": 193, "ctr": 2.09, "cpc": 1.8, "reach": 4741, "leads": 19, "video_views": 1342, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 210.01, "impressions": 4329, "clicks": 64, "ctr": 1.48, "cpc": 3.28, "reach": 2597, "leads": 10, "video_views": 771, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 152.06, "impressions": 5862, "clicks": 154, "ctr": 2.63, "cpc": 0.99, "reach": 4485, "leads": 0, "video_views": 1016, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 138.73, "impressions": 2084, "clicks": 48, "ctr": 2.3, "cpc": 2.89, "reach": 1388, "leads": 3, "video_views": 625, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 22.19, "impressions": 253, "clicks": 4, "ctr": 1.58, "cpc": 5.55, "reach": 184, "leads": 0, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732", "account": "DIAMO B2B", "account_color": "#eab308"}], "30": [{"spend": 761.44, "impressions": 23289, "clicks": 498, "ctr": 2.14, "cpc": 1.53, "reach": 11494, "leads": 58, "video_views": 3227, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 456.33, "impressions": 9267, "clicks": 158, "ctr": 1.7, "cpc": 2.89, "reach": 4816, "leads": 22, "video_views": 1786, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 321.14, "impressions": 12520, "clicks": 233, "ctr": 1.86, "cpc": 1.38, "reach": 9181, "leads": 0, "video_views": 2028, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 296.73, "impressions": 4892, "clicks": 119, "ctr": 2.43, "cpc": 2.49, "reach": 2552, "leads": 8, "video_views": 1328, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 30.41, "impressions": 208, "clicks": 12, "ctr": 5.77, "cpc": 2.53, "reach": 176, "leads": 1, "video_views": 68, "campaign_name": "OPN_IV_Top 3_Leads_Lookalike", "campaign_id": "120241699280950732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 22.19, "impressions": 253, "clicks": 4, "ctr": 1.58, "cpc": 5.55, "reach": 184, "leads": 0, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732", "account": "DIAMO B2B", "account_color": "#eab308"}]}, "daily": [{"date": "2026-02-05", "spend": 40.32, "impressions": 753, "clicks": 18, "reach": 707}, {"date": "2026-02-06", "spend": 93.53, "impressions": 1862, "clicks": 34, "reach": 1702}, {"date": "2026-02-07", "spend": 79.78, "impressions": 2147, "clicks": 45, "reach": 1899}, {"date": "2026-02-08", "spend": 65.56, "impressions": 1971, "clicks": 27, "reach": 1718}, {"date": "2026-02-09", "spend": 68.76, "impressions": 2053, "clicks": 35, "reach": 1784}, {"date": "2026-02-10", "spend": 66.52, "impressions": 2004, "clicks": 52, "reach": 1723}, {"date": "2026-02-11", "spend": 59.37, "impressions": 2064, "clicks": 39, "reach": 1704}, {"date": "2026-02-12", "spend": 55.88, "impressions": 1858, "clicks": 29, "reach": 1565}, {"date": "2026-02-13", "spend": 58.6, "impressions": 1772, "clicks": 37, "reach": 1545}, {"date": "2026-02-14", "spend": 50.4, "impressions": 1993, "clicks": 37, "reach": 1725}, {"date": "2026-02-15", "spend": 68.81, "impressions": 2380, "clicks": 46, "reach": 1949}, {"date": "2026-02-16", "spend": 66.8, "impressions": 2513, "clicks": 51, "reach": 2201}, {"date": "2026-02-17", "spend": 64.38, "impressions": 1463, "clicks": 30, "reach": 1207}, {"date": "2026-02-18", "spend": 60.2, "impressions": 1132, "clicks": 27, "reach": 883}, {"date": "2026-02-19", "spend": 61.62, "impressions": 1240, "clicks": 27, "reach": 979}, {"date": "2026-02-20", "spend": 56.37, "impressions": 1481, "clicks": 27, "reach": 1177}, {"date": "2026-02-21", "spend": 45.62, "impressions": 1142, "clicks": 22, "reach": 982}, {"date": "2026-02-22", "spend": 66.87, "impressions": 1710, "clicks": 45, "reach": 1440}, {"date": "2026-02-23", "spend": 60.42, "impressions": 1621, "clicks": 24, "reach": 1374}, {"date": "2026-02-24", "spend": 60.22, "impressions": 1354, "clicks": 41, "reach": 1081}, {"date": "2026-02-25", "spend": 57.46, "impressions": 1611, "clicks": 25, "reach": 1307}, {"date": "2026-02-26", "spend": 64.18, "impressions": 1457, "clicks": 24, "reach": 1175}, {"date": "2026-02-27", "spend": 57.57, "impressions": 1234, "clicks": 20, "reach": 1063}, {"date": "2026-02-28", "spend": 57.64, "impressions": 1511, "clicks": 38, "reach": 1225}, {"date": "2026-03-01", "spend": 70.52, "impressions": 1630, "clicks": 46, "reach": 1380}, {"date": "2026-03-02", "spend": 69.67, "impressions": 1800, "clicks": 41, "reach": 1462}, {"date": "2026-03-03", "spend": 70.76, "impressions": 1733, "clicks": 39, "reach": 1440}, {"date": "2026-03-04", "spend": 62.98, "impressions": 1824, "clicks": 40, "reach": 1493}, {"date": "2026-03-05", "spend": 67.02, "impressions": 1602, "clicks": 35, "reach": 1345}, {"date": "2026-03-06", "spend": 60.41, "impressions": 1514, "clicks": 23, "reach": 1253}], "daily_7": [{"date": "2026-02-28", "spend": 57.64, "impressions": 1511, "clicks": 38, "reach": 1225}, {"date": "2026-03-01", "spend": 70.52, "impressions": 1630, "clicks": 46, "reach": 1380}, {"date": "2026-03-02", "spend": 69.67, "impressions": 1800, "clicks": 41, "reach": 1462}, {"date": "2026-03-03", "spend": 70.76, "impressions": 1733, "clicks": 39, "reach": 1440}, {"date": "2026-03-04", "spend": 62.98, "impressions": 1824, "clicks": 40, "reach": 1493}, {"date": "2026-03-05", "spend": 67.02, "impressions": 1602, "clicks": 35, "reach": 1345}, {"date": "2026-03-06", "spend": 60.41, "impressions": 1514, "clicks": 23, "reach": 1253}], "daily_30": [{"date": "2026-02-05", "spend": 40.32, "impressions": 753, "clicks": 18, "reach": 707}, {"date": "2026-02-06", "spend": 93.53, "impressions": 1862, "clicks": 34, "reach": 1702}, {"date": "2026-02-07", "spend": 79.78, "impressions": 2147, "clicks": 45, "reach": 1899}, {"date": "2026-02-08", "spend": 65.56, "impressions": 1971, "clicks": 27, "reach": 1718}, {"date": "2026-02-09", "spend": 68.76, "impressions": 2053, "clicks": 35, "reach": 1784}, {"date": "2026-02-10", "spend": 66.52, "impressions": 2004, "clicks": 52, "reach": 1723}, {"date": "2026-02-11", "spend": 59.37, "impressions": 2064, "clicks": 39, "reach": 1704}, {"date": "2026-02-12", "spend": 55.88, "impressions": 1858, "clicks": 29, "reach": 1565}, {"date": "2026-02-13", "spend": 58.6, "impressions": 1772, "clicks": 37, "reach": 1545}, {"date": "2026-02-14", "spend": 50.4, "impressions": 1993, "clicks": 37, "reach": 1725}, {"date": "2026-02-15", "spend": 68.81, "impressions": 2380, "clicks": 46, "reach": 1949}, {"date": "2026-02-16", "spend": 66.8, "impressions": 2513, "clicks": 51, "reach": 2201}, {"date": "2026-02-17", "spend": 64.38, "impressions": 1463, "clicks": 30, "reach": 1207}, {"date": "2026-02-18", "spend": 60.2, "impressions": 1132, "clicks": 27, "reach": 883}, {"date": "2026-02-19", "spend": 61.62, "impressions": 1240, "clicks": 27, "reach": 979}, {"date": "2026-02-20", "spend": 56.37, "impressions": 1481, "clicks": 27, "reach": 1177}, {"date": "2026-02-21", "spend": 45.62, "impressions": 1142, "clicks": 22, "reach": 982}, {"date": "2026-02-22", "spend": 66.87, "impressions": 1710, "clicks": 45, "reach": 1440}, {"date": "2026-02-23", "spend": 60.42, "impressions": 1621, "clicks": 24, "reach": 1374}, {"date": "2026-02-24", "spend": 60.22, "impressions": 1354, "clicks": 41, "reach": 1081}, {"date": "2026-02-25", "spend": 57.46, "impressions": 1611, "clicks": 25, "reach": 1307}, {"date": "2026-02-26", "spend": 64.18, "impressions": 1457, "clicks": 24, "reach": 1175}, {"date": "2026-02-27", "spend": 57.57, "impressions": 1234, "clicks": 20, "reach": 1063}, {"date": "2026-02-28", "spend": 57.64, "impressions": 1511, "clicks": 38, "reach": 1225}, {"date": "2026-03-01", "spend": 70.52, "impressions": 1630, "clicks": 46, "reach": 1380}, {"date": "2026-03-02", "spend": 69.67, "impressions": 1800, "clicks": 41, "reach": 1462}, {"date": "2026-03-03", "spend": 70.76, "impressions": 1733, "clicks": 39, "reach": 1440}, {"date": "2026-03-04", "spend": 62.98, "impressions": 1824, "clicks": 40, "reach": 1493}, {"date": "2026-03-05", "spend": 67.02, "impressions": 1602, "clicks": 35, "reach": 1345}, {"date": "2026-03-06", "spend": 60.41, "impressions": 1514, "clicks": 23, "reach": 1253}]}};
-const ACCOUNT_NAMES = {"act_7210159085728033": "Sonesta", "act_265382959435127": "SAX", "act_269770309012859": "Mercy Me", "act_1423348345499145": "DIAMO B2B"};
-const ACCOUNT_COLORS = {"Sonesta": "#6366f1", "SAX": "#22c55e", "Mercy Me": "#ec4899", "DIAMO B2B": "#eab308"};
-const AGGREGATED_DATA = {"7": {"spend": 1208.16, "impressions": 167306, "clicks": 4788, "reach": 125093, "leads": 18, "ctr": 2.86, "cpc": 0.25, "campaigns": 13, "prev": {"spend": 1109.05, "impressions": 154342, "clicks": 4338, "reach": 113646}}, "14": {"spend": 2317.21, "impressions": 321648, "clicks": 9126, "reach": 214186, "leads": 32, "ctr": 2.84, "cpc": 0.25, "campaigns": 14, "prev": {"spend": 2325.8199999999997, "impressions": 455715, "clicks": 9980, "reach": 286087}}, "30": {"spend": 4964.91, "impressions": 847189, "clicks": 20403, "reach": 503645, "leads": 89, "ctr": 2.41, "cpc": 0.24, "campaigns": 18, "prev": {"spend": 3838.45, "impressions": 716523, "clicks": 15523, "reach": 442032}}};
-const ALL_CAMPAIGNS = {"7": [{"spend": 178.75, "impressions": 4843, "clicks": 113, "ctr": 2.33, "cpc": 1.58, "reach": 3055, "leads": 11, "video_views": 681, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 140.91, "impressions": 16013, "clicks": 928, "ctr": 5.8, "cpc": 0.15, "reach": 11158, "leads": 0, "video_views": 5738, "campaign_name": "OPN_Dinner Focus_Feb 23", "campaign_id": "120239060302450408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 140.26, "impressions": 23086, "clicks": 1116, "ctr": 4.83, "cpc": 0.13, "reach": 17036, "leads": 0, "video_views": 2979, "campaign_name": "iExcel-MercyMe-Brazilian Fusion-Opentable", "campaign_id": "120229536144980408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 113.97, "impressions": 35692, "clicks": 737, "ctr": 2.06, "cpc": 0.15, "reach": 29299, "leads": 0, "video_views": 8521, "campaign_name": "iExcel_RoyalSonesta_Businesstripgetaways", "campaign_id": "120229934408880678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 111.81, "impressions": 2318, "clicks": 32, "ctr": 1.38, "cpc": 3.49, "reach": 1575, "leads": 5, "video_views": 397, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 105.47, "impressions": 33077, "clicks": 404, "ctr": 1.22, "cpc": 0.26, "reach": 27074, "leads": 0, "video_views": 0, "campaign_name": "OPN_Winter Escape_Static_2", "campaign_id": "120237217575830678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 75.83, "impressions": 3083, "clicks": 85, "ctr": 2.76, "cpc": 0.89, "reach": 2412, "leads": 0, "video_views": 552, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 70.42, "impressions": 1117, "clicks": 28, "ctr": 2.51, "cpc": 2.52, "reach": 850, "leads": 2, "video_views": 349, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 69.81, "impressions": 12255, "clicks": 397, "ctr": 3.24, "cpc": 0.18, "reach": 9382, "leads": 0, "video_views": 1835, "campaign_name": "iExcel-MercyMe-SambaNights", "campaign_id": "120231416008300408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 67.98, "impressions": 10996, "clicks": 418, "ctr": 3.8, "cpc": 0.16, "reach": 7546, "leads": 0, "video_views": 74, "campaign_name": "OPN_Brazil Brothers_Wed_Feb", "campaign_id": "120238947059620408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 60.41, "impressions": 17293, "clicks": 262, "ctr": 1.52, "cpc": 0.23, "reach": 14417, "leads": 0, "video_views": 0, "campaign_name": "OPN_Three Nights_Static_1", "campaign_id": "120237217779420678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 50.35, "impressions": 7280, "clicks": 264, "ctr": 3.63, "cpc": 0.19, "reach": 5873, "leads": 0, "video_views": 167, "campaign_name": "OPN_Private Events Carrousel", "campaign_id": "120239422731580408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 22.19, "impressions": 253, "clicks": 4, "ctr": 1.58, "cpc": 5.55, "reach": 184, "leads": 0, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732", "account": "DIAMO B2B", "account_color": "#eab308"}], "14": [{"spend": 348.35, "impressions": 9215, "clicks": 193, "ctr": 2.09, "cpc": 1.8, "reach": 4741, "leads": 19, "video_views": 1342, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 280.91, "impressions": 45911, "clicks": 2324, "ctr": 5.06, "cpc": 0.12, "reach": 29138, "leads": 0, "video_views": 6333, "campaign_name": "iExcel-MercyMe-Brazilian Fusion-Opentable", "campaign_id": "120229536144980408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 225.83, "impressions": 66006, "clicks": 1396, "ctr": 2.11, "cpc": 0.16, "reach": 49624, "leads": 0, "video_views": 15318, "campaign_name": "iExcel_RoyalSonesta_Businesstripgetaways", "campaign_id": "120229934408880678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 221.7, "impressions": 26165, "clicks": 1472, "ctr": 5.63, "cpc": 0.15, "reach": 15677, "leads": 0, "video_views": 9198, "campaign_name": "OPN_Dinner Focus_Feb 23", "campaign_id": "120239060302450408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 210.23, "impressions": 58743, "clicks": 756, "ctr": 1.29, "cpc": 0.28, "reach": 44363, "leads": 0, "video_views": 0, "campaign_name": "OPN_Winter Escape_Static_2", "campaign_id": "120237217575830678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 210.01, "impressions": 4329, "clicks": 64, "ctr": 1.48, "cpc": 3.28, "reach": 2597, "leads": 10, "video_views": 771, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 170.1, "impressions": 27333, "clicks": 851, "ctr": 3.11, "cpc": 0.2, "reach": 16503, "leads": 0, "video_views": 83, "campaign_name": "OPN_Brazil Brothers_Wed_Feb", "campaign_id": "120238947059620408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 152.06, "impressions": 5862, "clicks": 154, "ctr": 2.63, "cpc": 0.99, "reach": 4485, "leads": 0, "video_views": 1016, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 139.02, "impressions": 22787, "clicks": 818, "ctr": 3.59, "cpc": 0.17, "reach": 15694, "leads": 0, "video_views": 3797, "campaign_name": "iExcel-MercyMe-SambaNights", "campaign_id": "120231416008300408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 138.73, "impressions": 2084, "clicks": 48, "ctr": 2.3, "cpc": 2.89, "reach": 1388, "leads": 3, "video_views": 625, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 138.37, "impressions": 44020, "clicks": 578, "ctr": 1.31, "cpc": 0.24, "reach": 36564, "leads": 0, "video_views": 0, "campaign_name": "OPN_Three Nights_Static_1", "campaign_id": "120237217779420678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 50.35, "impressions": 7280, "clicks": 264, "ctr": 3.63, "cpc": 0.19, "reach": 5873, "leads": 0, "video_views": 167, "campaign_name": "OPN_Private Events Carrousel", "campaign_id": "120239422731580408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 22.19, "impressions": 253, "clicks": 4, "ctr": 1.58, "cpc": 5.55, "reach": 184, "leads": 0, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 9.36, "impressions": 1660, "clicks": 204, "ctr": 12.29, "cpc": 0.05, "reach": 1543, "leads": 0, "video_views": 745, "campaign_name": "OPN_Sir Sunday_Jan 2026 Campaign", "campaign_id": "120240086970590515", "account": "SAX", "account_color": "#22c55e"}], "30": [{"spend": 761.44, "impressions": 23289, "clicks": 498, "ctr": 2.14, "cpc": 1.53, "reach": 11494, "leads": 58, "video_views": 3227, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 598.26, "impressions": 106350, "clicks": 5004, "ctr": 4.71, "cpc": 0.12, "reach": 57697, "leads": 0, "video_views": 15172, "campaign_name": "iExcel-MercyMe-Brazilian Fusion-Opentable", "campaign_id": "120229536144980408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 480.77, "impressions": 243942, "clicks": 3627, "ctr": 1.49, "cpc": 0.13, "reach": 133809, "leads": 0, "video_views": 44500, "campaign_name": "iExcel_RoyalSonesta_Businesstripgetaways", "campaign_id": "120229934408880678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 456.33, "impressions": 9267, "clicks": 158, "ctr": 1.7, "cpc": 2.89, "reach": 4816, "leads": 22, "video_views": 1786, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 448.89, "impressions": 112088, "clicks": 1608, "ctr": 1.43, "cpc": 0.28, "reach": 73711, "leads": 0, "video_views": 0, "campaign_name": "OPN_Winter Escape_Static_2", "campaign_id": "120237217575830678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 321.14, "impressions": 12520, "clicks": 233, "ctr": 1.86, "cpc": 1.38, "reach": 9181, "leads": 0, "video_views": 2028, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 299.07, "impressions": 52042, "clicks": 1463, "ctr": 2.81, "cpc": 0.2, "reach": 29854, "leads": 0, "video_views": 11810, "campaign_name": "iExcel-MercyMe-SambaNights", "campaign_id": "120231416008300408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 297.49, "impressions": 87737, "clicks": 1215, "ctr": 1.38, "cpc": 0.24, "reach": 68483, "leads": 0, "video_views": 0, "campaign_name": "OPN_Three Nights_Static_1", "campaign_id": "120237217779420678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 296.73, "impressions": 4892, "clicks": 119, "ctr": 2.43, "cpc": 2.49, "reach": 2552, "leads": 8, "video_views": 1328, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 221.7, "impressions": 26165, "clicks": 1472, "ctr": 5.63, "cpc": 0.15, "reach": 15677, "leads": 0, "video_views": 9198, "campaign_name": "OPN_Dinner Focus_Feb 23", "campaign_id": "120239060302450408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 170.1, "impressions": 27333, "clicks": 851, "ctr": 3.11, "cpc": 0.2, "reach": 16503, "leads": 0, "video_views": 83, "campaign_name": "OPN_Brazil Brothers_Wed_Feb", "campaign_id": "120238947059620408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 154.75, "impressions": 26008, "clicks": 588, "ctr": 2.26, "cpc": 0.26, "reach": 17542, "leads": 0, "video_views": 3107, "campaign_name": "OPN_Galentines Traffic Flyer_1", "campaign_id": "120238534322250408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 142.22, "impressions": 67073, "clicks": 712, "ctr": 1.06, "cpc": 0.2, "reach": 53561, "leads": 0, "video_views": 1220, "campaign_name": "OPN_Winter Suite_Carrousel_1", "campaign_id": "120237218487160678", "account": "Sonesta", "account_color": "#6366f1"}, {"spend": 116.46, "impressions": 23055, "clicks": 486, "ctr": 2.11, "cpc": 0.24, "reach": 14603, "leads": 0, "video_views": 1892, "campaign_name": "OPN_Vday Graphic_1", "campaign_id": "120238418295470408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 96.61, "impressions": 17687, "clicks": 2089, "ctr": 11.81, "cpc": 0.05, "reach": 13292, "leads": 0, "video_views": 7947, "campaign_name": "OPN_Sir Sunday_Jan 2026 Campaign", "campaign_id": "120240086970590515", "account": "SAX", "account_color": "#22c55e"}, {"spend": 50.35, "impressions": 7280, "clicks": 264, "ctr": 3.63, "cpc": 0.19, "reach": 5873, "leads": 0, "video_views": 167, "campaign_name": "OPN_Private Events Carrousel", "campaign_id": "120239422731580408", "account": "Mercy Me", "account_color": "#ec4899"}, {"spend": 30.41, "impressions": 208, "clicks": 12, "ctr": 5.77, "cpc": 2.53, "reach": 176, "leads": 1, "video_views": 68, "campaign_name": "OPN_IV_Top 3_Leads_Lookalike", "campaign_id": "120241699280950732", "account": "DIAMO B2B", "account_color": "#eab308"}, {"spend": 22.19, "impressions": 253, "clicks": 4, "ctr": 1.58, "cpc": 5.55, "reach": 184, "leads": 0, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732", "account": "DIAMO B2B", "account_color": "#eab308"}]};
-const COMBINED_DAILY = {"7": [{"date": "2026-02-28", "spend": 139.76999999999998, "impressions": 16897, "clicks": 531, "reach": 15874}, {"date": "2026-03-01", "spend": 167.91, "impressions": 23704, "clicks": 686, "reach": 21467}, {"date": "2026-03-02", "spend": 165.38, "impressions": 23319, "clicks": 622, "reach": 21773}, {"date": "2026-03-03", "spend": 180.31, "impressions": 24868, "clicks": 707, "reach": 22436}, {"date": "2026-03-04", "spend": 184.14, "impressions": 26757, "clicks": 845, "reach": 24150}, {"date": "2026-03-05", "spend": 196.45999999999998, "impressions": 27599, "clicks": 747, "reach": 25360}, {"date": "2026-03-06", "spend": 174.19, "impressions": 24162, "clicks": 650, "reach": 21485}], "30": [{"date": "2026-02-05", "spend": 126.58000000000001, "impressions": 33397, "clicks": 612, "reach": 29923}, {"date": "2026-02-06", "spend": 195.3, "impressions": 36429, "clicks": 685, "reach": 32126}, {"date": "2026-02-07", "spend": 183.23, "impressions": 35247, "clicks": 665, "reach": 30974}, {"date": "2026-02-08", "spend": 182.43, "impressions": 40564, "clicks": 737, "reach": 35416}, {"date": "2026-02-09", "spend": 192.38, "impressions": 40459, "clicks": 782, "reach": 35288}, {"date": "2026-02-10", "spend": 192.12, "impressions": 37750, "clicks": 726, "reach": 32826}, {"date": "2026-02-11", "spend": 180.06, "impressions": 35373, "clicks": 835, "reach": 31767}, {"date": "2026-02-12", "spend": 181.9, "impressions": 34372, "clicks": 820, "reach": 29312}, {"date": "2026-02-13", "spend": 181.71, "impressions": 35228, "clicks": 856, "reach": 30783}, {"date": "2026-02-14", "spend": 151.26, "impressions": 33680, "clicks": 720, "reach": 30863}, {"date": "2026-02-15", "spend": 159.35, "impressions": 33878, "clicks": 701, "reach": 28768}, {"date": "2026-02-16", "spend": 156.89, "impressions": 32511, "clicks": 709, "reach": 28737}, {"date": "2026-02-17", "spend": 146.83999999999997, "impressions": 30048, "clicks": 613, "reach": 27489}, {"date": "2026-02-18", "spend": 143.61, "impressions": 26654, "clicks": 631, "reach": 24380}, {"date": "2026-02-19", "spend": 140.5, "impressions": 20849, "clicks": 598, "reach": 18356}, {"date": "2026-02-20", "spend": 133.54, "impressions": 19102, "clicks": 587, "reach": 17694}, {"date": "2026-02-21", "spend": 123.34, "impressions": 18159, "clicks": 523, "reach": 16558}, {"date": "2026-02-22", "spend": 169.68, "impressions": 21785, "clicks": 674, "reach": 19490}, {"date": "2026-02-23", "spend": 166.87, "impressions": 22942, "clicks": 599, "reach": 20821}, {"date": "2026-02-24", "spend": 192.74, "impressions": 27466, "clicks": 808, "reach": 25116}, {"date": "2026-02-25", "spend": 168.78, "impressions": 27198, "clicks": 666, "reach": 25004}, {"date": "2026-02-26", "spend": 148.4, "impressions": 19506, "clicks": 543, "reach": 17842}, {"date": "2026-02-27", "spend": 139.24, "impressions": 17286, "clicks": 525, "reach": 16118}, {"date": "2026-02-28", "spend": 139.76999999999998, "impressions": 16897, "clicks": 531, "reach": 15874}, {"date": "2026-03-01", "spend": 167.91, "impressions": 23704, "clicks": 686, "reach": 21467}, {"date": "2026-03-02", "spend": 165.38, "impressions": 23319, "clicks": 622, "reach": 21773}, {"date": "2026-03-03", "spend": 180.31, "impressions": 24868, "clicks": 707, "reach": 22436}, {"date": "2026-03-04", "spend": 184.14, "impressions": 26757, "clicks": 845, "reach": 24150}, {"date": "2026-03-05", "spend": 196.45999999999998, "impressions": 27599, "clicks": 747, "reach": 25360}, {"date": "2026-03-06", "spend": 174.19, "impressions": 24162, "clicks": 650, "reach": 21485}]};
-let currentRange = 7;
-let currentAccount = 'all';
-let spendChart, reachChart;
+const DATA = {daily:{}};
+DATA.daily["sonesta"] = {labels:["02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07"],spend:[48.71, 48.67, 54.71, 53.53, 50.42, 49.81, 49.71, 48.28, 50.47, 52.37, 52.13, 49.94, 48.29, 43.7, 43.44, 39.87, 42.15, 42.49, 47.51, 47.06, 37.61, 37.89, 32.24, 44.39, 42.27, 43.09, 38.01, 41.35, 38.67, 19.33],clicks:[302, 287, 313, 333, 287, 243, 248, 296, 286, 289, 283, 275, 222, 204, 229, 157, 182, 187, 205, 241, 168, 187, 136, 261, 203, 221, 208, 199, 176, 100]};
+DATA.daily["sax"] = {labels:["02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22"],spend:[5.33, 5.91, 6.36, 5.51, 5.29, 5.41, 5.21, 5.16, 5.9, 5.93, 5.49, 5.21, 4.98, 5.12, 5.06, 5.11, 4.25],clicks:[113, 111, 148, 117, 86, 125, 105, 112, 128, 129, 127, 123, 118, 108, 114, 114, 90]};
+DATA.daily["mercyme"] = {labels:["02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07"],spend:[47.73, 48.87, 55.8, 64.58, 69.89, 65.47, 71.1, 69.67, 44.49, 32.24, 32.47, 27.31, 30.14, 30.06, 28.67, 32.74, 56.41, 63.96, 85.01, 64.26, 46.61, 43.78, 49.89, 53.0, 53.44, 66.46, 83.15, 88.1, 75.4, 94.53],clicks:[236, 222, 249, 297, 301, 428, 438, 411, 269, 237, 248, 185, 264, 259, 217, 230, 357, 388, 562, 400, 351, 318, 357, 379, 379, 447, 597, 513, 452, 560]};
+DATA.daily["diamo"] = {labels:["02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07"],spend:[93.53, 79.78, 65.56, 68.76, 66.52, 59.37, 55.88, 58.6, 50.4, 68.81, 66.8, 64.38, 60.2, 61.62, 56.37, 45.62, 66.87, 60.42, 60.22, 57.46, 64.18, 57.57, 57.64, 70.52, 69.67, 70.76, 62.98, 67.02, 61.18, 51.12],clicks:[34, 45, 27, 35, 52, 39, 29, 37, 37, 46, 51, 30, 27, 27, 27, 22, 45, 24, 41, 25, 24, 20, 38, 46, 41, 39, 40, 35, 23, 45]};
 
-function formatNumber(num) {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-  return num.toLocaleString();
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2
-  }).format(amount);
-}
-
-function updateKPIs() {
-  let kpis = [];
-
-  if (currentAccount === 'all') {
-    const data = AGGREGATED_DATA[currentRange];
-    kpis = [
-      { label: 'Total Spend', value: formatCurrency(data.spend) },
-      { label: 'Total Impressions', value: formatNumber(data.impressions) },
-      { label: 'Total Clicks', value: formatNumber(data.clicks) },
-      { label: 'Average CTR', value: data.ctr.toFixed(2) + '%' },
-      { label: 'Average CPC', value: formatCurrency(data.cpc) },
-      { label: 'Total Leads', value: formatNumber(data.leads) }
-    ];
-  } else {
-    // Find account data
-    let accountId = null;
-    for (let id in ACCOUNT_NAMES) {
-      if (ACCOUNT_NAMES[id] === currentAccount) {
-        accountId = id;
-        break;
-      }
-    }
-
-    if (accountId) {
-      const data = ACCOUNT_DATA[accountId].kpi[currentRange];
-      kpis = [
-        { label: 'Spend', value: formatCurrency(data.spend) },
-        { label: 'Impressions', value: formatNumber(data.impressions) },
-        { label: 'Clicks', value: formatNumber(data.clicks) },
-        { label: 'CTR', value: data.ctr.toFixed(2) + '%' },
-        { label: 'CPC', value: formatCurrency(data.cpc) },
-        { label: 'Leads', value: formatNumber(data.leads) }
-      ];
-    }
-  }
-
-  document.getElementById('kpiRow').innerHTML = kpis.map(kpi => `
-    <div class="kpi-card">
-      <div class="kpi-label">${kpi.label}</div>
-      <div class="kpi-value">${kpi.value}</div>
-    </div>
-  `).join('');
-}
-
-function updateCampaigns() {
-  let campaigns = [];
-
-  if (currentAccount === 'all') {
-    campaigns = ALL_CAMPAIGNS[currentRange] || [];
-  } else {
-    // Filter campaigns for specific account
-    campaigns = (ALL_CAMPAIGNS[currentRange] || []).filter(c => c.account === currentAccount);
-  }
-
-  document.getElementById('campaignBody').innerHTML = campaigns.slice(0, 20).map(campaign => `
-    <tr>
-      <td>${campaign.campaign_name}</td>
-      <td><span class="acct-color-dot" style="background:${campaign.account_color}"></span>${campaign.account}</td>
-      <td>${formatCurrency(campaign.spend)}</td>
-      <td>${formatNumber(campaign.impressions)}</td>
-      <td>${formatNumber(campaign.clicks)}</td>
-      <td>${campaign.ctr.toFixed(2)}%</td>
-      <td>${formatCurrency(campaign.cpc)}</td>
-    </tr>
-  `).join('');
-}
-
-function updateCharts() {
-  let dailyData = COMBINED_DAILY[currentRange];
-
-  if (currentAccount !== 'all') {
-    // Filter for specific account
-    let accountId = null;
-    for (let id in ACCOUNT_NAMES) {
-      if (ACCOUNT_NAMES[id] === currentAccount) {
-        accountId = id;
-        break;
-      }
-    }
-
-    if (accountId) {
-      dailyData = currentRange === 7 ? ACCOUNT_DATA[accountId].daily_7 : ACCOUNT_DATA[accountId].daily_30;
-    }
-  }
-
-  const labels = dailyData.map(day => new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-
-  // Destroy existing charts
-  if (spendChart) spendChart.destroy();
-  if (reachChart) reachChart.destroy();
-
-  // Spend Chart
-  spendChart = new Chart(document.getElementById('spendChart'), {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Daily Spend',
-        data: dailyData.map(day => day.spend),
-        borderColor: '#6366f1',
-        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-        tension: 0.4,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: { color: 'rgba(255,255,255,0.1)' },
-          ticks: {
-            color: '#a1a1aa',
-            callback: function(value) { return '$' + value; }
-          }
-        },
-        x: {
-          grid: { color: 'rgba(255,255,255,0.1)' },
-          ticks: { color: '#a1a1aa' }
-        }
-      }
-    }
-  });
-
-  // Reach Chart
-  reachChart = new Chart(document.getElementById('reachChart'), {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Daily Reach',
-        data: dailyData.map(day => day.reach),
-        borderColor: '#22c55e',
-        backgroundColor: 'rgba(34, 197, 94, 0.1)',
-        tension: 0.4,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: { color: 'rgba(255,255,255,0.1)' },
-          ticks: {
-            color: '#a1a1aa',
-            callback: function(value) { return formatNumber(value); }
-          }
-        },
-        x: {
-          grid: { color: 'rgba(255,255,255,0.1)' },
-          ticks: { color: '#a1a1aa' }
-        }
-      }
-    }
+let curClient, curRange = "7", charts = {};
+function pctChange() {
+  document.querySelectorAll('.kpi-change').forEach(el => {
+    const cur = parseFloat(el.dataset.cur), prev = parseFloat(el.dataset.prev);
+    if (!prev || isNaN(cur) || isNaN(prev)) { el.textContent = ''; return; }
+    const pct = ((cur - prev) / prev * 100).toFixed(1);
+    const up = cur >= prev;
+    el.textContent = (up ? '\u25B2 ' : '\u25BC ') + Math.abs(pct) + '%';
+    el.className = 'kpi-change ' + (up ? 'up' : 'down');
   });
 }
-
-function updatePeriodBadge() {
-  const badges = {
-    7: 'Feb 28 – Mar 5, 2026',
-    30: 'Feb 5 – Mar 6, 2026'
-  };
-  document.getElementById('periodBadge').textContent = badges[currentRange];
+function showClient(c) {
+  curClient = c;
+  document.querySelectorAll('.tab').forEach(t => { t.classList.toggle('active', t.dataset.client === c); t.style.background = t.dataset.client === c ? '#1a73e8' : ''; });
+  document.querySelectorAll('.client-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + c).classList.add('active');
+  showRange(curRange); renderChart();
 }
-
-function setRange(range) {
-  currentRange = range;
-
-  // Update active pill
-  document.querySelectorAll('.date-pill').forEach(pill => pill.classList.remove('active'));
-  document.querySelector(`[onclick="setRange(${range})"]`).classList.add('active');
-
-  // Update campaign title
-  document.getElementById('campTitle').innerHTML = `Campaign Performance <span style="font-size:.75rem;color:var(--muted);font-weight:400">(${range} Days)</span>`;
-
-  // Update data
-  updatePeriodBadge();
-  updateKPIs();
-  updateCampaigns();
-  updateCharts();
+function showRange(r) {
+  curRange = r;
+  document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.range === r));
+  const sec = document.getElementById('section-' + curClient);
+  sec.querySelectorAll('.kpi-grid').forEach(g => g.style.display = g.dataset.range === r ? 'grid' : 'none');
+  sec.querySelectorAll('.campaign-table-wrap').forEach(g => g.style.display = g.dataset.range === r ? 'block' : 'none');
+  pctChange();
 }
-
-function setAcct(account) {
-  currentAccount = account;
-
-  // Update active tab
-  document.querySelectorAll('.acct-tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelector(`[onclick="setAcct('${account}')"]`).classList.add('active');
-
-  // Update data
-  updateKPIs();
-  updateCampaigns();
-  updateCharts();
+function renderChart() {
+  const d = DATA.daily[curClient]; if (!d || !d.labels.length) return;
+  const canvas = document.getElementById('chart-' + curClient); if (!canvas) return;
+  if (charts[curClient]) charts[curClient].destroy();
+  charts[curClient] = new Chart(canvas, { type:'line', data:{ labels:d.labels, datasets:[
+    {label:'Spend ($)',data:d.spend,borderColor:'#1a73e8',backgroundColor:'rgba(26,115,232,0.1)',fill:true,tension:0.3,yAxisID:'y'},
+    {label:'Clicks',data:d.clicks,borderColor:'#4caf50',backgroundColor:'rgba(76,175,80,0.1)',fill:false,tension:0.3,yAxisID:'y1'}
+  ]}, options:{responsive:true,plugins:{legend:{labels:{color:'#aaa'}}},scales:{
+    x:{ticks:{color:'#666'},grid:{color:'#222'}},
+    y:{position:'left',ticks:{color:'#1a73e8'},grid:{color:'#222'}},
+    y1:{position:'right',ticks:{color:'#4caf50'},grid:{display:false}}
+  }}});
 }
-
-// Initialize dashboard
-document.addEventListener('DOMContentLoaded', function() {
-  setRange(7);
-});
-</script>
-</body>
-</html>
+showClient("sonesta");
+</script></body></html>
