@@ -1,37 +1,138 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DIAMO B2B — Meta Ads Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1117; color: #e0e0e0; }
-.header { background: linear-gradient(135deg, #1a1d29, #2a2d3a); padding: 24px 32px; border-bottom: 1px solid #333; display:flex; justify-content:space-between; align-items:center; }
-.header h1 { font-size: 22px; font-weight: 600; } .header .updated { font-size: 13px; color: #888; }
-.tabs { display:flex; gap:4px; padding: 12px 32px; background:#1a1d29; border-bottom:1px solid #333; flex-wrap:wrap; }
-.tab { padding: 8px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:500; background:#252830; color:#aaa; border:none; transition:all .2s; }
-.tab.active { background:#1a73e8; color:#fff; } .tab:hover:not(.active) { background:#333; color:#ccc; }
-.range-pills { display:flex; gap:6px; padding:12px 32px; }
-.pill { padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; background:#252830; color:#aaa; border:1px solid #333; }
-.pill.active { background:#6f1ae8; color:#fff; border-color:#6f1ae8; }
-.content { padding:24px 32px; }
-.kpi-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:16px; margin-bottom:24px; }
-.kpi-card { background:#1e2130; border-radius:12px; padding:18px; border:1px solid #2a2d3a; }
-.kpi-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
-.kpi-value { font-size:24px; font-weight:700; color:#fff; }
-.kpi-change { font-size:12px; margin-top:4px; } .kpi-change.up { color:#4caf50; } .kpi-change.down { color:#f44336; }
-.section-title { font-size:16px; font-weight:600; margin:24px 0 12px; color:#ccc; }
-.campaign-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:24px; }
-.campaign-table th { text-align:left; padding:10px 12px; background:#1a1d29; color:#888; font-weight:500; border-bottom:1px solid #333; }
-.campaign-table td { padding:10px 12px; border-bottom:1px solid #222; } .campaign-table tr:hover td { background:#1e2130; }
-.chart-container { background:#1e2130; border-radius:12px; padding:20px; margin-bottom:24px; border:1px solid #2a2d3a; }
-.no-data { color:#666; font-style:italic; padding:12px 0; }
-.client-section { display:none; } .client-section.active { display:block; }
-@media(max-width:768px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } .content,.tabs,.range-pills { padding-left:16px; padding-right:16px; } }</style></head><body>
-<div class="header"><h1>💎 DIAMO B2B — Meta Ads Dashboard</h1><div class="updated">Last updated: March 9, 2026 5:00 PM UTC</div></div>
-<div class="range-pills"><button class="pill active" data-range="7" onclick="showRange('7')">7 Days</button><button class="pill" data-range="14" onclick="showRange('14')">14 Days</button><button class="pill" data-range="30" onclick="showRange('30')">30 Days</button></div>
-<div class="content"><h2 class="section-title">Key Metrics</h2><div class="kpi-grid" data-range="7"><div class="kpi-card"><div class="kpi-label">Spend</div><div class="kpi-value">$461.79</div><div class="kpi-change" data-cur="461.79" data-prev="428.01"></div></div><div class="kpi-card"><div class="kpi-label">Impressions</div><div class="kpi-value">11,986</div><div class="kpi-change" data-cur="11986" data-prev="10418"></div></div><div class="kpi-card"><div class="kpi-label">Reach</div><div class="kpi-value">7,301</div><div class="kpi-change" data-cur="7301" data-prev="6022"></div></div><div class="kpi-card"><div class="kpi-label">Clicks</div><div class="kpi-value">260</div><div class="kpi-change" data-cur="260" data-prev="218"></div></div><div class="kpi-card"><div class="kpi-label">CTR</div><div class="kpi-value">2.17%</div><div class="kpi-change" data-cur="2.17" data-prev="2.09"></div></div><div class="kpi-card"><div class="kpi-label">CPC</div><div class="kpi-value">$1.78</div><div class="kpi-change" data-cur="1.78" data-prev="1.96"></div></div><div class="kpi-card"><div class="kpi-label">Leads</div><div class="kpi-value">21</div><div class="kpi-change" data-cur="21" data-prev="15"></div></div><div class="kpi-card"><div class="kpi-label">Video Views</div><div class="kpi-value">1,898</div><div class="kpi-change" data-cur="1898" data-prev="1914"></div></div></div><div class="kpi-grid" data-range="14"><div class="kpi-card"><div class="kpi-label">Spend</div><div class="kpi-value">$889.80</div><div class="kpi-change" data-cur="889.8" data-prev="850.2"></div></div><div class="kpi-card"><div class="kpi-label">Impressions</div><div class="kpi-value">22,404</div><div class="kpi-change" data-cur="22404" data-prev="24805"></div></div><div class="kpi-card"><div class="kpi-label">Reach</div><div class="kpi-value">11,697</div><div class="kpi-change" data-cur="11697" data-prev="13456"></div></div><div class="kpi-card"><div class="kpi-label">Clicks</div><div class="kpi-value">478</div><div class="kpi-change" data-cur="478" data-prev="504"></div></div><div class="kpi-card"><div class="kpi-label">CTR</div><div class="kpi-value">2.13%</div><div class="kpi-change" data-cur="2.13" data-prev="2.03"></div></div><div class="kpi-card"><div class="kpi-label">CPC</div><div class="kpi-value">$1.86</div><div class="kpi-change" data-cur="1.86" data-prev="1.69"></div></div><div class="kpi-card"><div class="kpi-label">Leads</div><div class="kpi-value">36</div><div class="kpi-change" data-cur="36" data-prev="50"></div></div><div class="kpi-card"><div class="kpi-label">Video Views</div><div class="kpi-value">3,812</div><div class="kpi-change" data-cur="3812" data-prev="3985"></div></div></div><div class="kpi-grid" data-range="30"><div class="kpi-card"><div class="kpi-label">Spend</div><div class="kpi-value">$1,885.34</div><div class="kpi-change" data-cur="1885.34" data-prev="1484.65"></div></div><div class="kpi-card"><div class="kpi-label">Impressions</div><div class="kpi-value">51,327</div><div class="kpi-change" data-cur="51327" data-prev="45480"></div></div><div class="kpi-card"><div class="kpi-label">Reach</div><div class="kpi-value">24,586</div><div class="kpi-change" data-cur="24586" data-prev="25602"></div></div><div class="kpi-card"><div class="kpi-label">Clicks</div><div class="kpi-value">1,054</div><div class="kpi-change" data-cur="1054" data-prev="868"></div></div><div class="kpi-card"><div class="kpi-label">CTR</div><div class="kpi-value">2.05%</div><div class="kpi-change" data-cur="2.05" data-prev="1.91"></div></div><div class="kpi-card"><div class="kpi-label">CPC</div><div class="kpi-value">$1.79</div><div class="kpi-change" data-cur="1.79" data-prev="1.71"></div></div><div class="kpi-card"><div class="kpi-label">Leads</div><div class="kpi-value">95</div><div class="kpi-change" data-cur="95" data-prev="61"></div></div><div class="kpi-card"><div class="kpi-label">Video Views</div><div class="kpi-value">8,493</div><div class="kpi-change" data-cur="8493" data-prev="6650"></div></div></div><h2 class="section-title">Campaigns</h2><div class="campaign-table-wrap" data-range="7"><table class="campaign-table"><thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead><tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$163.24</td><td>4,460</td><td>2,829</td><td>100</td><td>2.24%</td><td>$1.63</td><td>11</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$103.84</td><td>2,201</td><td>1,493</td><td>46</td><td>2.09%</td><td>$2.26</td><td>10</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$76.56</td><td>3,438</td><td>2,643</td><td>77</td><td>2.24%</td><td>$0.99</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$65.74</td><td>1,038</td><td>795</td><td>26</td><td>2.50%</td><td>$2.53</td><td>0</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$52.41</td><td>849</td><td>502</td><td>11</td><td>1.30%</td><td>$4.76</td><td>0</td></tr></tbody></table></div><div class="campaign-table-wrap" data-range="14"><table class="campaign-table"><thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead><tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$337.03</td><td>9,034</td><td>4,658</td><td>196</td><td>2.17%</td><td>$1.72</td><td>20</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$210.20</td><td>4,382</td><td>2,666</td><td>72</td><td>1.64%</td><td>$2.92</td><td>13</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$153.35</td><td>6,087</td><td>4,512</td><td>155</td><td>2.55%</td><td>$0.99</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$136.81</td><td>2,052</td><td>1,372</td><td>44</td><td>2.14%</td><td>$3.11</td><td>3</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$52.41</td><td>849</td><td>502</td><td>11</td><td>1.30%</td><td>$4.76</td><td>0</td></tr></tbody></table></div><div class="campaign-table-wrap" data-range="30"><table class="campaign-table"><thead><tr><th>Campaign</th><th>Spend</th><th>Impr</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead><tbody><tr><td>Leads_Boutique_Owners_Leads</td><td>$753.47</td><td>23,483</td><td>11,407</td><td>515</td><td>2.19%</td><td>$1.46</td><td>61</td></tr><tr><td>OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026</td><td>$457.66</td><td>9,478</td><td>4,741</td><td>170</td><td>1.79%</td><td>$2.69</td><td>26</td></tr><tr><td>OPN_Orli_30 second_typeform</td><td>$326.41</td><td>12,749</td><td>9,231</td><td>245</td><td>1.92%</td><td>$1.33</td><td>0</td></tr><tr><td>OPN_Orli_30 second_leadform_lookalike</td><td>$295.39</td><td>4,768</td><td>2,515</td><td>113</td><td>2.37%</td><td>$2.61</td><td>8</td></tr><tr><td>OPN_New Static Ads_Lead Form New_Top Funnel</td><td>$52.41</td><td>849</td><td>502</td><td>11</td><td>1.30%</td><td>$4.76</td><td>0</td></tr></tbody></table></div><h2 class="section-title">Daily Trend (30 Days)</h2><div class="chart-container"><canvas id="chart-diamo" height="200"></canvas></div></div>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #e0e0e0; }
+.header { background: #111; padding: 20px 32px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 20px; color: #fff; }
+.header .updated { font-size: 12px; color: #888; }
+.range-tabs { display: flex; gap: 8px; padding: 20px 32px 0; }
+.range-tab { padding: 6px 16px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #888; cursor: pointer; font-size: 13px; }
+.range-tab.active { background: #6f1ae8; color: #fff; border-color: #6f1ae8; }
+.content { padding: 20px 32px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: #161616; border-radius: 12px; padding: 20px; border: 1px solid #222; }
+.kpi-card .label { font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 8px; }
+.kpi-card .value { font-size: 24px; font-weight: 700; color: #fff; }
+.kpi-card .change { font-size: 12px; margin-top: 4px; }
+.kpi-card .change.up { color: #34a853; }
+.kpi-card .change.down { color: #ea4335; }
+.chart-container { background: #161616; border-radius: 12px; padding: 20px; border: 1px solid #222; margin-bottom: 24px; height: 300px; position: relative; }
+table { width: 100%; border-collapse: collapse; background: #161616; border-radius: 12px; overflow: hidden; border: 1px solid #222; }
+th { text-align: left; padding: 12px 16px; background: #1a1a1a; color: #888; font-size: 12px; text-transform: uppercase; font-weight: 600; }
+td { padding: 12px 16px; border-top: 1px solid #222; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>💎 DIAMO B2B — Meta Ads Dashboard</h1>
+  <div class="updated">Last updated: March 9, 2026 11:00 PM UTC</div>
+</div>
+<div class="range-tabs">
+  <div class="range-tab active" onclick="showRange('7', this)">7 Days</div>
+  <div class="range-tab" onclick="showRange('14', this)">14 Days</div>
+  <div class="range-tab" onclick="showRange('30', this)">30 Days</div>
+</div>
+<div class="content" id="content"></div>
+
 <script>
-let curRange="7";
-function pctChange(){document.querySelectorAll('.kpi-change').forEach(el=>{const cur=parseFloat(el.dataset.cur),prev=parseFloat(el.dataset.prev);if(!prev||isNaN(cur)||isNaN(prev)){el.textContent='';return;}const pct=((cur-prev)/prev*100).toFixed(1);const up=cur>=prev;el.textContent=(up?'\u25B2 ':'\u25BC ')+Math.abs(pct)+'%';el.className='kpi-change '+(up?'up':'down');});}
-function showRange(r){curRange=r;document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.range===r));document.querySelectorAll('.kpi-grid').forEach(g=>g.style.display=g.dataset.range===r?'grid':'none');document.querySelectorAll('.campaign-table-wrap').forEach(g=>g.style.display=g.dataset.range===r?'block':'none');pctChange();}
-showRange('7');
-new Chart(document.getElementById("chart-diamo"),{type:"line",data:{labels:["02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07", "03-08"],datasets:[{label:"Spend ($)",data:[79.78, 65.56, 68.76, 66.52, 59.37, 55.88, 58.6, 50.4, 68.81, 66.8, 64.38, 60.2, 61.62, 56.37, 45.62, 66.87, 60.42, 60.22, 57.46, 64.18, 57.57, 57.64, 70.52, 69.67, 70.76, 62.98, 67.02, 61.18, 51.12, 79.06],borderColor:"#6f1ae8",backgroundColor:"rgba(111,26,232,0.1)",fill:true,tension:0.3,yAxisID:"y"},{label:"Clicks",data:[45, 27, 35, 52, 39, 29, 37, 37, 46, 51, 30, 27, 27, 27, 22, 45, 24, 41, 25, 24, 20, 38, 46, 41, 39, 40, 35, 23, 45, 37],borderColor:"#4caf50",backgroundColor:"rgba(76,175,80,0.1)",fill:false,tension:0.3,yAxisID:"y1"}]},options:{responsive:true,plugins:{legend:{labels:{color:"#aaa"}}},scales:{x:{ticks:{color:"#666"},grid:{color:"#222"}},y:{position:"left",ticks:{color:"#6f1ae8"},grid:{color:"#222"}},y1:{position:"right",ticks:{color:"#4caf50"},grid:{display:false}}}}});</script></body></html>
+const DATA = {"7": {"spend": 511.37, "impressions": 13037, "clicks": 281, "ctr": 2.155404, "cpc": 1.819822, "reach": 7785, "leads": 23.0, "prev": {"spend": 497.68, "impressions": 12218, "clicks": 259, "ctr": 2.119823, "cpc": 1.921544, "reach": 7016, "leads": 19.0}}, "campaigns_by_range": {"7": [{"spend": 175.86, "impressions": 4819, "clicks": 103, "ctr": 2.137373, "cpc": 1.707379, "reach": 3008, "leads": 11.0, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732"}, {"spend": 74.51, "impressions": 1144, "clicks": 32, "ctr": 2.797203, "cpc": 2.328438, "reach": 872, "leads": 0, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732"}, {"spend": 83.88, "impressions": 3752, "clicks": 85, "ctr": 2.265458, "cpc": 0.986824, "reach": 2822, "leads": 0, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732"}, {"spend": 114.3, "impressions": 2351, "clicks": 50, "ctr": 2.126755, "cpc": 2.286, "reach": 1595, "leads": 11.0, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732"}, {"spend": 62.82, "impressions": 971, "clicks": 11, "ctr": 1.132853, "cpc": 5.710909, "reach": 547, "leads": 1.0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732"}], "14": [{"spend": 349.65, "impressions": 9393, "clicks": 199, "ctr": 2.118599, "cpc": 1.757035, "reach": 4784, "leads": 20.0, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732"}, {"spend": 145.58, "impressions": 2158, "clicks": 50, "ctr": 2.31696, "cpc": 2.9116, "reach": 1438, "leads": 3.0, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732"}, {"spend": 160.67, "impressions": 6401, "clicks": 163, "ctr": 2.546477, "cpc": 0.985706, "reach": 4676, "leads": 0, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732"}, {"spend": 220.66, "impressions": 4532, "clicks": 76, "ctr": 1.676964, "cpc": 2.903421, "reach": 2756, "leads": 14.0, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732"}, {"spend": 62.82, "impressions": 971, "clicks": 11, "ctr": 1.132853, "cpc": 5.710909, "reach": 547, "leads": 1.0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732"}], "30": [{"spend": 766.09, "impressions": 23842, "clicks": 518, "ctr": 2.172637, "cpc": 1.478938, "reach": 11486, "leads": 61.0, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732"}, {"spend": 304.16, "impressions": 4874, "clicks": 119, "ctr": 2.441526, "cpc": 2.555966, "reach": 2561, "leads": 8.0, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732"}, {"spend": 333.73, "impressions": 13063, "clicks": 253, "ctr": 1.936768, "cpc": 1.319091, "reach": 9347, "leads": 0, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732"}, {"spend": 468.12, "impressions": 9628, "clicks": 174, "ctr": 1.807229, "cpc": 2.690345, "reach": 4824, "leads": 27.0, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732"}, {"spend": 62.82, "impressions": 971, "clicks": 11, "ctr": 1.132853, "cpc": 5.710909, "reach": 547, "leads": 1.0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732"}]}, "14": {"spend": 939.38, "impressions": 23455, "clicks": 499, "ctr": 2.127478, "cpc": 1.882525, "reach": 12054, "leads": 38.0, "prev": {"spend": 910.62, "impressions": 26426, "clicks": 528, "ctr": 1.998032, "cpc": 1.724659, "reach": 14293, "leads": 51.0}}, "30": {"spend": 1934.92, "impressions": 52378, "clicks": 1075, "ctr": 2.052388, "cpc": 1.799926, "reach": 24869, "leads": 97.0, "prev": {"spend": 1564.43, "impressions": 47627, "clicks": 913, "ctr": 1.91698, "cpc": 1.713505, "reach": 26718, "leads": 67.0}}, "daily": [{"spend": 79.78, "impressions": 2147, "clicks": 45, "ctr": 2.095948, "cpc": 1.772889, "reach": 1899, "leads": 6.0, "date": "2026-02-07"}, {"spend": 65.56, "impressions": 1971, "clicks": 27, "ctr": 1.369863, "cpc": 2.428148, "reach": 1718, "leads": 3.0, "date": "2026-02-08"}, {"spend": 68.76, "impressions": 2053, "clicks": 35, "ctr": 1.704822, "cpc": 1.964571, "reach": 1784, "leads": 3.0, "date": "2026-02-09"}, {"spend": 66.52, "impressions": 2004, "clicks": 52, "ctr": 2.59481, "cpc": 1.279231, "reach": 1723, "leads": 5.0, "date": "2026-02-10"}, {"spend": 59.37, "impressions": 2064, "clicks": 39, "ctr": 1.889535, "cpc": 1.522308, "reach": 1704, "leads": 5.0, "date": "2026-02-11"}, {"spend": 55.88, "impressions": 1858, "clicks": 29, "ctr": 1.560818, "cpc": 1.926897, "reach": 1565, "leads": 4.0, "date": "2026-02-12"}, {"spend": 58.6, "impressions": 1772, "clicks": 37, "ctr": 2.088036, "cpc": 1.583784, "reach": 1545, "leads": 4.0, "date": "2026-02-13"}, {"spend": 50.4, "impressions": 1993, "clicks": 37, "ctr": 1.856498, "cpc": 1.362162, "reach": 1725, "leads": 4.0, "date": "2026-02-14"}, {"spend": 68.81, "impressions": 2380, "clicks": 46, "ctr": 1.932773, "cpc": 1.49587, "reach": 1949, "leads": 6.0, "date": "2026-02-15"}, {"spend": 66.8, "impressions": 2513, "clicks": 51, "ctr": 2.029447, "cpc": 1.309804, "reach": 2201, "leads": 4.0, "date": "2026-02-16"}, {"spend": 64.38, "impressions": 1463, "clicks": 30, "ctr": 2.050581, "cpc": 2.146, "reach": 1207, "leads": 4.0, "date": "2026-02-17"}, {"spend": 60.2, "impressions": 1132, "clicks": 27, "ctr": 2.385159, "cpc": 2.22963, "reach": 883, "leads": 3.0, "date": "2026-02-18"}, {"spend": 61.62, "impressions": 1240, "clicks": 27, "ctr": 2.177419, "cpc": 2.282222, "reach": 979, "leads": 0, "date": "2026-02-19"}, {"spend": 56.37, "impressions": 1481, "clicks": 27, "ctr": 1.823093, "cpc": 2.087778, "reach": 1177, "leads": 3.0, "date": "2026-02-20"}, {"spend": 45.62, "impressions": 1142, "clicks": 22, "ctr": 1.926445, "cpc": 2.073636, "reach": 982, "leads": 2.0, "date": "2026-02-21"}, {"spend": 66.87, "impressions": 1710, "clicks": 45, "ctr": 2.631579, "cpc": 1.486, "reach": 1440, "leads": 3.0, "date": "2026-02-22"}, {"spend": 60.42, "impressions": 1621, "clicks": 24, "ctr": 1.480568, "cpc": 2.5175, "reach": 1374, "leads": 1.0, "date": "2026-02-23"}, {"spend": 60.22, "impressions": 1354, "clicks": 41, "ctr": 3.028065, "cpc": 1.46878, "reach": 1081, "leads": 3.0, "date": "2026-02-24"}, {"spend": 57.46, "impressions": 1611, "clicks": 25, "ctr": 1.551831, "cpc": 2.2984, "reach": 1307, "leads": 1.0, "date": "2026-02-25"}, {"spend": 64.18, "impressions": 1457, "clicks": 24, "ctr": 1.64722, "cpc": 2.674167, "reach": 1175, "leads": 4.0, "date": "2026-02-26"}, {"spend": 57.57, "impressions": 1234, "clicks": 20, "ctr": 1.620746, "cpc": 2.8785, "reach": 1063, "leads": 0, "date": "2026-02-27"}, {"spend": 57.64, "impressions": 1511, "clicks": 38, "ctr": 2.514891, "cpc": 1.516842, "reach": 1225, "leads": 3.0, "date": "2026-02-28"}, {"spend": 70.52, "impressions": 1630, "clicks": 46, "ctr": 2.822086, "cpc": 1.533043, "reach": 1380, "leads": 3.0, "date": "2026-03-01"}, {"spend": 69.67, "impressions": 1800, "clicks": 41, "ctr": 2.277778, "cpc": 1.699268, "reach": 1462, "leads": 4.0, "date": "2026-03-02"}, {"spend": 70.76, "impressions": 1733, "clicks": 39, "ctr": 2.250433, "cpc": 1.814359, "reach": 1440, "leads": 2.0, "date": "2026-03-03"}, {"spend": 62.98, "impressions": 1824, "clicks": 40, "ctr": 2.192982, "cpc": 1.5745, "reach": 1493, "leads": 3.0, "date": "2026-03-04"}, {"spend": 67.02, "impressions": 1603, "clicks": 35, "ctr": 2.183406, "cpc": 1.914857, "reach": 1345, "leads": 2.0, "date": "2026-03-05"}, {"spend": 61.18, "impressions": 1522, "clicks": 23, "ctr": 1.51117, "cpc": 2.66, "reach": 1256, "leads": 1.0, "date": "2026-03-06"}, {"spend": 51.12, "impressions": 1392, "clicks": 45, "ctr": 3.232759, "cpc": 1.136, "reach": 1150, "leads": 6.0, "date": "2026-03-07"}, {"spend": 79.06, "impressions": 2112, "clicks": 37, "ctr": 1.751894, "cpc": 2.136757, "reach": 1682, "leads": 3.0, "date": "2026-03-08"}, {"spend": 49.58, "impressions": 1051, "clicks": 21, "ctr": 1.998097, "cpc": 2.360952, "reach": 915, "leads": 2.0, "date": "2026-03-09"}]};
+let currentRange = "7";
+let chartInstance = null;
+
+function pctChange(curr, prev) {
+  if (!prev || prev === 0) return "";
+  const pct = ((curr - prev) / prev * 100).toFixed(1);
+  const cls = pct >= 0 ? "up" : "down";
+  const arrow = pct >= 0 ? "▲" : "▼";
+  return `<div class="change ${cls}">${arrow} ${Math.abs(pct)}% MoM</div>`;
+}
+
+function fmtMoney(v) { return "$" + Number(v).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmtInt(v) { return Number(v).toLocaleString(); }
+function fmtPct(v) { return Number(v).toFixed(2) + "%"; }
+
+function showRange(r, el) {
+  currentRange = r;
+  document.querySelectorAll(".range-tab").forEach(t => t.classList.remove("active"));
+  el.classList.add("active");
+  render();
+}
+
+function render() {
+  const el = document.getElementById("content");
+  const r = DATA[currentRange];
+  const prev = r.prev || {};
+
+  let kpis = `
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="label">Spend</div><div class="value">${fmtMoney(r.spend)}</div>${pctChange(r.spend, prev.spend)}</div>
+      <div class="kpi-card"><div class="label">Impressions</div><div class="value">${fmtInt(r.impressions)}</div>${pctChange(r.impressions, prev.impressions)}</div>
+      <div class="kpi-card"><div class="label">Reach</div><div class="value">${fmtInt(r.reach)}</div>${pctChange(r.reach, prev.reach)}</div>
+      <div class="kpi-card"><div class="label">Clicks</div><div class="value">${fmtInt(r.clicks)}</div>${pctChange(r.clicks, prev.clicks)}</div>
+      <div class="kpi-card"><div class="label">CTR</div><div class="value">${fmtPct(r.ctr)}</div>${pctChange(r.ctr, prev.ctr)}</div>
+      <div class="kpi-card"><div class="label">CPC</div><div class="value">${fmtMoney(r.cpc)}</div>${pctChange(r.cpc, prev.cpc)}</div>
+      <div class="kpi-card"><div class="label">Leads</div><div class="value">${fmtInt(r.leads || 0)}</div>${pctChange(r.leads, prev.leads)}</div>
+    </div>`;
+
+  const camps = (DATA.campaigns_by_range || {})[currentRange] || [];
+  let campRows = camps.map(c => `<tr>
+    <td>${c.campaign_name}</td>
+    <td>${fmtMoney(c.spend)}</td>
+    <td>${fmtInt(c.impressions)}</td>
+    <td>${fmtInt(c.clicks)}</td>
+    <td>${fmtPct(c.ctr)}</td>
+    <td>${fmtMoney(c.cpc)}</td>
+    <td>${fmtInt(c.leads || 0)}</td>
+  </tr>`).join("");
+
+  let campTable = camps.length ? `
+    <h3 style="margin:24px 0 12px;font-size:16px;color:#fff;">Campaign Breakdown</h3>
+    <table>
+      <thead><tr><th>Campaign</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th></tr></thead>
+      <tbody>${campRows}</tbody>
+    </table>` : "";
+
+  let chartHtml = `<h3 style="margin:24px 0 12px;font-size:16px;color:#fff;">Daily Spend</h3>
+    <div class="chart-container"><canvas id="dailyChart"></canvas></div>`;
+
+  el.innerHTML = kpis + chartHtml + campTable;
+
+  const daily = DATA.daily || [];
+  const ctx = document.getElementById("dailyChart").getContext("2d");
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: daily.map(x => x.date),
+      datasets: [{
+        label: "Daily Spend ($)",
+        data: daily.map(x => x.spend),
+        borderColor: "#6f1ae8",
+        backgroundColor: "rgba(111,26,232,0.1)",
+        fill: true,
+        tension: 0.3,
+        pointRadius: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: "#888" } } },
+      scales: {
+        x: { ticks: { color: "#666", maxTicksLimit: 10 }, grid: { color: "#222" } },
+        y: { ticks: { color: "#666", callback: v => "$"+v }, grid: { color: "#222" } }
+      }
+    }
+  });
+}
+
+render();
+</script>
+</body>
+</html>
