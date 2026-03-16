@@ -31,7 +31,430 @@ td{padding:12px 16px;border-top:1px solid #222;font-size:14px}
 </div>
 <div class="content" id="content"></div>
 <script>
-const DATA = {"kpis": {"7": {"spend": 527.97, "impressions": 11505, "clicks": 207, "ctr": 1.8, "cpc": 2.55, "reach": 6799, "leads": 40, "video_views": 1522, "prev": {"spend": 461.9, "impressions": 11988, "clicks": 260, "ctr": 2.17, "cpc": 1.78, "reach": 7310, "leads": 42, "video_views": 1898}}, "14": {"spend": 989.87, "impressions": 23493, "clicks": 467, "ctr": 1.99, "cpc": 2.12, "reach": 12584, "leads": 82, "video_views": 3420, "prev": {"spend": 849.87, "impressions": 21099, "clicks": 447, "ctr": 2.12, "cpc": 1.9, "reach": 10998, "leads": 68, "video_views": 3755}}, "30": {"spend": 1958.95, "impressions": 48965, "clicks": 997, "ctr": 2.04, "cpc": 1.96, "reach": 22196, "leads": 170, "video_views": 7850, "prev": {"spend": 1617.31, "impressions": 46310, "clicks": 879, "ctr": 1.9, "cpc": 1.84, "reach": 26213, "leads": 140, "video_views": 7220}}}, "daily": [{"spend": 50.4, "impressions": 1993, "clicks": 37, "ctr": 1.86, "cpc": 1.36, "reach": 1725, "leads": 8, "video_views": 314, "date": "2026-02-14"}, {"spend": 68.81, "impressions": 2380, "clicks": 46, "ctr": 1.93, "cpc": 1.5, "reach": 1949, "leads": 12, "video_views": 361, "date": "2026-02-15"}, {"spend": 66.8, "impressions": 2513, "clicks": 51, "ctr": 2.03, "cpc": 1.31, "reach": 2201, "leads": 8, "video_views": 388, "date": "2026-02-16"}, {"spend": 64.38, "impressions": 1463, "clicks": 30, "ctr": 2.05, "cpc": 2.15, "reach": 1207, "leads": 8, "video_views": 262, "date": "2026-02-17"}, {"spend": 60.2, "impressions": 1132, "clicks": 27, "ctr": 2.39, "cpc": 2.23, "reach": 883, "leads": 6, "video_views": 220, "date": "2026-02-18"}, {"spend": 61.62, "impressions": 1240, "clicks": 27, "ctr": 2.18, "cpc": 2.28, "reach": 979, "leads": 0, "video_views": 232, "date": "2026-02-19"}, {"spend": 56.37, "impressions": 1481, "clicks": 27, "ctr": 1.82, "cpc": 2.09, "reach": 1177, "leads": 6, "video_views": 267, "date": "2026-02-20"}, {"spend": 45.62, "impressions": 1142, "clicks": 22, "ctr": 1.93, "cpc": 2.07, "reach": 982, "leads": 4, "video_views": 177, "date": "2026-02-21"}, {"spend": 66.87, "impressions": 1710, "clicks": 45, "ctr": 2.63, "cpc": 1.49, "reach": 1440, "leads": 6, "video_views": 295, "date": "2026-02-22"}, {"spend": 60.42, "impressions": 1621, "clicks": 24, "ctr": 1.48, "cpc": 2.52, "reach": 1374, "leads": 2, "video_views": 292, "date": "2026-02-23"}, {"spend": 60.22, "impressions": 1354, "clicks": 41, "ctr": 3.03, "cpc": 1.47, "reach": 1081, "leads": 6, "video_views": 269, "date": "2026-02-24"}, {"spend": 57.46, "impressions": 1611, "clicks": 25, "ctr": 1.55, "cpc": 2.3, "reach": 1307, "leads": 2, "video_views": 247, "date": "2026-02-25"}, {"spend": 64.18, "impressions": 1457, "clicks": 24, "ctr": 1.65, "cpc": 2.67, "reach": 1175, "leads": 8, "video_views": 258, "date": "2026-02-26"}, {"spend": 57.57, "impressions": 1234, "clicks": 20, "ctr": 1.62, "cpc": 2.88, "reach": 1063, "leads": 0, "video_views": 237, "date": "2026-02-27"}, {"spend": 57.64, "impressions": 1511, "clicks": 38, "ctr": 2.51, "cpc": 1.52, "reach": 1225, "leads": 6, "video_views": 310, "date": "2026-02-28"}, {"spend": 70.52, "impressions": 1630, "clicks": 46, "ctr": 2.82, "cpc": 1.53, "reach": 1380, "leads": 6, "video_views": 301, "date": "2026-03-01"}, {"spend": 69.67, "impressions": 1800, "clicks": 41, "ctr": 2.28, "cpc": 1.7, "reach": 1462, "leads": 8, "video_views": 276, "date": "2026-03-02"}, {"spend": 70.76, "impressions": 1733, "clicks": 39, "ctr": 2.25, "cpc": 1.81, "reach": 1440, "leads": 4, "video_views": 318, "date": "2026-03-03"}, {"spend": 62.98, "impressions": 1824, "clicks": 40, "ctr": 2.19, "cpc": 1.57, "reach": 1493, "leads": 6, "video_views": 306, "date": "2026-03-04"}, {"spend": 67.02, "impressions": 1603, "clicks": 35, "ctr": 2.18, "cpc": 1.91, "reach": 1345, "leads": 4, "video_views": 251, "date": "2026-03-05"}, {"spend": 61.18, "impressions": 1522, "clicks": 23, "ctr": 1.51, "cpc": 2.66, "reach": 1256, "leads": 2, "video_views": 217, "date": "2026-03-06"}, {"spend": 51.12, "impressions": 1392, "clicks": 45, "ctr": 3.23, "cpc": 1.14, "reach": 1150, "leads": 12, "video_views": 236, "date": "2026-03-07"}, {"spend": 79.17, "impressions": 2114, "clicks": 37, "ctr": 1.75, "cpc": 2.14, "reach": 1684, "leads": 6, "video_views": 294, "date": "2026-03-08"}, {"spend": 82.67, "impressions": 1845, "clicks": 40, "ctr": 2.17, "cpc": 2.07, "reach": 1541, "leads": 6, "video_views": 305, "date": "2026-03-09"}, {"spend": 81.48, "impressions": 2265, "clicks": 47, "ctr": 2.08, "cpc": 1.73, "reach": 1852, "leads": 8, "video_views": 286, "date": "2026-03-10"}, {"spend": 77.09, "impressions": 1734, "clicks": 29, "ctr": 1.67, "cpc": 2.66, "reach": 1396, "leads": 6, "video_views": 217, "date": "2026-03-11"}, {"spend": 77.24, "impressions": 1500, "clicks": 29, "ctr": 1.93, "cpc": 2.66, "reach": 1232, "leads": 6, "video_views": 193, "date": "2026-03-12"}, {"spend": 69.97, "impressions": 1361, "clicks": 27, "ctr": 1.98, "cpc": 2.59, "reach": 1121, "leads": 4, "video_views": 172, "date": "2026-03-13"}, {"spend": 51.3, "impressions": 1276, "clicks": 16, "ctr": 1.25, "cpc": 3.21, "reach": 1100, "leads": 6, "video_views": 152, "date": "2026-03-14"}, {"spend": 88.22, "impressions": 1524, "clicks": 19, "ctr": 1.25, "cpc": 4.64, "reach": 1212, "leads": 4, "video_views": 197, "date": "2026-03-15"}], "campaigns_by_range": {"7": [{"spend": 211.08, "impressions": 3902, "clicks": 54, "ctr": 1.38, "cpc": 3.91, "reach": 2046, "leads": 8, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732"}, {"spend": 126.38, "impressions": 3571, "clicks": 46, "ctr": 1.29, "cpc": 2.75, "reach": 2566, "leads": 8, "video_views": 676, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732"}, {"spend": 102.76, "impressions": 2112, "clicks": 41, "ctr": 1.94, "cpc": 2.51, "reach": 1659, "leads": 20, "video_views": 386, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732"}, {"spend": 71.15, "impressions": 1166, "clicks": 41, "ctr": 3.52, "cpc": 1.74, "reach": 969, "leads": 4, "video_views": 319, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732"}, {"spend": 16.6, "impressions": 754, "clicks": 25, "ctr": 3.32, "cpc": 0.66, "reach": 660, "leads": 0, "video_views": 141, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732"}], "14": [{"spend": 289.64, "impressions": 8032, "clicks": 146, "ctr": 1.82, "cpc": 1.98, "reach": 4659, "leads": 30, "video_views": 1341, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732"}, {"spend": 263.49, "impressions": 4751, "clicks": 65, "ctr": 1.37, "cpc": 4.05, "reach": 2282, "leads": 8, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732"}, {"spend": 206.69, "impressions": 4314, "clicks": 87, "ctr": 2.02, "cpc": 2.38, "reach": 2851, "leads": 40, "video_views": 811, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732"}, {"spend": 136.89, "impressions": 2204, "clicks": 67, "ctr": 3.04, "cpc": 2.04, "reach": 1612, "leads": 4, "video_views": 626, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732"}, {"spend": 93.16, "impressions": 4192, "clicks": 102, "ctr": 2.43, "cpc": 0.91, "reach": 3162, "leads": 0, "video_views": 642, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732"}], "30": [{"spend": 683.81, "impressions": 19549, "clicks": 412, "ctr": 2.11, "cpc": 1.66, "reach": 8939, "leads": 90, "video_views": 3051, "campaign_name": "Leads_Boutique_Owners_Leads", "campaign_id": "120233983479590732"}, {"spend": 447.42, "impressions": 9267, "clicks": 167, "ctr": 1.8, "cpc": 2.68, "reach": 4977, "leads": 58, "video_views": 1725, "campaign_name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026", "campaign_id": "120241916435890732"}, {"spend": 297.07, "impressions": 4751, "clicks": 122, "ctr": 2.57, "cpc": 2.44, "reach": 2813, "leads": 14, "video_views": 1326, "campaign_name": "OPN_Orli_30 second_leadform_lookalike", "campaign_id": "120237973663580732"}, {"spend": 267.16, "impressions": 10647, "clicks": 231, "ctr": 2.17, "cpc": 1.16, "reach": 7638, "leads": 0, "video_views": 1748, "campaign_name": "OPN_Orli_30 second_typeform", "campaign_id": "120238004342290732"}, {"spend": 263.49, "impressions": 4751, "clicks": 65, "ctr": 1.37, "cpc": 4.05, "reach": 2282, "leads": 8, "video_views": 0, "campaign_name": "OPN_New Static Ads_Lead Form New_Top Funnel", "campaign_id": "120243422183930732"}]}};
+const DATA = {
+  "kpis": {
+    "7": {
+      "spend": 527.97,
+      "impressions": 11505,
+      "clicks": 207,
+      "ctr": 1.799218,
+      "cpc": 2.55058,
+      "reach": 6799,
+      "leads": 20,
+      "video_views": 1522,
+      "prev": {
+        "spend": 461.9,
+        "impressions": 11988,
+        "clicks": 260,
+        "ctr": 2.168836,
+        "cpc": 1.776538,
+        "reach": 7310,
+        "leads": 21,
+        "video_views": 1898
+      }
+    },
+    "14": {
+      "spend": 989.87,
+      "impressions": 23493,
+      "clicks": 467,
+      "ctr": 1.987826,
+      "cpc": 2.119636,
+      "reach": 12584,
+      "leads": 41,
+      "video_views": 3420,
+      "prev": {
+        "spend": 849.87,
+        "impressions": 21099,
+        "clicks": 447,
+        "ctr": 2.118584,
+        "cpc": 1.901275,
+        "reach": 10998,
+        "leads": 34,
+        "video_views": 3755
+      }
+    },
+    "30": {
+      "spend": 1958.95,
+      "impressions": 48965,
+      "clicks": 997,
+      "ctr": 2.036148,
+      "cpc": 1.964845,
+      "reach": 22196,
+      "leads": 85,
+      "video_views": 7850,
+      "prev": {
+        "spend": 1617.31,
+        "impressions": 46310,
+        "clicks": 879,
+        "ctr": 1.898078,
+        "cpc": 1.839943,
+        "reach": 26213,
+        "leads": 70,
+        "video_views": 7220
+      }
+    }
+  },
+  "daily": [
+    {
+      "date": "2026-02-14",
+      "spend": 50.4,
+      "impressions": 1993,
+      "clicks": 37,
+      "reach": 1725,
+      "leads": 4
+    },
+    {
+      "date": "2026-02-15",
+      "spend": 68.81,
+      "impressions": 2380,
+      "clicks": 46,
+      "reach": 1949,
+      "leads": 6
+    },
+    {
+      "date": "2026-02-16",
+      "spend": 66.8,
+      "impressions": 2513,
+      "clicks": 51,
+      "reach": 2201,
+      "leads": 4
+    },
+    {
+      "date": "2026-02-17",
+      "spend": 64.38,
+      "impressions": 1463,
+      "clicks": 30,
+      "reach": 1207,
+      "leads": 4
+    },
+    {
+      "date": "2026-02-18",
+      "spend": 60.2,
+      "impressions": 1132,
+      "clicks": 27,
+      "reach": 883,
+      "leads": 3
+    },
+    {
+      "date": "2026-02-19",
+      "spend": 61.62,
+      "impressions": 1240,
+      "clicks": 27,
+      "reach": 979,
+      "leads": 0
+    },
+    {
+      "date": "2026-02-20",
+      "spend": 56.37,
+      "impressions": 1481,
+      "clicks": 27,
+      "reach": 1177,
+      "leads": 3
+    },
+    {
+      "date": "2026-02-21",
+      "spend": 45.62,
+      "impressions": 1142,
+      "clicks": 22,
+      "reach": 982,
+      "leads": 2
+    },
+    {
+      "date": "2026-02-22",
+      "spend": 66.87,
+      "impressions": 1710,
+      "clicks": 45,
+      "reach": 1440,
+      "leads": 3
+    },
+    {
+      "date": "2026-02-23",
+      "spend": 60.42,
+      "impressions": 1621,
+      "clicks": 24,
+      "reach": 1374,
+      "leads": 1
+    },
+    {
+      "date": "2026-02-24",
+      "spend": 60.22,
+      "impressions": 1354,
+      "clicks": 41,
+      "reach": 1081,
+      "leads": 3
+    },
+    {
+      "date": "2026-02-25",
+      "spend": 57.46,
+      "impressions": 1611,
+      "clicks": 25,
+      "reach": 1307,
+      "leads": 1
+    },
+    {
+      "date": "2026-02-26",
+      "spend": 64.18,
+      "impressions": 1457,
+      "clicks": 24,
+      "reach": 1175,
+      "leads": 4
+    },
+    {
+      "date": "2026-02-27",
+      "spend": 57.57,
+      "impressions": 1234,
+      "clicks": 20,
+      "reach": 1063,
+      "leads": 0
+    },
+    {
+      "date": "2026-02-28",
+      "spend": 57.64,
+      "impressions": 1511,
+      "clicks": 38,
+      "reach": 1225,
+      "leads": 3
+    },
+    {
+      "date": "2026-03-01",
+      "spend": 70.52,
+      "impressions": 1630,
+      "clicks": 46,
+      "reach": 1380,
+      "leads": 3
+    },
+    {
+      "date": "2026-03-02",
+      "spend": 69.67,
+      "impressions": 1800,
+      "clicks": 41,
+      "reach": 1462,
+      "leads": 4
+    },
+    {
+      "date": "2026-03-03",
+      "spend": 70.76,
+      "impressions": 1733,
+      "clicks": 39,
+      "reach": 1440,
+      "leads": 2
+    },
+    {
+      "date": "2026-03-04",
+      "spend": 62.98,
+      "impressions": 1824,
+      "clicks": 40,
+      "reach": 1493,
+      "leads": 3
+    },
+    {
+      "date": "2026-03-05",
+      "spend": 67.02,
+      "impressions": 1603,
+      "clicks": 35,
+      "reach": 1345,
+      "leads": 2
+    },
+    {
+      "date": "2026-03-06",
+      "spend": 61.18,
+      "impressions": 1522,
+      "clicks": 23,
+      "reach": 1256,
+      "leads": 1
+    },
+    {
+      "date": "2026-03-07",
+      "spend": 51.12,
+      "impressions": 1392,
+      "clicks": 45,
+      "reach": 1150,
+      "leads": 6
+    },
+    {
+      "date": "2026-03-08",
+      "spend": 79.17,
+      "impressions": 2114,
+      "clicks": 37,
+      "reach": 1684,
+      "leads": 3
+    },
+    {
+      "date": "2026-03-09",
+      "spend": 82.67,
+      "impressions": 1845,
+      "clicks": 40,
+      "reach": 1541,
+      "leads": 3
+    },
+    {
+      "date": "2026-03-10",
+      "spend": 81.48,
+      "impressions": 2265,
+      "clicks": 47,
+      "reach": 1852,
+      "leads": 4
+    }
+  ],
+  "campaigns_by_range": {
+    "7": [
+      {
+        "name": "Leads_Boutique_Owners_Leads",
+        "spend": 126.38,
+        "impressions": 3571,
+        "clicks": 46,
+        "ctr": 1.288155,
+        "cpc": 2.747391,
+        "reach": 2566,
+        "leads": 4
+      },
+      {
+        "name": "OPN_Orli_30 second_leadform_lookalike",
+        "spend": 71.15,
+        "impressions": 1166,
+        "clicks": 41,
+        "ctr": 3.516295,
+        "cpc": 1.735366,
+        "reach": 969,
+        "leads": 2
+      },
+      {
+        "name": "OPN_Orli_30 second_typeform",
+        "spend": 16.6,
+        "impressions": 754,
+        "clicks": 25,
+        "ctr": 3.31565,
+        "cpc": 0.664,
+        "reach": 660,
+        "leads": 0
+      },
+      {
+        "name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026",
+        "spend": 102.76,
+        "impressions": 2112,
+        "clicks": 41,
+        "ctr": 1.941288,
+        "cpc": 2.506341,
+        "reach": 1659,
+        "leads": 10
+      },
+      {
+        "name": "OPN_New Static Ads_Lead Form New_Top Funnel",
+        "spend": 211.08,
+        "impressions": 3902,
+        "clicks": 54,
+        "ctr": 1.383906,
+        "cpc": 3.908889,
+        "reach": 2046,
+        "leads": 4
+      }
+    ],
+    "14": [
+      {
+        "name": "Leads_Boutique_Owners_Leads",
+        "spend": 289.64,
+        "impressions": 8032,
+        "clicks": 146,
+        "ctr": 1.817729,
+        "cpc": 1.983836,
+        "reach": 4659,
+        "leads": 15
+      },
+      {
+        "name": "OPN_Orli_30 second_leadform_lookalike",
+        "spend": 136.89,
+        "impressions": 2204,
+        "clicks": 67,
+        "ctr": 3.039927,
+        "cpc": 2.043134,
+        "reach": 1612,
+        "leads": 2
+      },
+      {
+        "name": "OPN_Orli_30 second_typeform",
+        "spend": 93.16,
+        "impressions": 4192,
+        "clicks": 102,
+        "ctr": 2.433206,
+        "cpc": 0.913333,
+        "reach": 3162,
+        "leads": 0
+      },
+      {
+        "name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026",
+        "spend": 206.69,
+        "impressions": 4314,
+        "clicks": 87,
+        "ctr": 2.01669,
+        "cpc": 2.375747,
+        "reach": 2851,
+        "leads": 20
+      },
+      {
+        "name": "OPN_New Static Ads_Lead Form New_Top Funnel",
+        "spend": 263.49,
+        "impressions": 4751,
+        "clicks": 65,
+        "ctr": 1.368133,
+        "cpc": 4.053692,
+        "reach": 2282,
+        "leads": 4
+      }
+    ],
+    "30": [
+      {
+        "name": "Leads_Boutique_Owners_Leads",
+        "spend": 683.81,
+        "impressions": 19549,
+        "clicks": 412,
+        "ctr": 2.107525,
+        "cpc": 1.659733,
+        "reach": 8939,
+        "leads": 45
+      },
+      {
+        "name": "OPN_Orli_30 second_leadform_lookalike",
+        "spend": 297.07,
+        "impressions": 4751,
+        "clicks": 122,
+        "ctr": 2.56788,
+        "cpc": 2.435,
+        "reach": 2813,
+        "leads": 7
+      },
+      {
+        "name": "OPN_Orli_30 second_typeform",
+        "spend": 267.16,
+        "impressions": 10647,
+        "clicks": 231,
+        "ctr": 2.169625,
+        "cpc": 1.156537,
+        "reach": 7638,
+        "leads": 0
+      },
+      {
+        "name": "OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026",
+        "spend": 447.42,
+        "impressions": 9267,
+        "clicks": 167,
+        "ctr": 1.802093,
+        "cpc": 2.679162,
+        "reach": 4977,
+        "leads": 29
+      },
+      {
+        "name": "OPN_New Static Ads_Lead Form New_Top Funnel",
+        "spend": 263.49,
+        "impressions": 4751,
+        "clicks": 65,
+        "ctr": 1.368133,
+        "cpc": 4.053692,
+        "reach": 2282,
+        "leads": 4
+      }
+    ]
+  }
+};
 let currentRange="7";let chartInstance=null;
 function pctChange(curr,prev){if(!prev||prev===0)return"";const pct=((curr-prev)/Math.abs(prev)*100).toFixed(1);const cls=pct>=0?"up":"down";const arrow=pct>=0?"▲":"▼";return`<div class="change ${cls}">${arrow} ${Math.abs(pct)}%</div>`}
 function fmtMoney(v){return"$"+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
