@@ -2,20 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>OPN Agency — Meta Ads Dashboards</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#e0e0e0;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.container{text-align:center;max-width:600px;padding:40px}h1{font-size:28px;margin-bottom:32px;color:#fff}
-.card{background:#161616;border:1px solid #222;border-radius:16px;padding:24px;margin-bottom:16px;cursor:pointer;transition:all .2s}
-.card:hover{border-color:#1a73e8;transform:translateY(-2px)}
-.card h2{font-size:18px;margin-bottom:8px;color:#fff}.card p{font-size:14px;color:#888}
-a{text-decoration:none;color:inherit}</style>
+<title>Meta Ads Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#e0e0e0}.header{background:#111;padding:20px 32px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}.header h1{font-size:20px;color:#fff}.header .updated{font-size:12px;color:#888}.tabs{display:flex;gap:0;background:#111;padding:0 32px;border-bottom:1px solid #222}.tab{padding:12px 24px;cursor:pointer;color:#888;border-bottom:2px solid transparent;font-size:14px;font-weight:500}.tab.active{color:#1a73e8;border-bottom-color:#1a73e8}.tab:hover{color:#fff}.range-tabs{display:flex;gap:8px;padding:20px 32px 0}.range-tab{padding:6px 16px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-size:13px}.range-tab.active{background:#1a73e8;color:#fff;border-color:#1a73e8}.content{padding:20px 32px}.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}.kpi-card{background:#161616;border-radius:12px;padding:20px;border:1px solid #222}.kpi-card .label{font-size:12px;color:#888;text-transform:uppercase;margin-bottom:8px}.kpi-card .value{font-size:24px;font-weight:700;color:#fff}.kpi-card .change{font-size:12px;margin-top:4px}.kpi-card .change.up{color:#34a853}.kpi-card .change.down{color:#ea4335}.chart-container{background:#161616;border-radius:12px;padding:20px;border:1px solid #222;margin-bottom:24px;height:300px;position:relative}table{width:100%;border-collapse:collapse;background:#161616;border-radius:12px;overflow:hidden;border:1px solid #222}th{text-align:left;padding:12px 16px;background:#1a1a1a;color:#888;font-size:12px;text-transform:uppercase;font-weight:600}td{padding:12px 16px;border-top:1px solid #222;font-size:14px}</style>
 </head>
 <body>
-<div class="container">
-  <h1>📊 OPN Agency Dashboards</h1>
-  <a href="dashboard.html"><div class="card"><h2>Meta Ads Overview</h2><p>Sonesta · SAX · Mercy Me · DIAMO B2B — all clients in one view</p></div></a>
-  <a href="diamo.html"><div class="card"><h2>💎 DIAMO B2B</h2><p>Dedicated dashboard with leads tracking and campaign breakdowns</p></div></a>
-  <a href="mercyme.html"><div class="card"><h2>🍽️ Mercy Me</h2><p>Restaurant-focused dashboard with campaign performance</p></div></a>
-</div>
+<div class="header"><h1>Meta Ads Dashboard</h1><div class="updated">Last updated: March 26, 2026 11:02 PM UTC</div></div>
+<div class="tabs" id="clientTabs"><div class="tab active" data-client="sonesta">Sonesta</div><div class="tab" data-client="sax">SAX</div><div class="tab" data-client="mercy_me">Mercy Me</div><div class="tab" data-client="diamo_b2b">DIAMO B2B</div></div>
+<div class="range-tabs" id="rangeTabs"><div class="range-tab active" data-range="7">7 Days</div><div class="range-tab" data-range="14">14 Days</div><div class="range-tab" data-range="30">30 Days</div></div>
+<div class="content"><div class="kpi-grid" id="kpiGrid"></div><div class="chart-container"><canvas id="dailyChart"></canvas></div><div id="campaignTable"></div></div>
+<script src="dashboard-data.js"></script>
+<script>
+let currentClient='sonesta',currentRange='7',chart=null;
+function pctChange(c,p){if(!p)return'';const v=((c-p)/Math.abs(p)*100).toFixed(1);return'<div class="change '+(v>=0?'up':'down')+'">'+(v>=0?'\u25b2':'\u25bc')+' '+Math.abs(v)+'%</div>';}
+function fmt(v,t){if(t==='money')return'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});if(t==='pct')return Number(v).toFixed(2)+'%';if(t==='dec')return'$'+Number(v).toFixed(2);return Number(v).toLocaleString('en-US');}
+function render(){const d=DATA[currentClient];if(!d)return;const k=d.kpis[currentRange]||{},p=k.prev||{},isDiamo=currentClient==='diamo_b2b';let cards=[{l:'Spend',v:fmt(k.spend||0,'money'),c:pctChange(k.spend||0,p.spend)},{l:'Impressions',v:fmt(k.impressions||0),c:pctChange(k.impressions||0,p.impressions)},{l:'Reach',v:fmt(k.reach||0),c:pctChange(k.reach||0,p.reach)},{l:'Clicks',v:fmt(k.clicks||0),c:pctChange(k.clicks||0,p.clicks)},{l:'CTR',v:fmt(k.ctr||0,'pct'),c:pctChange(k.ctr||0,p.ctr)},{l:'CPC',v:fmt(k.cpc||0,'dec'),c:pctChange(k.cpc||0,p.cpc)}];if(isDiamo)cards.push({l:'Leads',v:fmt(k.leads||0),c:pctChange(k.leads||0,p.leads)});cards.push({l:'Video Views',v:fmt(k.video_views||0),c:pctChange(k.video_views||0,p.video_views)});document.getElementById('kpiGrid').innerHTML=cards.map(c=>'<div class="kpi-card"><div class="label">'+c.l+'</div><div class="value">'+c.v+'</div>'+c.c+'</div>').join('');const daily=d.daily||[],labels=daily.map(r=>r.date.slice(5)),spendData=daily.map(r=>r.spend);if(chart)chart.destroy();chart=new Chart(document.getElementById('dailyChart').getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'Daily Spend',data:spendData,backgroundColor:'rgba(26,115,232,0.7)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888'},grid:{display:false}},y:{ticks:{color:'#888',callback:v=>'$'+v},grid:{color:'#222'}}}}});const camps=(d.campaigns_by_range||{})[currentRange]||[];let th='<tr><th>Campaign</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th>';if(isDiamo)th+='<th>Leads</th>';th+='<th>Video Views</th></tr>';let rows=camps.map(c=>{let r='<tr><td>'+c.campaign_name+'</td><td>'+fmt(c.spend,'money')+'</td><td>'+fmt(c.impressions)+'</td><td>'+fmt(c.reach)+'</td><td>'+fmt(c.clicks)+'</td><td>'+fmt(c.ctr,'pct')+'</td><td>'+fmt(c.cpc,'dec')+'</td>';if(isDiamo)r+='<td>'+fmt(c.leads||0)+'</td>';return r+'<td>'+fmt(c.video_views||0)+'</td></tr>';}).join('');document.getElementById('campaignTable').innerHTML=camps.length?'<table>'+th+rows+'</table>':'<p style="color:#666;text-align:center;padding:20px;">No active campaigns in this period</p>';}
+document.querySelectorAll('#clientTabs .tab').forEach(t=>t.addEventListener('click',function(){document.querySelectorAll('#clientTabs .tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentClient=this.dataset.client;render();}));
+document.querySelectorAll('#rangeTabs .range-tab').forEach(t=>t.addEventListener('click',function(){document.querySelectorAll('#rangeTabs .range-tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentRange=this.dataset.range;render();}));
+render();
+</script>
 </body>
 </html>
