@@ -1,61 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Meta Ads Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#e0e0e0}
-.header{background:#111;padding:20px 32px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:20px;color:#fff}.header .updated{font-size:12px;color:#888}
-.tabs{display:flex;gap:0;background:#111;padding:0 32px;border-bottom:1px solid #222}
-.tab{padding:12px 24px;cursor:pointer;color:#888;border-bottom:2px solid transparent;font-size:14px;font-weight:500}
-.tab.active{color:#1a73e8;border-bottom-color:#1a73e8}.tab:hover{color:#fff}
-.range-tabs{display:flex;gap:8px;padding:20px 32px 0}
-.range-tab{padding:6px 16px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-size:13px}
-.range-tab.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
-.content{padding:20px 32px}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
-.kpi-card{background:#161616;border-radius:12px;padding:20px;border:1px solid #222}
-.kpi-card .label{font-size:12px;color:#888;text-transform:uppercase;margin-bottom:8px}
-.kpi-card .value{font-size:24px;font-weight:700;color:#fff}
-.kpi-card .change{font-size:12px;margin-top:4px}
-.kpi-card .change.up{color:#34a853}.kpi-card .change.down{color:#ea4335}
-.chart-container{background:#161616;border-radius:12px;padding:20px;border:1px solid #222;margin-bottom:24px;height:300px;position:relative}
-table{width:100%;border-collapse:collapse;background:#161616;border-radius:12px;overflow:hidden;border:1px solid #222}
-th{text-align:left;padding:12px 16px;background:#1a1a1a;color:#888;font-size:12px;text-transform:uppercase;font-weight:600}
-td{padding:12px 16px;border-top:1px solid #222;font-size:14px}</style>
-</head>
-<body>
-<div class="header">
-  <h1>📊 Meta Ads Dashboard</h1>
-  <div class="updated">Last updated: March 27, 2026 5:02 AM UTC</div>
-</div>
-<div class="tabs" id="clientTabs">
-  <div class="tab active" data-client="sonesta">Sonesta</div>
-  <div class="tab" data-client="sax">SAX</div>
-  <div class="tab" data-client="mercy_me">Mercy Me</div>
-  <div class="tab" data-client="diamo_b2b">DIAMO B2B</div>
-</div>
-<div class="range-tabs" id="rangeTabs">
-  <div class="range-tab active" data-range="7">7 Days</div>
-  <div class="range-tab" data-range="14">14 Days</div>
-  <div class="range-tab" data-range="30">30 Days</div>
-</div>
-<div class="content">
-  <div class="kpi-grid" id="kpiGrid"></div>
-  <div class="chart-container"><canvas id="dailyChart"></canvas></div>
-  <div id="campaignTable"></div>
-</div>
-<script>
-const DATA={"sonesta":{"label":"Sonesta","kpis":{"7":{"spend":111.2,"impressions":41437,"clicks":646,"ctr":1.558993,"cpc":0.172136,"reach":36301,"leads":0,"video_views":6746,"date":"2026-03-20","prev":{"spend":110.2,"impressions":38756,"clicks":702,"ctr":1.811332,"cpc":0.15698,"reach":34360,"leads":0,"video_views":7277,"date":"2026-03-13"}},"14":{"spend":221.4,"impressions":80193,"clicks":1348,"ctr":1.680945,"cpc":0.164243,"reach":66917,"leads":0,"video_views":14023,"date":"2026-03-13","prev":{"spend":418.34,"impressions":129093,"clicks":2149,"ctr":1.664691,"cpc":0.194667,"reach":104752,"leads":0,"video_views":15992,"date":"2026-02-27"}},"30":{"spend":724.41,"impressions":236880,"clicks":3906,"ctr":1.648936,"cpc":0.185461,"reach":187072,"leads":0,"video_views":32069,"date":"2026-02-25","prev":{"spend":1474.85,"impressions":616682,"clicks":8375,"ctr":1.358074,"cpc":0.176101,"reach":366024,"leads":0,"video_views":52046,"date":"2026-01-26"}}},"daily":[{"spend":47.06,"impressions":16129,"clicks":241,"ctr":1.494203,"cpc":0.19527,"reach":15370,"leads":0,"video_views":1033,"date":"2026-02-25"},{"spend":37.61,"impressions":11465,"clicks":168,"ctr":1.465329,"cpc":0.223869,"reach":10709,"leads":0,"video_views":1021,"date":"2026-02-26"},{"spend":37.89,"impressions":10323,"clicks":187,"ctr":1.811489,"cpc":0.20262,"reach":9742,"leads":0,"video_views":1015,"date":"2026-02-27"},{"spend":32.24,"impressions":8400,"clicks":136,"ctr":1.619048,"cpc":0.237059,"reach":8015,"leads":0,"video_views":952,"date":"2026-02-28"},{"spend":44.39,"impressions":13987,"clicks":261,"ctr":1.866018,"cpc":0.170077,"reach":12899,"leads":0,"video_views":1175,"date":"2026-03-01"},{"spend":42.27,"impressions":13280,"clicks":203,"ctr":1.528614,"cpc":0.208227,"reach":12564,"leads":0,"video_views":1179,"date":"2026-03-02"},{"spend":43.09,"impressions":12938,"clicks":221,"ctr":1.708147,"cpc":0.194977,"reach":11936,"leads":0,"video_views":1528,"date":"2026-03-03"},{"spend":38.01,"impressions":12243,"clicks":208,"ctr":1.69893,"cpc":0.18274,"reach":11725,"leads":0,"video_views":1248,"date":"2026-03-04"},{"spend":41.35,"impressions":13156,"clicks":199,"ctr":1.512618,"cpc":0.207789,"reach":12658,"leads":0,"video_views":1293,"date":"2026-03-05"},{"spend":38.68,"impressions":12090,"clicks":176,"ctr":1.455749,"cpc":0.219773,"reach":11049,"leads":0,"video_views":1159,"date":"2026-03-06"},{"spend":19.34,"impressions":5830,"clicks":102,"ctr":1.749571,"cpc":0.189608,"reach":5759,"leads":0,"video_views":1013,"date":"2026-03-07"},{"spend":18.19,"impressions":5265,"clicks":79,"ctr":1.500475,"cpc":0.230253,"reach":5040,"leads":0,"video_views":1120,"date":"2026-03-08"},{"spend":17.73,"impressions":5967,"clicks":98,"ctr":1.642366,"cpc":0.180918,"reach":5761,"leads":0,"video_views":1167,"date":"2026-03-09"},{"spend":14.84,"impressions":5489,"clicks":95,"ctr":1.730734,"cpc":0.156211,"reach":5260,"leads":0,"video_views":1023,"date":"2026-03-10"},{"spend":14.95,"impressions":5244,"clicks":98,"ctr":1.868802,"cpc":0.152551,"reach":5191,"leads":0,"video_views":1105,"date":"2026-03-11"},{"spend":15.37,"impressions":4881,"clicks":86,"ctr":1.761934,"cpc":0.178721,"reach":4630,"leads":0,"video_views":1015,"date":"2026-03-12"},{"spend":15.31,"impressions":4232,"clicks":70,"ctr":1.654064,"cpc":0.218714,"reach":4114,"leads":0,"video_views":969,"date":"2026-03-13"},{"spend":15.59,"impressions":4097,"clicks":102,"ctr":2.489627,"cpc":0.152843,"reach":4076,"leads":0,"video_views":855,"date":"2026-03-14"},{"spend":17.82,"impressions":6876,"clicks":121,"ctr":1.759744,"cpc":0.147273,"reach":6444,"leads":0,"video_views":980,"date":"2026-03-15"},{"spend":15.9,"impressions":5660,"clicks":104,"ctr":1.837456,"cpc":0.152885,"reach":5586,"leads":0,"video_views":1042,"date":"2026-03-16"},{"spend":15.79,"impressions":6349,"clicks":114,"ctr":1.795558,"cpc":0.138509,"reach":6022,"leads":0,"video_views":1224,"date":"2026-03-17"},{"spend":15.32,"impressions":6129,"clicks":98,"ctr":1.598956,"cpc":0.156327,"reach":5825,"leads":0,"video_views":1157,"date":"2026-03-18"},{"spend":14.47,"impressions":5413,"clicks":93,"ctr":1.718086,"cpc":0.155591,"reach":5413,"leads":0,"video_views":1050,"date":"2026-03-19"},{"spend":15.51,"impressions":5320,"clicks":83,"ctr":1.56015,"cpc":0.186867,"reach":5048,"leads":0,"video_views":1080,"date":"2026-03-20"},{"spend":17.16,"impressions":5657,"clicks":98,"ctr":1.732367,"cpc":0.175102,"reach":5298,"leads":0,"video_views":1002,"date":"2026-03-21"},{"spend":16.67,"impressions":6980,"clicks":119,"ctr":1.704871,"cpc":0.140084,"reach":6634,"leads":0,"video_views":992,"date":"2026-03-22"},{"spend":16.59,"impressions":6928,"clicks":96,"ctr":1.385681,"cpc":0.172813,"reach":6871,"leads":0,"video_views":1059,"date":"2026-03-23"},{"spend":15.12,"impressions":5403,"clicks":86,"ctr":1.591708,"cpc":0.175814,"reach":5180,"leads":0,"video_views":919,"date":"2026-03-24"},{"spend":14.86,"impressions":6118,"clicks":85,"ctr":1.389343,"cpc":0.174824,"reach":5905,"leads":0,"video_views":842,"date":"2026-03-25"},{"spend":15.29,"impressions":5031,"clicks":79,"ctr":1.570264,"cpc":0.193544,"reach":4986,"leads":0,"video_views":852,"date":"2026-03-26"}],"campaigns_by_range":{"7":[{"spend":111.2,"impressions":41437,"clicks":646,"ctr":1.558993,"cpc":0.172136,"reach":36301,"leads":0,"video_views":6746,"date":"2026-03-20","campaign_name":"iExcel_RoyalSonesta_Businesstripgetaways"}],"14":[{"spend":221.4,"impressions":80193,"clicks":1348,"ctr":1.680945,"cpc":0.164243,"reach":66917,"leads":0,"video_views":14023,"date":"2026-03-13","campaign_name":"iExcel_RoyalSonesta_Businesstripgetaways"}],"30":[{"spend":478.08,"impressions":159763,"clicks":2914,"ctr":1.823952,"cpc":0.164063,"reach":122529,"leads":0,"video_views":32069,"date":"2026-02-25","campaign_name":"iExcel_RoyalSonesta_Businesstripgetaways"},{"spend":152.26,"impressions":45181,"clicks":571,"ctr":1.263806,"cpc":0.266655,"reach":36381,"leads":0,"video_views":0,"date":"2026-02-25","campaign_name":"OPN_Winter Escape_Static_2"},{"spend":94.07,"impressions":31936,"clicks":421,"ctr":1.318262,"cpc":0.223444,"reach":27253,"leads":0,"video_views":0,"date":"2026-02-25","campaign_name":"OPN_Three Nights_Static_1"}]}},"sax":{"label":"SAX","kpis":{"7":{"spend":0,"impressions":0,"clicks":0,"ctr":0,"cpc":0,"reach":0,"leads":0,"video_views":0,"date":"2026-03-20","prev":{"spend":0,"impressions":0,"clicks":0,"ctr":0,"cpc":0,"reach":0,"leads":0,"video_views":0,"date":"2026-03-13"}},"14":{"spend":0,"impressions":0,"clicks":0,"ctr":0,"cpc":0,"reach":0,"leads":0,"video_views":0,"date":"2026-03-13","prev":{"spend":0,"impressions":0,"clicks":0,"ctr":0,"cpc":0,"reach":0,"leads":0,"video_views":0,"date":"2026-02-27"}},"30":{"spend":0,"impressions":0,"clicks":0,"ctr":0,"cpc":0,"reach":0,"leads":0,"video_views":0,"date":"2026-02-25","prev":{"spend":149.92,"impressions":27953,"clicks":3187,"ctr":11.401281,"cpc":0.047041,"reach":18023,"leads":0,"video_views":12937,"date":"2026-01-26"}}},"daily":[],"campaigns_by_range":{"7":[],"14":[],"30":[]}},"mercy_me":{"label":"Mercy Me","kpis":{"7":{"spend":753.77,"impressions":99984,"clicks":4532,"ctr":4.532725,"cpc":0.166322,"reach":70644,"leads":0,"video_views":17531,"date":"2026-03-20","prev":{"spend":744.92,"impressions":106989,"clicks":4866,"ctr":4.548131,"cpc":0.153087,"reach":72403,"leads":0,"video_views":17815,"date":"2026-03-13"}},"14":{"spend":1498.69,"impressions":206973,"clicks":9398,"ctr":4.540689,"cpc":0.159469,"reach":118536,"leads":0,"video_views":35346,"date":"2026-03-13","prev":{"spend":1244.85,"impressions":175703,"clicks":8509,"ctr":4.842831,"cpc":0.146298,"reach":92745,"leads":0,"video_views":28494,"date":"2026-02-27"}},"30":{"spend":2854.41,"impressions":398718,"clicks":18658,"ctr":4.679498,"cpc":0.152986,"reach":180434,"leads":0,"video_views":66856,"date":"2026-02-25","prev":{"spend":1497.08,"impressions":269160,"clicks":8406,"ctr":3.123049,"cpc":0.178097,"reach":131938,"leads":0,"video_views":40116,"date":"2026-01-26"}}},"daily":[{"spend":64.26,"impressions":9458,"clicks":400,"ctr":4.229224,"cpc":0.16065,"reach":8327,"leads":0,"video_views":1585,"date":"2026-02-25"},{"spend":46.61,"impressions":6584,"clicks":351,"ctr":5.331106,"cpc":0.132792,"reach":5958,"leads":0,"video_views":1431,"date":"2026-02-26"},{"spend":43.78,"impressions":5729,"clicks":318,"ctr":5.550707,"cpc":0.137673,"reach":5313,"leads":0,"video_views":1292,"date":"2026-02-27"},{"spend":49.89,"impressions":6986,"clicks":357,"ctr":5.11022,"cpc":0.139748,"reach":6634,"leads":0,"video_views":1388,"date":"2026-02-28"},{"spend":53.0,"impressions":8087,"clicks":379,"ctr":4.686534,"cpc":0.139842,"reach":7188,"leads":0,"video_views":1589,"date":"2026-03-01"},{"spend":53.44,"impressions":8239,"clicks":379,"ctr":4.600073,"cpc":0.141003,"reach":7747,"leads":0,"video_views":1651,"date":"2026-03-02"},{"spend":66.46,"impressions":10197,"clicks":447,"ctr":4.383642,"cpc":0.14868,"reach":9060,"leads":0,"video_views":1707,"date":"2026-03-03"},{"spend":83.15,"impressions":12690,"clicks":597,"ctr":4.704492,"cpc":0.13928,"reach":10932,"leads":0,"video_views":1682,"date":"2026-03-04"},{"spend":88.1,"impressions":12842,"clicks":513,"ctr":3.994705,"cpc":0.171735,"reach":11357,"leads":0,"video_views":1471,"date":"2026-03-05"},{"spend":75.4,"impressions":10619,"clicks":452,"ctr":4.256521,"cpc":0.166814,"reach":9247,"leads":0,"video_views":1313,"date":"2026-03-06"},{"spend":94.6,"impressions":13213,"clicks":560,"ctr":4.23825,"cpc":0.168929,"reach":11738,"leads":0,"video_views":1773,"date":"2026-03-07"},{"spend":135.16,"impressions":18899,"clicks":927,"ctr":4.905021,"cpc":0.145804,"reach":16128,"leads":0,"video_views":3146,"date":"2026-03-08"},{"spend":136.95,"impressions":18794,"clicks":954,"ctr":5.076088,"cpc":0.143553,"reach":16547,"leads":0,"video_views":3089,"date":"2026-03-09"},{"spend":130.77,"impressions":17547,"clicks":994,"ctr":5.664786,"cpc":0.131559,"reach":16071,"leads":0,"video_views":3096,"date":"2026-03-10"},{"spend":117.39,"impressions":16322,"clicks":799,"ctr":4.895233,"cpc":0.146921,"reach":14398,"leads":0,"video_views":2703,"date":"2026-03-11"},{"spend":116.76,"impressions":15539,"clicks":833,"ctr":5.360705,"cpc":0.140168,"reach":13862,"leads":0,"video_views":2594,"date":"2026-03-12"},{"spend":118.08,"impressions":14990,"clicks":759,"ctr":5.063376,"cpc":0.155573,"reach":13569,"leads":0,"video_views":2532,"date":"2026-03-13"},{"spend":119.3,"impressions":15820,"clicks":763,"ctr":4.823009,"cpc":0.156356,"reach":14206,"leads":0,"video_views":2696,"date":"2026-03-14"},{"spend":116.08,"impressions":15882,"clicks":745,"ctr":4.690845,"cpc":0.155812,"reach":14649,"leads":0,"video_views":2771,"date":"2026-03-15"},{"spend":104.99,"impressions":17145,"clicks":730,"ctr":4.257801,"cpc":0.143822,"reach":15442,"leads":0,"video_views":2548,"date":"2026-03-16"},{"spend":97.02,"impressions":15782,"clicks":685,"ctr":4.340388,"cpc":0.141635,"reach":14524,"leads":0,"video_views":2441,"date":"2026-03-17"},{"spend":94.64,"impressions":13697,"clicks":607,"ctr":4.431627,"cpc":0.155914,"reach":12460,"leads":0,"video_views":2453,"date":"2026-03-18"},{"spend":94.81,"impressions":13673,"clicks":577,"ctr":4.219996,"cpc":0.164315,"reach":12219,"leads":0,"video_views":2374,"date":"2026-03-19"},{"spend":96.27,"impressions":13136,"clicks":583,"ctr":4.438185,"cpc":0.165129,"reach":11733,"leads":0,"video_views":2315,"date":"2026-03-20"},{"spend":116.2,"impressions":15606,"clicks":758,"ctr":4.857106,"cpc":0.153298,"reach":13600,"leads":0,"video_views":3058,"date":"2026-03-21"},{"spend":109.0,"impressions":16117,"clicks":584,"ctr":3.623503,"cpc":0.186644,"reach":14522,"leads":0,"video_views":2697,"date":"2026-03-22"},{"spend":108.84,"impressions":16178,"clicks":642,"ctr":3.968352,"cpc":0.169533,"reach":14163,"leads":0,"video_views":2543,"date":"2026-03-23"},{"spend":111.32,"impressions":13982,"clicks":724,"ctr":5.178086,"cpc":0.153757,"reach":12782,"leads":0,"video_views":2380,"date":"2026-03-24"},{"spend":107.5,"impressions":13030,"clicks":658,"ctr":5.049885,"cpc":0.163374,"reach":12230,"leads":0,"video_views":2383,"date":"2026-03-25"},{"spend":104.64,"impressions":11935,"clicks":583,"ctr":4.884793,"cpc":0.179485,"reach":10948,"leads":0,"video_views":2155,"date":"2026-03-26"}],"campaigns_by_range":{"7":[{"spend":249.14,"impressions":26963,"clicks":2061,"ctr":7.643808,"cpc":0.120883,"reach":22210,"leads":0,"video_views":7985,"date":"2026-03-20","campaign_name":"OPN_Brazil Brothers_Wed_Feb"},{"spend":140.49,"impressions":25930,"clicks":894,"ctr":3.447744,"cpc":0.157148,"reach":19302,"leads":0,"video_views":2942,"date":"2026-03-20","campaign_name":"iExcel-MercyMe-Brazilian Fusion-Opentable"},{"spend":140.48,"impressions":16955,"clicks":432,"ctr":2.547921,"cpc":0.325185,"reach":12402,"leads":0,"video_views":1063,"date":"2026-03-20","campaign_name":"OPN_Private Events Carrousel"},{"spend":139.8,"impressions":12947,"clicks":648,"ctr":5.00502,"cpc":0.215741,"reach":9821,"leads":0,"video_views":4619,"date":"2026-03-20","campaign_name":"OPN_Dinner Focus_Feb 23"},{"spend":43.17,"impressions":6822,"clicks":290,"ctr":4.250953,"cpc":0.148862,"reach":4902,"leads":0,"video_views":0,"date":"2026-03-20","campaign_name":"OPN_Cherry Blossom Garden_Carousel_Mar24"},{"spend":40.69,"impressions":10367,"clicks":207,"ctr":1.99672,"cpc":0.19657,"reach":7608,"leads":0,"video_views":922,"date":"2026-03-20","campaign_name":"iExcel-MercyMe-SambaNights"}],"14":[{"spend":501.06,"impressions":59515,"clicks":4329,"ctr":7.273797,"cpc":0.115745,"reach":40024,"leads":0,"video_views":15230,"date":"2026-03-13","campaign_name":"OPN_Brazil Brothers_Wed_Feb"},{"spend":281.59,"impressions":53820,"clicks":1856,"ctr":3.448532,"cpc":0.151719,"reach":34486,"leads":0,"video_views":6211,"date":"2026-03-13","campaign_name":"iExcel-MercyMe-Brazilian Fusion-Opentable"},{"spend":281.58,"impressions":34677,"clicks":930,"ctr":2.681893,"cpc":0.302774,"reach":22236,"leads":0,"video_views":1727,"date":"2026-03-13","campaign_name":"OPN_Private Events Carrousel"},{"spend":280.02,"impressions":26450,"clicks":1421,"ctr":5.372401,"cpc":0.197058,"reach":17607,"leads":0,"video_views":9578,"date":"2026-03-13","campaign_name":"OPN_Dinner Focus_Feb 23"},{"spend":111.27,"impressions":25689,"clicks":572,"ctr":2.226634,"cpc":0.194528,"reach":17127,"leads":0,"video_views":2600,"date":"2026-03-13","campaign_name":"iExcel-MercyMe-SambaNights"},{"spend":43.17,"impressions":6822,"clicks":290,"ctr":4.250953,"cpc":0.148862,"reach":4902,"leads":0,"video_views":0,"date":"2026-03-13","campaign_name":"OPN_Cherry Blossom Garden_Carousel_Mar24"}],"30":[{"spend":899.93,"impressions":116276,"clicks":7607,"ctr":6.542193,"cpc":0.118303,"reach":61472,"leads":0,"video_views":22988,"date":"2026-02-25","campaign_name":"OPN_Brazil Brothers_Wed_Feb"},{"spend":597.53,"impressions":104122,"clicks":4224,"ctr":4.05678,"cpc":0.141461,"reach":57501,"leads":0,"video_views":13224,"date":"2026-02-25","campaign_name":"iExcel-MercyMe-Brazilian Fusion-Opentable"},{"spend":596.26,"impressions":61303,"clicks":3410,"ctr":5.562534,"cpc":0.174856,"reach":30801,"leads":0,"video_views":21887,"date":"2026-02-25","campaign_name":"OPN_Dinner Focus_Feb 23"},{"spend":448.54,"impressions":58480,"clicks":1636,"ctr":2.797538,"cpc":0.274169,"reach":32371,"leads":0,"video_views":2111,"date":"2026-02-25","campaign_name":"OPN_Private Events Carrousel"},{"spend":268.98,"impressions":51715,"clicks":1491,"ctr":2.883109,"cpc":0.180402,"reach":30938,"leads":0,"video_views":6646,"date":"2026-02-25","campaign_name":"iExcel-MercyMe-SambaNights"},{"spend":43.17,"impressions":6822,"clicks":290,"ctr":4.250953,"cpc":0.148862,"reach":4902,"leads":0,"video_views":0,"date":"2026-02-25","campaign_name":"OPN_Cherry Blossom Garden_Carousel_Mar24"}]}},"diamo_b2b":{"label":"DIAMO B2B","kpis":{"7":{"spend":612.5,"impressions":27216,"clicks":331,"ctr":1.216196,"cpc":1.850453,"reach":7149,"leads":15,"video_views":1284,"date":"2026-03-20","prev":{"spend":516.4,"impressions":10365,"clicks":185,"ctr":1.784853,"cpc":2.791351,"reach":5753,"leads":16,"video_views":1383,"date":"2026-03-13"}},"14":{"spend":1128.9,"impressions":37581,"clicks":516,"ctr":1.373034,"cpc":2.187791,"reach":11060,"leads":31,"video_views":2667,"date":"2026-03-13","prev":{"spend":966.11,"impressions":23707,"clicks":509,"ctr":2.147045,"cpc":1.898055,"reach":12679,"leads":40,"video_views":3747,"date":"2026-02-27"}},"30":{"spend":2216.65,"impressions":64356,"clicks":1074,"ctr":1.668842,"cpc":2.06392,"reach":21657,"leads":76,"video_views":6919,"date":"2026-02-25","prev":{"spend":1689.49,"impressions":43515,"clicks":867,"ctr":1.992416,"cpc":1.948662,"reach":24256,"leads":74,"video_views":7571,"date":"2026-01-26"}}},"daily":[{"spend":57.46,"impressions":1611,"clicks":25,"ctr":1.551831,"cpc":2.2984,"reach":1307,"leads":1,"video_views":247,"date":"2026-02-25"},{"spend":64.18,"impressions":1457,"clicks":24,"ctr":1.64722,"cpc":2.674167,"reach":1175,"leads":4,"video_views":258,"date":"2026-02-26"},{"spend":57.57,"impressions":1234,"clicks":20,"ctr":1.620746,"cpc":2.8785,"reach":1063,"leads":0,"video_views":237,"date":"2026-02-27"},{"spend":57.64,"impressions":1511,"clicks":38,"ctr":2.514891,"cpc":1.516842,"reach":1225,"leads":3,"video_views":310,"date":"2026-02-28"},{"spend":70.52,"impressions":1630,"clicks":46,"ctr":2.822086,"cpc":1.533043,"reach":1380,"leads":3,"video_views":301,"date":"2026-03-01"},{"spend":69.67,"impressions":1800,"clicks":41,"ctr":2.277778,"cpc":1.699268,"reach":1462,"leads":4,"video_views":276,"date":"2026-03-02"},{"spend":70.76,"impressions":1733,"clicks":39,"ctr":2.250433,"cpc":1.814359,"reach":1440,"leads":2,"video_views":318,"date":"2026-03-03"},{"spend":62.98,"impressions":1824,"clicks":40,"ctr":2.192982,"cpc":1.5745,"reach":1493,"leads":3,"video_views":306,"date":"2026-03-04"},{"spend":67.02,"impressions":1603,"clicks":35,"ctr":2.183406,"cpc":1.914857,"reach":1345,"leads":2,"video_views":251,"date":"2026-03-05"},{"spend":61.18,"impressions":1522,"clicks":23,"ctr":1.51117,"cpc":2.66,"reach":1256,"leads":1,"video_views":217,"date":"2026-03-06"},{"spend":51.12,"impressions":1392,"clicks":45,"ctr":3.232759,"cpc":1.136,"reach":1150,"leads":6,"video_views":236,"date":"2026-03-07"},{"spend":79.17,"impressions":2114,"clicks":37,"ctr":1.750237,"cpc":2.13973,"reach":1684,"leads":3,"video_views":294,"date":"2026-03-08"},{"spend":82.67,"impressions":1845,"clicks":40,"ctr":2.168022,"cpc":2.06675,"reach":1541,"leads":3,"video_views":305,"date":"2026-03-09"},{"spend":81.48,"impressions":2265,"clicks":47,"ctr":2.075055,"cpc":1.733617,"reach":1852,"leads":4,"video_views":286,"date":"2026-03-10"},{"spend":77.09,"impressions":1734,"clicks":29,"ctr":1.672434,"cpc":2.658276,"reach":1396,"leads":3,"video_views":217,"date":"2026-03-11"},{"spend":77.24,"impressions":1500,"clicks":29,"ctr":1.933333,"cpc":2.663448,"reach":1232,"leads":3,"video_views":193,"date":"2026-03-12"},{"spend":69.97,"impressions":1361,"clicks":27,"ctr":1.983835,"cpc":2.591481,"reach":1121,"leads":2,"video_views":172,"date":"2026-03-13"},{"spend":51.3,"impressions":1276,"clicks":16,"ctr":1.253919,"cpc":3.20625,"reach":1100,"leads":3,"video_views":152,"date":"2026-03-14"},{"spend":88.22,"impressions":1524,"clicks":19,"ctr":1.246719,"cpc":4.643158,"reach":1212,"leads":2,"video_views":197,"date":"2026-03-15"},{"spend":72.86,"impressions":1656,"clicks":36,"ctr":2.173913,"cpc":2.023889,"reach":1341,"leads":2,"video_views":221,"date":"2026-03-16"},{"spend":86.79,"impressions":1674,"clicks":27,"ctr":1.612903,"cpc":3.214444,"reach":1312,"leads":1,"video_views":226,"date":"2026-03-17"},{"spend":76.37,"impressions":1407,"clicks":26,"ctr":1.847903,"cpc":2.937308,"reach":1131,"leads":3,"video_views":209,"date":"2026-03-18"},{"spend":70.89,"impressions":1467,"clicks":34,"ctr":2.317655,"cpc":2.085,"reach":1180,"leads":3,"video_views":206,"date":"2026-03-19"},{"spend":62.58,"impressions":1522,"clicks":22,"ctr":1.445466,"cpc":2.844545,"reach":1205,"leads":1,"video_views":214,"date":"2026-03-20"},{"spend":56.03,"impressions":1735,"clicks":31,"ctr":1.786744,"cpc":1.807419,"reach":1358,"leads":5,"video_views":162,"date":"2026-03-21"},{"spend":103.53,"impressions":5432,"clicks":73,"ctr":1.343888,"cpc":1.418219,"reach":2420,"leads":4,"video_views":204,"date":"2026-03-22"},{"spend":100.94,"impressions":5329,"clicks":71,"ctr":1.332333,"cpc":1.42169,"reach":2200,"leads":1,"video_views":172,"date":"2026-03-23"},{"spend":93.67,"impressions":4774,"clicks":48,"ctr":1.005446,"cpc":1.951458,"reach":1753,"leads":0,"video_views":200,"date":"2026-03-24"},{"spend":103.2,"impressions":4494,"clicks":47,"ctr":1.045839,"cpc":2.195745,"reach":1545,"leads":2,"video_views":188,"date":"2026-03-25"},{"spend":92.55,"impressions":3930,"clicks":39,"ctr":0.992366,"cpc":2.373077,"reach":1499,"leads":2,"video_views":144,"date":"2026-03-26"}],"campaigns_by_range":{"7":[{"spend":207.44,"impressions":4165,"clicks":50,"ctr":1.20048,"cpc":4.1488,"reach":2283,"leads":3,"video_views":0,"date":"2026-03-20","campaign_name":"OPN_New Static Ads_Lead Form New_Top Funnel"},{"spend":126.75,"impressions":2892,"clicks":63,"ctr":2.178423,"cpc":2.011905,"reach":2116,"leads":8,"video_views":612,"date":"2026-03-20","campaign_name":"Leads_Boutique_Owners_Leads"},{"spend":103.74,"impressions":2253,"clicks":36,"ctr":1.59787,"cpc":2.881667,"reach":1503,"leads":4,"video_views":424,"date":"2026-03-20","campaign_name":"OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026"},{"spend":101.69,"impressions":17032,"clicks":152,"ctr":0.892438,"cpc":0.669013,"reach":1524,"leads":0,"video_views":0,"date":"2026-03-20","campaign_name":"DIAMO_Top10_Revenue_Strategies_Traffic_Mar2026"},{"spend":72.88,"impressions":874,"clicks":30,"ctr":3.432494,"cpc":2.429333,"reach":711,"leads":0,"video_views":248,"date":"2026-03-20","campaign_name":"OPN_Orli_30 second_leadform_lookalike"}],"14":[{"spend":421.81,"impressions":7797,"clicks":101,"ctr":1.29537,"cpc":4.176337,"reach":3762,"leads":3,"video_views":0,"date":"2026-03-13","campaign_name":"OPN_New Static Ads_Lead Form New_Top Funnel"},{"spend":251.56,"impressions":6551,"clicks":129,"ctr":1.969165,"cpc":1.950078,"reach":3848,"leads":14,"video_views":1318,"date":"2026-03-13","campaign_name":"Leads_Boutique_Owners_Leads"},{"spend":212.61,"impressions":4326,"clicks":78,"ctr":1.803051,"cpc":2.725769,"reach":2681,"leads":13,"video_views":824,"date":"2026-03-13","campaign_name":"OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026"},{"spend":141.23,"impressions":1875,"clicks":56,"ctr":2.986667,"cpc":2.521964,"reach":1422,"leads":1,"video_views":525,"date":"2026-03-13","campaign_name":"OPN_Orli_30 second_leadform_lookalike"},{"spend":101.69,"impressions":17032,"clicks":152,"ctr":0.892438,"cpc":0.669013,"reach":1524,"leads":0,"video_views":0,"date":"2026-03-13","campaign_name":"DIAMO_Top10_Revenue_Strategies_Traffic_Mar2026"}],"30":[{"spend":613.9,"impressions":16407,"clicks":321,"ctr":1.956482,"cpc":1.912461,"reach":7604,"leads":33,"video_views":2864,"date":"2026-02-25","campaign_name":"Leads_Boutique_Owners_Leads"},{"spend":599.25,"impressions":11121,"clicks":149,"ctr":1.339808,"cpc":4.021812,"reach":4792,"leads":7,"video_views":0,"date":"2026-02-25","campaign_name":"OPN_New Static Ads_Lead Form New_Top Funnel"},{"spend":452.79,"impressions":9325,"clicks":170,"ctr":1.823056,"cpc":2.663471,"reach":4949,"leads":31,"video_views":1730,"date":"2026-02-25","campaign_name":"OPN_Top Funnel_Leads_Boutique_Owners_Leads_Jan 2026"},{"spend":299.97,"impressions":4421,"clicks":127,"ctr":2.872653,"cpc":2.361969,"reach":2890,"leads":5,"video_views":1268,"date":"2026-02-25","campaign_name":"OPN_Orli_30 second_leadform_lookalike"},{"spend":149.05,"impressions":6050,"clicks":155,"ctr":2.561983,"cpc":0.961613,"reach":4410,"leads":0,"video_views":1057,"date":"2026-02-25","campaign_name":"OPN_Orli_30 second_typeform"},{"spend":101.69,"impressions":17032,"clicks":152,"ctr":0.892438,"cpc":0.669013,"reach":1524,"leads":0,"video_views":0,"date":"2026-02-25","campaign_name":"DIAMO_Top10_Revenue_Strategies_Traffic_Mar2026"}]}}};
-let currentClient='sonesta',currentRange='7',chart=null;
-function pctChange(curr,prev){if(prev===undefined||prev===null||prev===0)return"";const pct=((curr-prev)/Math.abs(prev)*100).toFixed(1);const cls=pct>=0?"up":"down";const arrow=pct>=0?"▲":"▼";return'<div class="change '+cls+'">'+arrow+' '+Math.abs(pct)+'%</div>';}
-function fmt(v,type){if(type==='money')return'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});if(type==='pct')return Number(v).toFixed(2)+'%';if(type==='dec')return'$'+Number(v).toFixed(2);return Number(v).toLocaleString('en-US');}
-function render(){const d=DATA[currentClient];if(!d)return;const kpi=d.kpis[currentRange]||{};const prev=kpi.prev||{};const isDiamo=currentClient==='diamo_b2b';let cards=[{label:'Spend',value:fmt(kpi.spend||0,'money'),change:pctChange(kpi.spend||0,prev.spend)},{label:'Impressions',value:fmt(kpi.impressions||0,'num'),change:pctChange(kpi.impressions||0,prev.impressions)},{label:'Reach',value:fmt(kpi.reach||0,'num'),change:pctChange(kpi.reach||0,prev.reach)},{label:'Clicks',value:fmt(kpi.clicks||0,'num'),change:pctChange(kpi.clicks||0,prev.clicks)},{label:'CTR',value:fmt(kpi.ctr||0,'pct'),change:pctChange(kpi.ctr||0,prev.ctr)},{label:'CPC',value:fmt(kpi.cpc||0,'dec'),change:pctChange(kpi.cpc||0,prev.cpc)}];if(isDiamo)cards.push({label:'Leads',value:fmt(kpi.leads||0,'num'),change:pctChange(kpi.leads||0,prev.leads)});cards.push({label:'Video Views',value:fmt(kpi.video_views||0,'num'),change:pctChange(kpi.video_views||0,prev.video_views)});document.getElementById('kpiGrid').innerHTML=cards.map(c=>'<div class="kpi-card"><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div>'+c.change+'</div>').join('');const daily=d.daily||[];const labels=daily.map(r=>r.date.slice(5));const spendData=daily.map(r=>r.spend);if(chart)chart.destroy();const ctx=document.getElementById('dailyChart').getContext('2d');chart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Daily Spend',data:spendData,backgroundColor:'rgba(26,115,232,0.7)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888'},grid:{display:false}},y:{ticks:{color:'#888',callback:v=>'$'+v},grid:{color:'#222'}}}}});const camps=(d.campaigns_by_range||{})[currentRange]||[];let th='<tr><th>Campaign</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th>';if(isDiamo)th+='<th>Leads</th>';th+='<th>Video Views</th></tr>';let rows=camps.map(c=>{let r='<tr><td>'+c.campaign_name+'</td><td>'+fmt(c.spend,'money')+'</td><td>'+fmt(c.impressions,'num')+'</td><td>'+fmt(c.reach,'num')+'</td><td>'+fmt(c.clicks,'num')+'</td><td>'+fmt(c.ctr,'pct')+'</td><td>'+fmt(c.cpc,'dec')+'</td>';if(isDiamo)r+='<td>'+fmt(c.leads||0,'num')+'</td>';r+='<td>'+fmt(c.video_views||0,'num')+'</td></tr>';return r;}).join('');document.getElementById('campaignTable').innerHTML=camps.length?'<table>'+th+rows+'</table>':'<p style="color:#666;text-align:center;padding:20px;">No active campaigns in this period</p>';}
-document.querySelectorAll('#clientTabs .tab').forEach(t=>t.addEventListener('click',function(){document.querySelectorAll('#clientTabs .tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentClient=this.dataset.client;render();}));
-document.querySelectorAll('#rangeTabs .range-tab').forEach(t=>t.addEventListener('click',function(){document.querySelectorAll('#rangeTabs .range-tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentRange=this.dataset.range;render();}));
-render();
-</script>
-</body>
-</html>
+PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj48aGVhZD4KPG1ldGEg
+Y2hhcnNldD0iVVRGLTgiPjxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50
+PSJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MS4wIj4KPHRp
+dGxlPk1ldGEgQWRzIERhc2hib2FyZCDigJQgT1BOIEFnZW5jeTwvdGl0bGU+
+CjxzY3JpcHQgc3JjPSJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL2No
+YXJ0LmpzIj48L3NjcmlwdD4KPHN0eWxlPgoqe21hcmdpbjowO3BhZGRpbmc6
+MDtib3gtc2l6aW5nOmJvcmRlci1ib3h9CmJvZHl7Zm9udC1mYW1pbHk6LWFw
+cGxlLXN5c3RlbSxCbGlua01hY1N5c3RlbUZvbnQsJ1NlZ29lIFVJJyxSb2Jv
+dG8sc2Fucy1zZXJpZjtiYWNrZ3JvdW5kOiMwYTBhMGE7Y29sb3I6I2UwZTBl
+MH0KLmhlYWRlcntiYWNrZ3JvdW5kOiMxMTE7cGFkZGluZzoyMHB4IDMycHg7
+Ym9yZGVyLWJvdHRvbToxcHggc29saWQgIzIyMjtkaXNwbGF5OmZsZXg7anVz
+dGlmeS1jb250ZW50OnNwYWNlLWJldHdlZW47YWxpZ24taXRlbXM6Y2VudGVy
+fQouaGVhZGVyIGgxe2ZvbnQtc2l6ZToyMHB4O2NvbG9yOiNmZmZ9LmhlYWRl
+ciAudXBkYXRlZHtmb250LXNpemU6MTJweDtjb2xvcjojODg4fQoudGFic3tk
+aXNwbGF5OmZsZXg7Z2FwOjA7YmFja2dyb3VuZDojMTExO3BhZGRpbmc6MCAz
+MnB4O2JvcmRlci1ib3R0b206MXB4IHNvbGlkICMyMjJ9Ci50YWJ7cGFkZGlu
+ZzoxMnB4IDI0cHg7Y3Vyc29yOnBvaW50ZXI7Y29sb3I6Izg4ODtib3JkZXIt
+Ym90dG9tOjJweCBzb2xpZCB0cmFuc3BhcmVudDtmb250LXNpemU6MTRweDtm
+b250LXdlaWdodDo1MDB9Ci50YWIuYWN0aXZle2NvbG9yOiMxYTczZTg7Ym9y
+ZGVyLWJvdHRvbS1jb2xvcjojMWE3M2U4fS50YWI6aG92ZXJ7Y29sb3I6I2Zm
+Zn0KLnJhbmdlLXRhYnN7ZGlzcGxheTpmbGV4O2dhcDo4cHg7cGFkZGluZzoy
+MHB4IDMycHggMH0KLnJhbmdlLXRhYntwYWRkaW5nOjZweCAxNnB4O2JvcmRl
+ci1yYWRpdXM6MjBweDtib3JkZXI6MXB4IHNvbGlkICMzMzM7YmFja2dyb3Vu
+ZDp0cmFuc3BhcmVudDtjb2xvcjojODg4O2N1cnNvcjpwb2ludGVyO2ZvbnQt
+c2l6ZToxM3B4fQoucmFuZ2UtdGFiLmFjdGl2ZXtiYWNrZ3JvdW5kOiMxYTcz
+ZTg7Y29sb3I6I2ZmZjtib3JkZXItY29sb3I6IzFhNzNlOH0KLmNvbnRlbnR7
+cGFkZGluZzoyMHB4IDMycHh9Ci5rcGktZ3JpZHtkaXNwbGF5OmdyaWQ7Z3Jp
+ZC10ZW1wbGF0ZS1jb2x1bW5zOnJlcGVhdChhdXRvLWZpdCxtaW5tYXgoMTgw
+cHgsMWZyKSk7Z2FwOjE2cHg7bWFyZ2luLWJvdHRvbToyNHB4fQoua3BpLWNh
+cmR7YmFja2dyb3VuZDojMTYxNjE2O2JvcmRlci1yYWRpdXM6MTJweDtwYWRk
+aW5nOjIwcHg7Ym9yZGVyOjFweCBzb2xpZCAjMjIyfQoua3BpLWNhcmQgLmxh
+YmVse2ZvbnQtc2l6ZToxMnB4O2NvbG9yOiM4ODg7dGV4dC10cmFuc2Zvcm06
+dXBwZXJjYXNlO21hcmdpbi1ib3R0b206OHB4fQoua3BpLWNhcmQgLnZhbHVl
+e2ZvbnQtc2l6ZToyNHB4O2ZvbnQtd2VpZ2h0OjcwMDtjb2xvcjojZmZmfQou
+a3BpLWNhcmQgLmNoYW5nZXtmb250LXNpemU6MTJweDttYXJnaW4tdG9wOjRw
+eH0KLmtwaS1jYXJkIC5jaGFuZ2UudXB7Y29sb3I6IzM0YTg1M30ua3BpLWNh
+cmQgLmNoYW5nZS5kb3due2NvbG9yOiNlYTQzMzV9Ci5jaGFydC1jb250YWlu
+ZXJ7YmFja2dyb3VuZDojMTYxNjE2O2JvcmRlci1yYWRpdXM6MTJweDtwYWRk
+aW5nOjIwcHg7Ym9yZGVyOjFweCBzb2xpZCAjMjIyO21hcmdpbi1ib3R0b206
+MjRweDtoZWlnaHQ6MzAwcHg7cG9zaXRpb246cmVsYXRpdmV9CnRhYmxle3dp
+ZHRoOjEwMCU7Ym9yZGVyLWNvbGxhcHNlOmNvbGxhcHNlO2JhY2tncm91bmQ6
+IzE2MTYxNjtib3JkZXItcmFkaXVzOjEycHg7b3ZlcmZsb3c6aGlkZGVuO2Jv
+cmRlcjoxcHggc29saWQgIzIyMn0KdGh7dGV4dC1hbGlnbjpsZWZ0O3BhZGRp
+bmc6MTJweCAxNnB4O2JhY2tncm91bmQ6IzFhMWExYTtjb2xvcjojODg4O2Zv
+bnQtc2l6ZToxMnB4O3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTtmb250LXdl
+aWdodDo2MDB9CnRke3BhZGRpbmc6MTJweCAxNnB4O2JvcmRlci10b3A6MXB4
+IHNvbGlkICMyMjI7Zm9udC1zaXplOjE0cHh9Cjwvc3R5bGU+PC9oZWFkPjxi
+b2R5Pgo8ZGl2IGNsYXNzPSJoZWFkZXIiPjxoMT5NZXRhIEFkcyBEYXNoYm9h
+cmQ8L2gxPjxkaXYgY2xhc3M9InVwZGF0ZWQiPkxhc3QgdXBkYXRlZDogTWFy
+Y2ggMTgsIDIwMjYgMTE6MDAgQU0gVVRDPC9kaXY+PC9kaXY+CjxkaXYgY2xh
+c3M9InRhYnMiIGlkPSJjbGllbnRUYWJzIj48L2Rpdj4KPGRpdiBjbGFzcz0i
+cmFuZ2UtdGFicyIgaWQ9InJhbmdlVGFicyI+CiAgPGRpdiBjbGFzcz0icmFu
+Z2UtdGFiIGFjdGl2ZSIgb25jbGljaz0ic2hvd1JhbmdlKCc3JykiPjcgRGF5
+czwvZGl2PgogIDxkaXYgY2xhc3M9InJhbmdlLXRhYiIgb25jbGljaz0ic2hv
+d1JhbmdlKCcxNCcpIj4xNCBEYXlzPC9kaXY+CiAgPGRpdiBjbGFzcz0icmFu
+Z2UtdGFiIiBvbmNsaWNrPSJzaG93UmFuZ2UoJzMwJykiPjMwIERheXM8L2Rp
+dj4KPC9kaXY+CjxkaXYgY2xhc3M9ImNvbnRlbnQiIGlkPSJjb250ZW50Ij48
+L2Rpdj4KPHNjcmlwdD4KLyogRGFzaGJvYXJkIGRhdGEgYW5kIHJlbmRlcmlu
+ZyBjb2RlIC0gc2VlIGZ1bGwgdmVyc2lvbiBpbiB3b3Jrc3BhY2UgKi8KY29u
+c3QgREFUQSA9IHsic29uZXN0YSI6eyJsYWJlbCI6IlNvbmVzdGEiLCJrcGlz
+Ijp7IjciOnsic3BlbmQiOjExMC42NCwiaW1wcmVzc2lvbnMiOjM3MzE5LCJj
+bGlja3MiOjY5NSwiY3RyIjoxLjg2LCJjcGMiOjAuMTYsInJlYWNoIjozMjcx
+MX0sIjE0Ijp7InNwZW5kIjoyOTguNzgsImltcHJlc3Npb25zIjo5NzM1OSwi
+Y2xpY2tzIjoxNjUyLCJjdHIiOjEuNzAsImNwYyI6MC4xOCwicmVhY2giOjgx
+OTc4fSwiMzAiOnsic3BlbmQiOjk5Mi44NSwiaW1wcmVzc2lvbnMiOjMxODU2
+NSwiY2xpY2tzIjo1MDEzLCJjdHIiOjEuNTcsImNwYyI6MC4yMCwicmVhY2gi
+OjIzNDgyOX19LCJkYWlseSI6W10sImNhbXBhaWduc19ieV9yYW5nZSI6eyI3
+IjpbXSwiMTQiOltdLCIzMCI6W119fSwic2F4Ijp7ImxhYmVsIjoiU0FYIiwi
+a3BpcyI6eyI3Ijp7InNwZW5kIjowLCJpbXByZXNzaW9ucyI6MCwiY2xpY2tz
+IjowLCJjdHIiOjAsImNwYyI6MCwicmVhY2giOjB9LCIxNCI6eyJzcGVuZCI6
+MCwiaW1wcmVzc2lvbnMiOjAsImNsaWNrcyI6MCwiY3RyIjowLCJjcGMiOjAs
+InJlYWNoIjowfSwiMzAiOnsic3BlbmQiOjM1LjIyLCJpbXByZXNzaW9ucyI6
+NjUxNSwiY2xpY2tzIjo3OTQsImN0ciI6MTIuMTksImNwYyI6MC4wNCwicmVh
+Y2giOjU4MDR9fSwiZGFpbHkiOltdLCJjYW1wYWlnbnNfYnlfcmFuZ2UiOnsi
+NyI6W10sIjE0IjpbXSwiMzAiOltdfX0sIm1lcmN5X21lIjp7ImxhYmVsIjoi
+TWVyY3kgTWUiLCJrcGlzIjp7IjciOnsic3BlbmQiOjc4OS4zOSwiaW1wcmVz
+c2lvbnMiOjExMTQ1NywiY2xpY2tzIjo1MzEzLCJjdHIiOjQuNzcsImNwYyI6
+MC4xNSwicmVhY2giOjc0MDM5fSwiMTQiOnsic3BlbmQiOjE1MzMuNTIsImlt
+cHJlc3Npb25zIjoyMTYwNjEsImNsaWNrcyI6MTAzMTAsImN0ciI6NC43Nywi
+Y3BjIjowLjE1LCJyZWFjaCI6MTEzMzI0fSwiMzAiOnsic3BlbmQiOjIyOTcu
+NzMsImltcHJlc3Npb25zIjozMzYwMDIsImNsaWNrcyI6MTU2NTEsImN0ciI6
+NC42NiwiY3BjIjowLjE1LCJyZWFjaCI6MTUxODA3fX0sImRhaWx5IjpbXSwi
+Y2FtcGFpZ25zX2J5X3JhbmdlIjp7IjciOltdLCIxNCI6W10sIjMwIjpbXX19
+LCJkaWFtb19iMmIiOnsibGFiZWwiOiJESUFNTyBCMkIiLCJrcGlzIjp7Ijci
+Onsic3BlbmQiOjUyMy4zOCwiaW1wcmVzc2lvbnMiOjEwNzE5LCJjbGlja3Mi
+OjE4MiwiY3RyIjoxLjcwLCJjcGMiOjIuODgsInJlYWNoIjo2MTgxLCJsZWFk
+cyI6MTZ9LCIxNCI6eyJzcGVuZCI6MTAwOSwiaW1wcmVzc2lvbnMiOjIzMjg0
+LCJjbGlja3MiOjQ0OSwiY3RyIjoxLjkzLCJjcGMiOjIuMjUsInJlYWNoIjox
+MjAyNiwibGVhZHMiOjM4fSwiMzAiOnsic3BlbmQiOjE5OTkuMzAsImltcHJl
+c3Npb25zIjo0NzkxNiwiY2xpY2tzIjo5NzYsImN0ciI6Mi4wNCwiY3BjIjoy
+LjA1LCJyZWFjaCI6MjE3MDUsImxlYWRzIjo3OH19LCJkYWlseSI6W10sImNh
+bXBhaWduc19ieV9yYW5nZSI6eyI3IjpbXSwiMTQiOltdLCIzMCI6W119fX07
+CmNvbnN0IENMSUVOVFM9T2JqZWN0LmtleXMoREFUQSk7bGV0IGN1cnJlbnRD
+bGllbnQ9Q0xJRU5UU1swXSxjdXJyZW50UmFuZ2U9IjciLGNoYXJ0SW5zdGFu
+Y2U9bnVsbDsKZnVuY3Rpb24gZm10TW9uZXkodil7cmV0dXJuIiQiK051bWJl
+cih2KS50b0xvY2FsZVN0cmluZyh1bmRlZmluZWQse21pbmltdW1GcmFjdGlv
+bkRpZ2l0czoyLG1heGltdW1GcmFjdGlvbkRpZ2l0czoyfSl9CmZ1bmN0aW9u
+IGZtdEludCh2KXtyZXR1cm4gTnVtYmVyKHYpLnRvTG9jYWxlU3RyaW5nKCl9
+CmZ1bmN0aW9uIGZtdFBjdCh2KXtyZXR1cm4gTnVtYmVyKHYpLnRvRml4ZWQo
+MikrIiUifQpmdW5jdGlvbiByZW5kZXJUYWJzKCl7Y29uc3QgZWw9ZG9jdW1l
+bnQuZ2V0RWxlbWVudEJ5SWQoImNsaWVudFRhYnMiKTtlbC5pbm5lckhUTUw9
+IiI7Q0xJRU5UUy5mb3JFYWNoKGs9Pntjb25zdCB0PWRvY3VtZW50LmNyZWF0
+ZUVsZW1lbnQoImRpdiIpO3QuY2xhc3NOYW1lPSJ0YWIiKyhrPT09Y3VycmVu
+dENsaWVudD8iIGFjdGl2ZSI6IiIpO3QudGV4dENvbnRlbnQ9REFUQVtrXS5s
+YWJlbDt0Lm9uY2xpY2s9KCk9PntjdXJyZW50Q2xpZW50PWs7cmVuZGVyVGFi
+cygpO3JlbmRlckNvbnRlbnQoKX07ZWwuYXBwZW5kQ2hpbGQodCl9KX0KZnVu
+Y3Rpb24gc2hvd1JhbmdlKHIpe2N1cnJlbnRSYW5nZT1yO2RvY3VtZW50LnF1
+ZXJ5U2VsZWN0b3JBbGwoIi5yYW5nZS10YWIiKS5mb3JFYWNoKHQ9PnQuY2xh
+c3NMaXN0LnJlbW92ZSgiYWN0aXZlIikpO2V2ZW50LnRhcmdldC5jbGFzc0xp
+c3QuYWRkKCJhY3RpdmUiKTtyZW5kZXJDb250ZW50KCl9CmZ1bmN0aW9uIHJl
+bmRlckNvbnRlbnQoKXtjb25zdCBlbD1kb2N1bWVudC5nZXRFbGVtZW50QnlJ
+ZCgiY29udGVudCIpO2NvbnN0IGQ9REFUQVtjdXJyZW50Q2xpZW50XTtjb25z
+dCByPWQua3Bpc1tjdXJyZW50UmFuZ2VdO2NvbnN0IGlzZGlhbW89Y3VycmVu
+dENsaWVudD09PSJkaWFtb19iMmIiOwpsZXQga3Bpcz0nPGRpdiBjbGFzcz0i
+a3BpLWdyaWQiPjxkaXYgY2xhc3M9ImtwaS1jYXJkIj48ZGl2IGNsYXNzPSJs
+YWJlbCI+U3BlbmQ8L2Rpdj48ZGl2IGNsYXNzPSJ2YWx1ZSI+JytmbXRNb25l
+eShyLnNwZW5kKSsnPC9kaXY+PC9kaXY+PGRpdiBjbGFzcz0ia3BpLWNhcmQi
+PjxkaXYgY2xhc3M9ImxhYmVsIj5JbXByZXNzaW9uczwvZGl2PjxkaXYgY2xh
+c3M9InZhbHVlIj4nK2ZtdEludChyLmltcHJlc3Npb25zKSsnPC9kaXY+PC9k
+aXY+PGRpdiBjbGFzcz0ia3BpLWNhcmQiPjxkaXYgY2xhc3M9ImxhYmVsIj5S
+ZWFjaDwvZGl2PjxkaXYgY2xhc3M9InZhbHVlIj4nK2ZtdEludChyLnJlYWNo
+KSsnPC9kaXY+PC9kaXY+PGRpdiBjbGFzcz0ia3BpLWNhcmQiPjxkaXYgY2xh
+c3M9ImxhYmVsIj5DbGlja3M8L2Rpdj48ZGl2IGNsYXNzPSJ2YWx1ZSI+Jytm
+bXRJbnQoci5jbGlja3MpKyc8L2Rpdj48L2Rpdj48ZGl2IGNsYXNzPSJrcGkt
+Y2FyZCI+PGRpdiBjbGFzcz0ibGFiZWwiPkNUUjwvZGl2PjxkaXYgY2xhc3M9
+InZhbHVlIj4nK2ZtdFBjdChyLmN0cikrJzwvZGl2PjwvZGl2PjxkaXYgY2xh
+c3M9ImtwaS1jYXJkIj48ZGl2IGNsYXNzPSJsYWJlbCI+Q1BDPC9kaXY+PGRp
+diBjbGFzcz0idmFsdWUiPicrZm10TW9uZXkoci5jcGMpKyc8L2Rpdj48L2Rp
+dj4nKyhpc2RpYW1vPyc8ZGl2IGNsYXNzPSJrcGktY2FyZCI+PGRpdiBjbGFz
+cz0ibGFiZWwiPkxlYWRzPC9kaXY+PGRpdiBjbGFzcz0idmFsdWUiPicrZm10
+SW50KHIubGVhZHN8fDApKyc8L2Rpdj48L2Rpdj4nOicnKSsnPC9kaXY+JzsK
+ZWwuaW5uZXJIVE1MPWtwaXMrJzxwIHN0eWxlPSJjb2xvcjojNjY2O21hcmdp
+bi10b3A6MjBweCI+Tm90ZTogVGhpcyBpcyB0aGUgYmFja3VwIGNvcHkuIEZ1
+bGwgZGFzaGJvYXJkIHdpdGggY2hhcnRzIGFuZCBjYW1wYWlnbiBkYXRhIGF2
+YWlsYWJsZSBpbiB3b3Jrc3BhY2UuPC9wPid9CnJlbmRlclRhYnMoKTtyZW5k
+ZXJDb250ZW50KCk7Cjwvc2NyaXB0PjwvYm9keT48L2h0bWw+
