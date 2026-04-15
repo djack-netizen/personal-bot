@@ -1,1 +1,53 @@
-test content - will replace momentarily
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Meta Ads Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#e0e0e0}
+.header{background:#111;padding:20px 32px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:20px;color:#fff}.header .updated{font-size:12px;color:#888}
+.tabs{display:flex;gap:0;background:#111;padding:0 32px;border-bottom:1px solid #222}
+.tab{padding:12px 24px;cursor:pointer;color:#888;border-bottom:2px solid transparent;font-size:14px;font-weight:500}
+.tab.active{color:#1a73e8;border-bottom-color:#1a73e8}.tab:hover{color:#fff}
+.range-tabs{display:flex;gap:8px;padding:20px 32px 0}
+.range-tab{padding:6px 16px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-size:13px}
+.range-tab.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.content{padding:20px 32px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.kpi-card{background:#161616;border-radius:12px;padding:20px;border:1px solid #222}
+.kpi-card .label{font-size:12px;color:#888;text-transform:uppercase;margin-bottom:8px}
+.kpi-card .value{font-size:24px;font-weight:700;color:#fff}
+.kpi-card .change{font-size:12px;margin-top:4px}
+.kpi-card .change.up{color:#34a853}.kpi-card .change.down{color:#ea4335}
+.chart-container{background:#161616;border-radius:12px;padding:20px;border:1px solid #222;margin-bottom:24px;height:300px;position:relative}
+table{width:100%;border-collapse:collapse;background:#161616;border-radius:12px;overflow:hidden;border:1px solid #222}
+th{text-align:left;padding:12px 16px;background:#1a1a1a;color:#888;font-size:12px;text-transform:uppercase;font-weight:600}
+td{padding:12px 16px;border-top:1px solid #222;font-size:14px}</style>
+</head>
+<body>
+<div class="header">
+  <h1>📊 Meta Ads Dashboard</h1>
+  <div class="updated">Last updated: April 15, 2026 5:03 AM UTC</div>
+</div>
+<div class="tabs" id="clientTabs">
+  <div class="tab active" data-client="sonesta">Sonesta</div>
+  <div class="tab" data-client="sax">SAX</div>
+  <div class="tab" data-client="mercy_me">Mercy Me</div>
+  <div class="tab" data-client="diamo_b2b">DIAMO B2B</div>
+</div>
+<div class="range-tabs" id="rangeTabs">
+  <div class="range-tab active" data-range="7">7 Days</div>
+  <div class="range-tab" data-range="14">14 Days</div>
+  <div class="range-tab" data-range="30">30 Days</div>
+</div>
+<div class="content">
+  <div class="kpi-grid" id="kpiGrid"></div>
+  <div class="chart-container"><canvas id="dailyChart"></canvas></div>
+  <div id="campaignTable"></div>
+</div>
+<script src="dashboard_data.js"></script>
+<script src="dashboard_app.js"></script>
+</body>
+</html>
