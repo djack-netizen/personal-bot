@@ -78,7 +78,7 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .card-stat-value.high-eng { color: var(--red); }
 .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); }
 .card-date { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-.card-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .card-action-btn { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
 .card-action-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
 .card-action-btn.posted { background: var(--success); color: white; border-color: var(--success); }
@@ -144,7 +144,7 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 <button class="filter-btn" data-filter="HIGH">High</button>
 <button class="filter-btn" data-filter="MEDIUM">Medium</button>
 <button class="filter-btn" data-filter="posted">Posted</button>
-<button class="filter-btn" data-filter="unposted">Queue</button>
+<button class="filter-btn" data-filter="unposted">Not Posted</button>
 <span class="toolbar-spacer"></span>
 <input type="text" class="search-box" placeholder="Search accounts..." id="searchBox">
 </div>
@@ -210,13 +210,13 @@ function rG(){
   g.innerHTML=cs.map(rC).join('');
 }
 function rC(c){
-  const ini=c.account.slice(0,2).toUpperCase(),eC=c.engagement>=5?'high-eng':'',pC=c.posted?'posted':'',pT=c.posted?'Posted':'Queue';
+  const ini=c.account.slice(0,2).toUpperCase(),eC=c.engagement>=5?'high-eng':'',pC=c.posted?'posted':'',pT=c.posted?'Posted':'Not Posted';
   const cc={'chef':'#C8372D','cocktail':'#2B4C7E','food media':'#D4A843','bartender':'#6B4C8A','food creator':'#2D8B46','viral_food_creators':'#C8372D','food_beverage_culture':'#D4A843','chef_personality':'#6B4C8A','restaurant_bar_brands':'#2B4C7E','diy_recipes':'#2D8B46'};
   const ac=cc[(c.category||'').toLowerCase()]||'#2B4C7E';
   const catLabel=(c.category||'Uncategorized').replace(/_/g,' ');
   try{return`<div class="card" onclick="openReel('${c.reelUrl}')"><div class="card-header"><div class="card-account"><div class="avatar" style="background:${ac}">${ini}</div><div><div class="account-name">@${c.account}</div><div class="account-category">${catLabel}${c.tiktokHandle?' · TT: @'+c.tiktokHandle:''}</div></div></div>${c.priority?`<span class="priority-badge priority-${c.priority}">${c.priority}</span>`:''}</div>${c.notes?`<div class="card-caption">${eH(c.notes)}</div>`:''}
 <div class="card-stats"><div class="card-stat"><div class="card-stat-value">${fN(c.views)}</div><div class="card-stat-label">Views</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.likes)}</div><div class="card-stat-label">Likes</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.comments)}</div><div class="card-stat-label">Comments</div></div><div class="card-stat"><div class="card-stat-value ${eC}">${c.engagement.toFixed(1)}%</div><div class="card-stat-label">Engagement</div></div></div>
-<div class="card-footer"><div class="card-date">${c.date||'-'}</div><div class="card-actions"><button class="card-action-btn" onclick="event.stopPropagation();openReel('${c.reelUrl}')">View Reel</button><button class="card-action-btn download" onclick="event.stopPropagation();dlReel('${c.reelUrl}',this)">Copy Link</button><label class="toggle-wrap" onclick="event.stopPropagation()"><span class="toggle-label ${c.posted?'on':''}">${c.posted?'Posted':'Queue'}</span><label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" ${c.posted?'checked':''} onchange="togglePosted(${c.rank+1},this)"><span class="slider"></span></label></label></div></div></div>`;}catch(e){return'';}
+<div class="card-footer"><div class="card-date">${c.date||'-'}</div><div class="card-actions"><button class="card-action-btn" onclick="event.stopPropagation();openReel('${c.reelUrl}')">View Reel</button><button class="card-action-btn download" onclick="event.stopPropagation();dlReel('${c.reelUrl}',this)">Copy Link</button><label class="toggle-wrap" onclick="event.stopPropagation()"><span class="toggle-label ${c.posted?'on':''}">${c.posted?'Posted':'Not Posted'}</span><label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" ${c.posted?'checked':''} onchange="togglePosted(${c.rank+1},this)"><span class="slider"></span></label></label></div></div></div>`;}catch(e){return'';}
 }
 function fN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
 function eH(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
@@ -227,9 +227,9 @@ async function togglePosted(row,cb){
   const label=wrap.querySelector('.toggle-label');
   const toggle=cb.closest('.toggle');
   const posted=cb.checked;
-  label.textContent=posted?'Posted':'Queue';
+  label.textContent=posted?'Posted':'Not Posted';
   label.className='toggle-label'+(posted?' on':'');
-  if(!GAS_URL){alert('Apps Script URL not configured. See setup instructions.');cb.checked=!posted;label.textContent=!posted?'Posted':'Queue';label.className='toggle-label'+(!posted?' on':'');return;}
+  if(!GAS_URL){alert('Apps Script URL not configured. See setup instructions.');cb.checked=!posted;label.textContent=!posted?'Posted':'Not Posted';label.className='toggle-label'+(!posted?' on':'');return;}
   toggle.classList.add('saving');
   try{
     await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({row:row,posted:posted})});
@@ -237,7 +237,7 @@ async function togglePosted(row,cb){
     const clip=A[row-2];if(clip)clip.posted=posted;
   }catch(err){
     cb.checked=!posted;
-    label.textContent=!posted?'Posted':'Queue';
+    label.textContent=!posted?'Posted':'Not Posted';
     label.className='toggle-label'+(!posted?' on':'');
     alert('Failed to save. Try again.');
   }
