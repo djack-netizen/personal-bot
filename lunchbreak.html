@@ -78,12 +78,24 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .card-stat-value.high-eng { color: var(--red); }
 .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); }
 .card-date { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-.card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .card-action-btn { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
 .card-action-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
 .card-action-btn.posted { background: var(--success); color: white; border-color: var(--success); }
 .card-action-btn.download { background: var(--navy); color: white; border-color: var(--navy); }
 .card-action-btn.download:hover { background: var(--blue); border-color: var(--blue); }
+
+/* TOGGLE SWITCH */
+.toggle-wrap { display: flex; align-items: center; gap: 6px; }
+.toggle-label { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); }
+.toggle-label.on { color: var(--success); }
+.toggle { position: relative; width: 36px; height: 20px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle .slider { position: absolute; inset: 0; background: var(--border); border-radius: 20px; transition: all 0.25s; }
+.toggle .slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 2px; bottom: 2px; background: white; border-radius: 50%; transition: all 0.25s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.toggle input:checked + .slider { background: var(--success); }
+.toggle input:checked + .slider:before { transform: translateX(16px); }
+.toggle.saving .slider { opacity: 0.5; }
 
 /* LOADING / EMPTY */
 .loading { text-align: center; padding: 80px 24px; color: var(--text-light); }
@@ -143,6 +155,8 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 
 <script>
 const SID='1TxAcALNsWi2PRQUZ2X7pOkE_hexkuL4779_p02r8xm8',HN='Daily Picks',SU=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(HN)}`;
+// PASTE YOUR APPS SCRIPT WEB APP URL HERE:
+const GAS_URL='';
 let A=[],CF='all',SQ='',selectedDate=null;
 
 // DATE PICKER — build 15 days
@@ -202,12 +216,33 @@ function rC(c){
   const catLabel=(c.category||'Uncategorized').replace(/_/g,' ');
   try{return`<div class="card" onclick="openReel('${c.reelUrl}')"><div class="card-header"><div class="card-account"><div class="avatar" style="background:${ac}">${ini}</div><div><div class="account-name">@${c.account}</div><div class="account-category">${catLabel}${c.tiktokHandle?' · TT: @'+c.tiktokHandle:''}</div></div></div>${c.priority?`<span class="priority-badge priority-${c.priority}">${c.priority}</span>`:''}</div>${c.notes?`<div class="card-caption">${eH(c.notes)}</div>`:''}
 <div class="card-stats"><div class="card-stat"><div class="card-stat-value">${fN(c.views)}</div><div class="card-stat-label">Views</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.likes)}</div><div class="card-stat-label">Likes</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.comments)}</div><div class="card-stat-label">Comments</div></div><div class="card-stat"><div class="card-stat-value ${eC}">${c.engagement.toFixed(1)}%</div><div class="card-stat-label">Engagement</div></div></div>
-<div class="card-footer"><div class="card-date">${c.date||'-'}</div><div class="card-actions"><button class="card-action-btn" onclick="event.stopPropagation();openReel('${c.reelUrl}')">View Reel</button><button class="card-action-btn download" onclick="event.stopPropagation();dlReel('${c.reelUrl}',this)">Copy Link</button><button class="card-action-btn ${pC}" onclick="event.stopPropagation()">${pT}</button></div></div></div>`;}catch(e){return'';}
+<div class="card-footer"><div class="card-date">${c.date||'-'}</div><div class="card-actions"><button class="card-action-btn" onclick="event.stopPropagation();openReel('${c.reelUrl}')">View Reel</button><button class="card-action-btn download" onclick="event.stopPropagation();dlReel('${c.reelUrl}',this)">Copy Link</button><label class="toggle-wrap" onclick="event.stopPropagation()"><span class="toggle-label ${c.posted?'on':''}">${c.posted?'Posted':'Queue'}</span><label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" ${c.posted?'checked':''} onchange="togglePosted(${c.rank+1},this)"><span class="slider"></span></label></label></div></div></div>`;}catch(e){return'';}
 }
 function fN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
 function eH(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function openReel(u){if(u&&u.startsWith('http'))window.open(u,'_blank');}
 function dlReel(u,btn){if(!u||!u.startsWith('http'))return;navigator.clipboard.writeText(u).then(()=>{if(btn){const orig=btn.textContent;btn.textContent='Copied!';btn.style.background='var(--success)';btn.style.borderColor='var(--success)';btn.style.color='white';setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.borderColor='';btn.style.color='';},1500);}}).catch(()=>{window.prompt('Copy this link:',u);});}
+async function togglePosted(row,cb){
+  const wrap=cb.closest('.toggle-wrap');
+  const label=wrap.querySelector('.toggle-label');
+  const toggle=cb.closest('.toggle');
+  const posted=cb.checked;
+  label.textContent=posted?'Posted':'Queue';
+  label.className='toggle-label'+(posted?' on':'');
+  if(!GAS_URL){alert('Apps Script URL not configured. See setup instructions.');cb.checked=!posted;label.textContent=!posted?'Posted':'Queue';label.className='toggle-label'+(!posted?' on':'');return;}
+  toggle.classList.add('saving');
+  try{
+    await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({row:row,posted:posted})});
+    // Update local data
+    const clip=A[row-2];if(clip)clip.posted=posted;
+  }catch(err){
+    cb.checked=!posted;
+    label.textContent=!posted?'Posted':'Queue';
+    label.className='toggle-label'+(!posted?' on':'');
+    alert('Failed to save. Try again.');
+  }
+  toggle.classList.remove('saving');
+}
 document.getElementById('toolbar').addEventListener('click',e=>{const b=e.target.closest('.filter-btn');if(!b)return;CF=b.dataset.filter;document.querySelectorAll('.filter-btn').forEach(x=>x.className='filter-btn');if(CF==='HIGH')b.className='filter-btn active-red';else if(CF==='MEDIUM')b.className='filter-btn active-gold';else b.className='filter-btn active';rG();});
 document.getElementById('searchBox').addEventListener('input',e=>{SQ=e.target.value;rG();});
 buildDatePicker();
