@@ -1,1 +1,99 @@
-replaced-via-base64
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lunchbreak -- Daily Picks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --cream: #FDF6EC; --cream-dark: #F5EBDA; --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D; --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456; --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D; --text-dark: #1A1A1A; --text-mid: #4A4A4A; --text-light: #8A8A8A; --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4A943A; --shadow-sm: 0 1px 3px rgba(15,25,35,0.08); --shadow-md: 0 4px 12px rgba(15,25,35,0.1); --shadow-lg: 0 8px 32px rgba(15,25,35,0.12); --radius: 12px; --radius-sm: 8px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+.header { background: var(--navy); color: var(--cream); padding: 20px 24px 16px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--red); }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-icon { width: 44px; height: 44px; background: var(--red); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 2px 8px rgba(200,55,45,0.4); }
+.brand-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 26px; letter-spacing: -0.5px; line-height: 1; }
+.brand-subtitle { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gold); margin-top: 2px; }
+.header-stats { display: flex; gap: 20px; align-items: center; }
+.stat-pill { font-family: 'Space Mono', monospace; font-size: 11px; background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); }
+.stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.stat-pill .count { font-weight: 700; color: white; }
+.toolbar { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+.filter-btn { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+.filter-btn.active-red { background: var(--red); color: white; border-color: var(--red); }
+.filter-btn.active-gold { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.filter-btn .badge { font-family: 'Space Mono', monospace; font-size: 10px; background: rgba(0,0,0,0.15); padding: 1px 6px; border-radius: 10px; }
+.filter-btn.active .badge, .filter-btn.active-red .badge, .filter-btn.active-gold .badge { background: rgba(255,255,255,0.25); }
+.toolbar-spacer { flex: 1; }
+.search-box { font-family: 'Inter', sans-serif; font-size: 13px; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-dark); width: 200px; outline: none; transition: all 0.2s; }
+.search-box:focus { border-color: var(--blue); width: 260px; }
+.grid { max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: all 0.25s ease; cursor: pointer; position: relative; }
+.card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--blue-light); }
+.card-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
+.card-account { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; text-transform: uppercase; flex-shrink: 0; }
+.account-name { font-weight: 700; font-size: 14px; color: var(--text-dark); }
+.account-category { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+.priority-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.priority-HIGH { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
+.priority-MEDIUM { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
+.priority-LOW { background: #E8F5EC; color: var(--success); border: 1px solid #B8DFCA; }
+.card-caption { padding: 0 16px 12px; font-size: 13px; color: var(--text-mid); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-stats { display: flex; border-top: 1px solid var(--border); background: var(--cream); }
+.card-stat { flex: 1; padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+.card-stat:last-child { border-right: none; }
+.card-stat-value { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 15px; color: var(--text-dark); }
+.card-stat-label { font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.card-stat-value.high-eng { color: var(--red); }
+.card-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); }
+.card-date { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-light); }
+.card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-action-btn { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+.card-action-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+.card-action-btn.posted { background: var(--success); color: white; border-color: var(--success); }
+.card-action-btn.download { background: var(--navy); color: white; border-color: var(--navy); }
+.card-action-btn.download:hover { background: var(--blue); border-color: var(--blue); }
+.loading { text-align: center; padding: 80px 24px; color: var(--text-light); }
+.loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state { text-align: center; padding: 80px 24px; }
+.empty-state-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+.empty-state-text { font-size: 14px; color: var(--text-light); }
+.footer { max-width: 1200px; margin: 40px auto 0; padding: 20px 24px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.footer-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 14px; color: var(--text-light); }
+.footer-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+@media (max-width: 768px) { .header { padding: 16px; } .brand-title { font-size: 22px; } .header-stats { display: none; } .toolbar { padding: 12px 16px; } .search-box { width: 100%; order: -1; } .search-box:focus { width: 100%; } .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; } .card-stats { flex-wrap: wrap; } .card-stat { min-width: 25%; } .footer { flex-direction: column; gap: 8px; text-align: center; } }
+@media (max-width: 420px) { .filter-btn { padding: 6px 10px; font-size: 11px; } .brand-icon { width: 36px; height: 36px; font-size: 18px; } .card-action-btn { padding: 4px 8px; font-size: 10px; } }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🍱</div><div><div class="brand-title">Lunchbreak</div><div class="brand-subtitle">Daily Viral Picks</div></div></div><div class="header-stats"><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>High:</span><span class="count" id="highCount">0</span></div></div></div></header>
+<div class="toolbar" id="toolbar"><button class="filter-btn active" data-filter="all">All <span class="badge" id="allBadge">0</span></button><button class="filter-btn" data-filter="HIGH">High</button><button class="filter-btn" data-filter="MEDIUM">Medium</button><button class="filter-btn" data-filter="posted">Posted</button><button class="filter-btn" data-filter="unposted">Queue</button><span class="toolbar-spacer"></span><input type="text" class="search-box" placeholder="Search accounts..." id="searchBox"></div>
+<div class="grid" id="clipGrid"><div class="loading"><div class="loading-spinner"></div><div>Scanning reels...</div></div></div>
+<div class="footer"><div class="footer-brand">Lunchbreak 2026</div><div class="footer-meta" id="lastUpdated">Last scan: loading...</div></div>
+<script>
+const SID='1TxAcALNsWi2PRQUZ2X7pOkE_hexkuL4779_p02r8xm8',HN='Daily Picks',SU=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(HN)}`;
+let A=[],CF='all',SQ='';
+async function fD(){try{const r=await fetch(SU),t=await r.text(),j=JSON.parse(t.match(/google\.visualization\.Query\.setResponse\((.+)\);?/)[1]);A=j.table.rows.map((r,i)=>{const g=n=>{const c=r.c[n];return c?(c.f||c.v||''):'';};return{rank:i+1,date:g(0),account:g(2),tiktokHandle:g(3),category:g(4),reelUrl:eU(g(5)),views:pN(g(6)),likes:pN(g(7)),comments:pN(g(8)),engagement:parseFloat(g(9))||0,priority:(g(10)||'').toUpperCase().trim(),posted:(g(11)||'').toLowerCase().includes('yes'),notes:g(17)};}).filter(c=>c.account);rA();}catch(e){document.getElementById('clipGrid').innerHTML='<div class="empty-state"><div class="empty-state-title">Connection Issue</div><div class="empty-state-text">Refresh to retry.</div></div>';}}
+function eU(v){if(!v)return'';const m=String(v).match(/https?:\/\/[^\s"')]+/);return m?m[0]:v;}
+function pN(v){if(!v)return 0;return parseInt(String(v).replace(/[^0-9.]/g,''))||0;}
+function rA(){document.getElementById('todayCount').textContent=A.length;document.getElementById('highCount').textContent=A.filter(c=>c.priority==='HIGH').length;document.getElementById('allBadge').textContent=A.length;document.getElementById('lastUpdated').textContent='Last scan: '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});rG();}
+function gF(){let c=[...A];if(CF==='HIGH'||CF==='MEDIUM'||CF==='LOW')c=c.filter(x=>x.priority===CF);else if(CF==='posted')c=c.filter(x=>x.posted);else if(CF==='unposted')c=c.filter(x=>!x.posted);if(SQ){const q=SQ.toLowerCase();c=c.filter(x=>x.account.toLowerCase().includes(q)||x.category.toLowerCase().includes(q));}return c;}
+function rG(){const g=document.getElementById('clipGrid'),cs=gF();if(!cs.length){g.innerHTML='<div class="empty-state"><div class="empty-state-title">No clips found</div><div class="empty-state-text">Try changing filters.</div></div>';return;}g.innerHTML=cs.map(rC).join('');}
+function rC(c){const in=c.account.slice(0,2).toUpperCase(),eC=c.engagement>=5?'high-eng':'',pC=c.posted?'posted':'',pT=c.posted?'Posted':'Queue',cc={'chef':'#C8372D','cocktail':'#2B4C7E','food media':'#D4A843','bartender':'#6B4C8A','food creator':'#2D8B46'},ac=cc[(c.category||'').toLowerCase()]||'#2B4C7E';try{return`<div class="card" onclick="openReel('${c.reelUrl}')"><div class="card-header"><div class="card-account"><div class="avatar" style="background:${ac}">${in}</div><div><div class="account-name">@${c.account}</div><div class="account-category">${c.category||'Uncategorized'}${c.tiktokHandle?' TT: @'+c.tiktokHandle:''}</div></div></div>${c.priority?`<span class="priority-badge priority-${c.priority}">${c.priority}</span>`:''}</div>${c.notes?`<div class="card-caption">${eH(c.notes)}</div>`:''}<div class="card-stats"><div class="card-stat"><div class="card-stat-value">${fN(c.views)}</div><div class="card-stat-label">Views</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.likes)}</div><div class="card-stat-label">Likes</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.comments)}</div><div class="card-stat-label">Comments</div></div><div class="card-stat"><div class="card-stat-value ${eC}">${c.engagement.toFixed(1)}%</div><div class="card-stat-label">Engagement</div></div></div><div class="card-footer"><div class="card-date">${c.date||'-'}</div><div class="card-actions"><button class="card-action-btn" onclick="event.stopPropagation();openReel('${c.reelUrl}')">View Reel</button><button class="card-action-btn download" onclick="event.stopPropagation();dlReel('${c.reelUrl}')">Save</button><button class="card-action-btn ${pC}" onclick="event.stopPropagation()">${pT}</button></div></div></div>`;}catch(e){return'';}}
+function fN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
+function eH(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function openReel(u){if(u)window.open(u,'_blank');}
+function dlReel(u){if(!u)return;window.open('https://fastdl.app/en/reels-download?url='+encodeURIComponent(u),'_blank');}
+document.getElementById('toolbar').addEventListener('click',e=>{const b=e.target.closest('.filter-btn');if(!b)return;CF=b.dataset.filter;document.querySelectorAll('.filter-btn').forEach(x=>x.className='filter-btn');if(CF==='HIGH')b.className='filter-btn active-red';else if(CF==='MEDIUM')b.className='filter-btn active-gold';else b.className='filter-btn active';rG();});
+document.getElementById('searchBox').addEventListener('input',e=>{SQ=e.target.value;rG();});
+fD();setInterval(fD,5*60*1000);
+</script>
+</body>
+</html>
