@@ -248,7 +248,9 @@ async function fD(){
     A=[...sheetData,...localOnly];
     rA();
   }catch(e){
-    document.getElementById('clipGrid').innerHTML='<div class="empty-state"><div class="empty-state-title">Connection Issue</div><div class="empty-state-text">Refresh to retry.</div></div>';
+    console.warn('Sheet fetch failed, using local data:',e);
+    if(LOCAL_DATA.length){A=LOCAL_DATA;rA();}
+    else{document.getElementById('clipGrid').innerHTML='<div class="empty-state"><div class="empty-state-title">Connection Issue</div><div class="empty-state-text">Refresh to retry.</div></div>';}
   }
 }
 
@@ -256,6 +258,11 @@ function eU(v){if(!v)return'';const s=String(v);const m=s.match(/https?:\/\/[^\s
 function pN(v){if(!v)return 0;return parseInt(String(v).replace(/[^0-9.]/g,''))||0;}
 
 function rA(){
+  // Auto-select latest date with data if current selection has none
+  if(selectedDate && A.length && !A.some(c=>c.date===selectedDate)){
+    const dates=[...new Set(A.map(c=>c.date))].sort().reverse();
+    if(dates.length){selectedDate=dates[0];const chips=document.querySelectorAll('.date-chip');chips.forEach(ch=>{ch.className='date-chip';if(ch.dataset.date===selectedDate)ch.className='date-chip active';});}
+  }
   const dateClips=selectedDate?A.filter(c=>c.date===selectedDate):A;
   const high=dateClips.filter(c=>c.priority==='HIGH');
   document.getElementById('todayCount').textContent=dateClips.length;
