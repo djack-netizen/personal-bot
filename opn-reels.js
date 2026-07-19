@@ -1,4 +1,4 @@
-/* OPN Juicebox - App Logic v3 */
+/* OPN Juicebox - App Logic v4 - Thumbnail Cards */
 var currentCategory='restaurants',selectedReels=new Set(),docUrl='',calendarDate=new Date(),selectedShootDate=null,clockStartH=10,clockStartM=0,clockStartAM=true,clockEndH=2,clockEndM=0,clockEndAM=false;
 
 function setCategory(cat){
@@ -82,13 +82,18 @@ function renderResults(){
   }
   grid.innerHTML=data.map(function(item,i){
     var ini=item.account.slice(0,2).toUpperCase();
-    var embedUrl=item.reelUrl+'embed/';
     var dlUrl='https://djack-netizen.github.io/personal-bot/dl.html?url='+encodeURIComponent(item.reelUrl);
     var isSel=selectedReels.has(currentCategory+':'+i);
+    var thumbHtml='';
+    if(item.thumbnail){
+      thumbHtml='<div class="card-thumb-wrap" onclick="window.open(\''+item.reelUrl+'\',\'_blank\')">'+'<img class="card-thumb" src="'+item.thumbnail+'" alt="@'+item.account+' reel" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=card-thumb-fallback>\u25B6 View on Instagram</div>\'"/>'+'<div class="card-play-overlay"><div class="card-play-btn">\u25B6</div></div>'+'</div>';
+    }else{
+      thumbHtml='<div class="card-thumb-wrap card-thumb-fallback-wrap" onclick="window.open(\''+item.reelUrl+'\',\'_blank\')">'+'<div class="card-thumb-fallback">\u25B6 View on Instagram</div>'+'</div>';
+    }
     return '<div class="card'+(isSel?' selected':'')+'" data-idx="'+i+'">'+
       '<div class="card-check"><input type="checkbox" '+(isSel?'checked':'')+' onchange="toggleSelect(\''+currentCategory+'\','+i+',this.checked)"></div>'+
       '<div class="card-top"><div class="avatar">'+ini+'</div><span class="username">@'+item.account+'</span></div>'+
-      '<iframe class="card-embed" src="'+embedUrl+'" loading="lazy" allowfullscreen allow="encrypted-media"></iframe>'+
+      thumbHtml+
       '<div class="card-stats">'+
         '<div class="card-stat"><div class="stat-val">'+formatNum(item.views)+'</div><div class="stat-label">Views</div></div>'+
         '<div class="card-stat"><div class="stat-val">'+formatNum(item.likes)+'</div><div class="stat-label">Likes</div></div>'+
