@@ -88,10 +88,12 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 /* DURATION BADGE */
 .dur-ok { color: var(--success); }
 .dur-short { color: var(--red); }
-/* TEXT OVERLAY RISK BADGE */
-.overlay-badge { font-family: 'Oswald', sans-serif; font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; }
-.overlay-MEDIUM { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
-.overlay-HIGH { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
+/* TEXT GRADE BADGE (A-D) */
+.text-grade { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px; margin-left: 6px; display: inline-block; }
+.text-grade-A { background: #E8F5EC; color: var(--success); border: 1px solid #B8DFCA; }
+.text-grade-B { background: #E8F0FA; color: var(--blue); border: 1px solid #B8D0E8; }
+.text-grade-C { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
+.text-grade-D { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
 
 /* TOGGLE SWITCH */
 .toggle-wrap { display: flex; align-items: center; gap: 6px; }
@@ -170,16 +172,16 @@ let A=[],CF='all',SQ='',selectedDate=null;
 // Local fallback data for days when Composio Sheets API is down
 const LOCAL_DATA=[
   // Jul 19
-  {date:'2026-07-19',rank:1,account:'thrillist',tiktokHandle:'',category:'Food Beverage Culture',reelUrl:'https://www.instagram.com/reel/DWHMOS8Dr0m/',views:741090,likes:1316,comments:34,engagement:0.2,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:92,textOverlayRisk:'LOW',sheetRow:9980},
-  {date:'2026-07-19',rank:2,account:'guyfieri',tiktokHandle:'flavortown',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DafoiD6gfX5/',views:159787,likes:1432,comments:36,engagement:0.9,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:69,textOverlayRisk:'LOW',sheetRow:9981},
-  {date:'2026-07-19',rank:3,account:'foodnetwork',tiktokHandle:'',category:'Cooking Shows Media',reelUrl:'https://www.instagram.com/reel/Da8YmengI_h/',views:249831,likes:2598,comments:52,engagement:1.1,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:76,textOverlayRisk:'LOW',sheetRow:9982},
-  {date:'2026-07-19',rank:4,account:'davidchang',tiktokHandle:'',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DVY69J-jw1d/',views:156720,likes:1515,comments:100,engagement:1.0,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:60,textOverlayRisk:'LOW',sheetRow:9983},
-  {date:'2026-07-19',rank:5,account:'davidchang',tiktokHandle:'',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DWpb6-hFsdM/',views:148522,likes:2409,comments:51,engagement:1.7,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:88,textOverlayRisk:'LOW',sheetRow:9984},
-  {date:'2026-07-19',rank:6,account:'thrillist',tiktokHandle:'',category:'Food Beverage Culture',reelUrl:'https://www.instagram.com/reel/DadZ_ywOGMz/',views:99916,likes:1564,comments:49,engagement:1.6,priority:'MEDIUM',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:98,textOverlayRisk:'LOW',sheetRow:9985},
+  {date:'2026-07-19',rank:1,account:'thrillist',tiktokHandle:'',category:'Food Beverage Culture',reelUrl:'https://www.instagram.com/reel/DWHMOS8Dr0m/',views:741090,likes:1316,comments:34,engagement:0.2,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:92,textGrade:'A',sheetRow:9980},
+  {date:'2026-07-19',rank:2,account:'guyfieri',tiktokHandle:'flavortown',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DafoiD6gfX5/',views:159787,likes:1432,comments:36,engagement:0.9,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:69,textGrade:'B',sheetRow:9981},
+  {date:'2026-07-19',rank:3,account:'foodnetwork',tiktokHandle:'',category:'Cooking Shows Media',reelUrl:'https://www.instagram.com/reel/Da8YmengI_h/',views:249831,likes:2598,comments:52,engagement:1.1,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:76,textGrade:'B',sheetRow:9982},
+  {date:'2026-07-19',rank:4,account:'davidchang',tiktokHandle:'',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DVY69J-jw1d/',views:156720,likes:1515,comments:100,engagement:1.0,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:60,textGrade:'A',sheetRow:9983},
+  {date:'2026-07-19',rank:5,account:'davidchang',tiktokHandle:'',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DWpb6-hFsdM/',views:148522,likes:2409,comments:51,engagement:1.7,priority:'HIGH',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:88,textGrade:'A',sheetRow:9984},
+  {date:'2026-07-19',rank:6,account:'thrillist',tiktokHandle:'',category:'Food Beverage Culture',reelUrl:'https://www.instagram.com/reel/DadZ_ywOGMz/',views:99916,likes:1564,comments:49,engagement:1.6,priority:'MEDIUM',onTikTok:'No',posted:false,datePosted:'',notes:'',duration:98,textGrade:'A',sheetRow:9985},
   // Jul 18
-  {date:'2026-07-18',rank:1,account:'masterchefonfox',tiktokHandle:'masterchefonfox',category:'Cooking Shows',reelUrl:'https://www.instagram.com/reel/Da1SazWzyOX/',views:488687,likes:18325,comments:142,engagement:3.8,priority:'HIGH',onTikTok:'',posted:false,datePosted:'',notes:'',duration:109,textOverlayRisk:'LOW',sheetRow:9990},
-  {date:'2026-07-18',rank:2,account:'infatuation',tiktokHandle:'infatuation',category:'Food Culture',reelUrl:'https://www.instagram.com/reel/Dakydx1OdzW/',views:412504,likes:7236,comments:67,engagement:1.8,priority:'HIGH',onTikTok:'',posted:false,datePosted:'',notes:'',duration:278,textOverlayRisk:'LOW',sheetRow:9991},
-  {date:'2026-07-18',rank:3,account:'guyfieri',tiktokHandle:'guyfieri',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DaOqbKPprUE/',views:320093,likes:11844,comments:318,engagement:3.8,priority:'HIGH',onTikTok:'',posted:false,datePosted:'',notes:'',duration:62,textOverlayRisk:'LOW',sheetRow:9992},
-  {date:'2026-07-18',rank:4,account:'infatuation',tiktokHandle:'infatuation',category:'Food Culture',reelUrl:'https://www.instagram.com/reel/DM8Kbp-uin-/',views:315615,likes:10257,comments:370,engagement:3.4,priority:'MEDIUM',onTikTok:'',posted:false,datePosted:'',notes:'',duration:81,textOverlayRisk:'LOW',sheetRow:9993},
-  {date:'2026-07-18',rank:5,account:'guyfieri',tiktokHandle:'guyfieri',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DZqGJsIielS/',views:301104,likes:7198,comments:133,engagement:2.4,priority:'MEDIUM',onTikTok:'',posted:false,datePosted:'',notes:'',duration:64,textOverlayRisk:'LOW',sheetRow:9994},
+  {date:'2026-07-18',rank:1,account:'masterchefonfox',tiktokHandle:'masterchefonfox',category:'Cooking Shows',reelUrl:'https://www.instagram.com/reel/Da1SazWzyOX/',views:488687,likes:18325,comments:142,engagement:3.8,priority:'HIGH',onTikTok:'',posted:false,datePosted:'',notes:'',duration:109,textGrade:'',sheetRow:9990},
+  {date:'2026-07-18',rank:2,account:'infatuation',tiktokHandle:'infatuation',category:'Food Culture',reelUrl:'https://www.instagram.com/reel/Dakydx1OdzW/',views:412504,likes:7236,comments:67,engagement:1.8,priority:'HIGH',onTikTok:'',posted:false,datePosted:'',notes:'',duration:278,textGrade:'',sheetRow:9991},
+  {date:'2026-07-18',rank:3,account:'guyfieri',tiktokHandle:'guyfieri',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DaOqbKPprUE/',views:320093,likes:11844,comments:318,engagement:3.8,priority:'HIGH',onTikTok:'',posted:false,datePosted:'',notes:'',duration:62,textGrade:'',sheetRow:9992},
+  {date:'2026-07-18',rank:4,account:'infatuation',tiktokHandle:'infatuation',category:'Food Culture',reelUrl:'https://www.instagram.com/reel/DM8Kbp-uin-/',views:315615,likes:10257,comments:370,engagement:3.4,priority:'MEDIUM',onTikTok:'',posted:false,datePosted:'',notes:'',duration:81,textGrade:'',sheetRow:9993},
+  {date:'2026-07-18',rank:5,account:'guyfieri',tiktokHandle:'guyfieri',category:'Celebrity Chefs',reelUrl:'https://www.instagram.com/reel/DZqGJsIielS/',views:301104,likes:7198,comments:133,engagement:2.4,priority:'MEDIUM',onTikTok:'',posted:false,datePosted:'',notes:'',duration:64,textGrade:'',sheetRow:9994},
 ];
