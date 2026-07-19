@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Downloading...</title>
+<style>
+body{font-family:-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#111;color:#fff}
+.box{text-align:center;padding:2rem}
+.spinner{border:3px solid #333;border-top:3px solid #0095f6;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+a{color:#0095f6;text-decoration:none}
+.error{color:#ff4444}
+</style>
+</head><body>
+<div class="box">
+<div class="spinner" id="spinner"></div>
+<p id="status">Fetching video...</p>
+<p id="link" style="display:none"></p>
+</div>
+<script>
+(async()=>{
+  var p=new URLSearchParams(location.search);
+  var url=p.get('url');
+  if(!url){document.getElementById('status').textContent='No URL provided';document.getElementById('spinner').style.display='none';return;}
+  try{
+    var fd=new URLSearchParams();fd.append('url',url);
+    var r=await fetch('https://api.instasave.website/media',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd});
+    var html=await r.text();
+    var m=html.match(/href="(https:\/\/cdn\.instasave\.website\/[^"]+)"/);
+    if(m){
+      document.getElementById('status').textContent='Redirecting to download...';
+      window.location.href=m[1];
+      setTimeout(function(){
+        document.getElementById('spinner').style.display='none';
+        document.getElementById('status').innerHTML='If download did not start:';
+        document.getElementById('link').style.display='block';
+        document.getElementById('link').innerHTML='<a href="'+m[1]+'">Tap here to download</a>';
+      },2000);
+    } else {
+      throw new Error('Could not extract download link');
+    }
+  }catch(e){
+    document.getElementById('spinner').style.display='none';
+    document.getElementById('status').className='error';
+    document.getElementById('status').textContent='Failed: '+e.message;
+    document.getElementById('link').style.display='block';
+    document.getElementById('link').innerHTML='<a href="https://instasave.website/" target="_blank">Try manually on instasave.website</a>';
+  }
+})();
+</script>
+</body></html>
