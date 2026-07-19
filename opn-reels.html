@@ -2,28 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Juicebox: OPN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="opn-reels.css">
+<link rel="stylesheet" href="opn-reels2.css">
 </head>
 <body>
-
 <header class="header">
-  <h1>🧃 Juicebox: OPN</h1>
-  <p class="subtitle">Reel Inspiration &amp; Shoot Planner</p>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🧃</div>
+      <div>
+        <div class="brand-title">Juicebox</div>
+        <div class="brand-subtitle">OPN Reel Inspiration</div>
+      </div>
+    </div>
+  </div>
 </header>
-
-<div class="toggle-wrap">
-  <div class="toggle">
-    <button class="active" data-cat="restaurants" onclick="setCategory('restaurants')">🍽 Restaurants</button>
-    <button data-cat="hotels" onclick="setCategory('hotels')">🏨 Hotels</button>
+<div class="vending-wrap">
+  <div class="vending-panel">
+    <div class="vending-label">Select Category</div>
+    <div class="vending-grid">
+      <button class="vending-btn active" data-cat="restaurants" onclick="setCategory('restaurants')">
+        <span class="vending-btn-code">A1</span>
+        <span class="vending-btn-icon">🍽</span>
+        Restaurants
+      </button>
+      <button class="vending-btn" data-cat="hotels" onclick="setCategory('hotels')">
+        <span class="vending-btn-code">A2</span>
+        <span class="vending-btn-icon">🏨</span>
+        Hotels
+      </button>
+      <button class="vending-btn" data-cat="spa" onclick="setCategory('spa')">
+        <span class="vending-btn-code">B1</span>
+        <span class="vending-btn-icon">🧖</span>
+        Spa
+      </button>
+      <button class="vending-btn" data-cat="b2b" onclick="setCategory('b2b')">
+        <span class="vending-btn-code">B2</span>
+        <span class="vending-btn-icon">💼</span>
+        B2B Tech
+      </button>
+    </div>
   </div>
 </div>
-
-<div class="initiate-wrap">
-  <button class="initiate-btn" id="initiateBtn" onclick="initiate()">⚡ Initiate</button>
+<div class="ignition-wrap">
+  <div class="ignition-ring">
+    <button class="ignition-btn" id="initiateBtn" onclick="initiate()">
+      <span class="ignition-icon">⚡</span>
+      <span>Start</span>
+    </button>
+  </div>
+  <div class="ignition-label">Push to Initiate</div>
 </div>
-
 <div class="juicebox-overlay" id="juiceboxOverlay">
   <div class="juicebox-scene">
     <div class="jb-straw"></div>
@@ -38,7 +71,6 @@
   <p class="juicebox-text">Squeezing the juice...</p>
   <p class="juicebox-progress" id="jbProgress">Finding the freshest reels</p>
 </div>
-
 <div class="results" id="results">
   <div class="results-header">
     <h2 id="resultsTitle">Top Restaurant Reels</h2>
@@ -46,15 +78,13 @@
   </div>
   <div class="grid" id="grid"></div>
 </div>
-
 <div class="sel-bar" id="selBar">
   <span class="sel-count" id="selCount">0 reels selected</span>
   <button class="btn-plan" onclick="openPlanModal()">📋 Create Plan</button>
   <button class="btn-clear" onclick="clearSelection()">Clear</button>
 </div>
-
 <div class="modal-overlay" id="planModal">
-  <div class="modal" style="position:relative">
+  <div class="modal">
     <button class="modal-close" onclick="closePlanModal()">✕</button>
     <div id="planForm">
       <h2>📋 Create Shoot Plan</h2>
@@ -77,16 +107,16 @@
       </div>
       <div class="form-group">
         <label>Shoot Date</label>
-        <input type="date" id="shootDate">
+        <div class="calendar-wrap" id="calendarWrap"></div>
       </div>
       <div class="time-row">
         <div class="form-group">
           <label>Start Time</label>
-          <input type="time" id="shootStart">
+          <div class="clock-wrap" id="clockStart"></div>
         </div>
         <div class="form-group">
           <label>End Time</label>
-          <input type="time" id="shootEnd">
+          <div class="clock-wrap" id="clockEnd"></div>
         </div>
       </div>
       <div class="form-group">
@@ -117,7 +147,11 @@
     </div>
   </div>
 </div>
-
+<div class="footer">
+  <span class="footer-brand">Juicebox</span>
+  <span class="footer-meta">OPN Agency • Powered by Lunchbreak</span>
+</div>
+<script src="opn-reels-data.js"></script>
 <script src="opn-reels.js"></script>
 </body>
 </html>
