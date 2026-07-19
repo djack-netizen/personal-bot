@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juicebox: OPN</title>
+<link rel="stylesheet" href="opn-reels.css">
+</head>
+<body>
+
+<header class="header">
+  <h1>🧃 Juicebox: OPN</h1>
+  <p class="subtitle">Reel Inspiration &amp; Shoot Planner</p>
+</header>
+
+<div class="toggle-wrap">
+  <div class="toggle">
+    <button class="active" data-cat="restaurants" onclick="setCategory('restaurants')">🍽 Restaurants</button>
+    <button data-cat="hotels" onclick="setCategory('hotels')">🏨 Hotels</button>
+  </div>
+</div>
+
+<div class="initiate-wrap">
+  <button class="initiate-btn" id="initiateBtn" onclick="initiate()">⚡ Initiate</button>
+</div>
+
+<div class="juicebox-overlay" id="juiceboxOverlay">
+  <div class="juicebox-scene">
+    <div class="jb-straw"></div>
+    <div class="jb-straw-bend"></div>
+    <div class="jb-box">
+      <div class="jb-juice" id="jbJuice">
+        <div class="jb-bubbles" id="jbBubbles"></div>
+      </div>
+      <div class="jb-label">JB</div>
+    </div>
+  </div>
+  <p class="juicebox-text">Squeezing the juice...</p>
+  <p class="juicebox-progress" id="jbProgress">Finding the freshest reels</p>
+</div>
+
+<div class="results" id="results">
+  <div class="results-header">
+    <h2 id="resultsTitle">Top Restaurant Reels</h2>
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="sel-bar" id="selBar">
+  <span class="sel-count" id="selCount">0 reels selected</span>
+  <button class="btn-plan" onclick="openPlanModal()">📋 Create Plan</button>
+  <button class="btn-clear" onclick="clearSelection()">Clear</button>
+</div>
+
+<div class="modal-overlay" id="planModal">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closePlanModal()">✕</button>
+    <div id="planForm">
+      <h2>📋 Create Shoot Plan</h2>
+      <div class="form-group">
+        <label>Client</label>
+        <select id="clientSelect">
+          <option value="">Select client...</option>
+          <option>Hotel Washington</option>
+          <option>Vue</option>
+          <option>The Spa</option>
+          <option>The Patio</option>
+          <option>Fireclay</option>
+          <option>DIAMO</option>
+          <option>Royal Sonesta Dupont Circle</option>
+          <option>Yours Truly DC</option>
+          <option>SAX DC</option>
+          <option>The Riggsby</option>
+          <option>Blossom</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Shoot Date</label>
+        <input type="date" id="shootDate">
+      </div>
+      <div class="time-row">
+        <div class="form-group">
+          <label>Start Time</label>
+          <input type="time" id="shootStart">
+        </div>
+        <div class="form-group">
+          <label>End Time</label>
+          <input type="time" id="shootEnd">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Shot Types</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" value="Dinner"> Dinner</label>
+          <label><input type="checkbox" value="Brunch"> Brunch</label>
+          <label><input type="checkbox" value="Breakfast"> Breakfast</label>
+          <label><input type="checkbox" value="Cocktails"> Cocktails</label>
+          <label><input type="checkbox" value="Ambience"> Ambience</label>
+          <label><input type="checkbox" value="Lifestyle"> Lifestyle</label>
+        </div>
+      </div>
+      <button class="btn-generate" id="generateBtn" onclick="generateShotList()">🚀 Generate Shot List</button>
+    </div>
+    <div id="planLoading" class="loading-state" style="display:none">
+      <div class="spinner"></div>
+      <p>Generating your shot list...</p>
+    </div>
+    <div id="planResult" class="shot-result" style="display:none">
+      <div class="icon">✅</div>
+      <h3>Shot list ready!</h3>
+      <a class="doc-link" id="docLink" href="#" target="_blank">Open Google Doc →</a>
+      <div class="share-btns">
+        <button onclick="copyDocLink()">📋 Copy Link</button>
+        <button onclick="emailDoc()">✉️ Email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="opn-reels.js"></script>
+</body>
+</html>
