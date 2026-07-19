@@ -1,0 +1,57 @@
+/* ─── Modal ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,25,35,.85);z-index:2000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:28px;position:relative}
+.modal h2{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;color:var(--text-dark);text-transform:uppercase;letter-spacing:1px}
+.modal-close{position:absolute;top:16px;right:16px;font-size:1.4rem;color:var(--text-light);background:none;cursor:pointer}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;color:var(--text-light);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px}
+.form-group select{width:100%;padding:10px 14px;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text-dark);font-size:.9rem}
+.form-group select:focus{border-color:var(--blue);outline:none}
+.calendar-wrap{background:var(--cream);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;user-select:none}
+.calendar-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calendar-nav button{width:32px;height:32px;border-radius:50%;background:var(--card-bg);border:1px solid var(--border);font-size:14px;color:var(--text-mid);transition:all .2s}
+.calendar-nav button:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.calendar-month{font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dark)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.calendar-dow{font-family:'Oswald',sans-serif;font-size:.6rem;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;padding:4px 0}
+.calendar-day{font-family:'Barlow',sans-serif;font-size:.8rem;font-weight:500;padding:8px 4px;border-radius:6px;cursor:pointer;transition:all .15s;color:var(--text-mid)}
+.calendar-day:hover{background:var(--cream-dark)}
+.calendar-day.today{font-weight:700;color:var(--red)}
+.calendar-day.selected{background:var(--red);color:#fff;font-weight:700}
+.calendar-day.other-month{color:var(--text-light);opacity:.4}
+.calendar-day.disabled{opacity:.2;cursor:not-allowed}
+.time-row{display:flex;gap:12px}
+.time-row .form-group{flex:1}
+.clock-wrap{display:flex;align-items:center;gap:6px;background:#1a1a1e;border-radius:var(--radius-sm);padding:10px 14px;border:2px solid #3a3a3e}
+.clock-segment{display:flex;flex-direction:column;align-items:center;gap:2px}
+.clock-segment button{width:28px;height:18px;border-radius:4px;background:#333;border:1px solid #555;color:#888;font-size:10px;transition:all .15s}
+.clock-segment button:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.clock-digit{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:700;color:var(--gold);text-shadow:0 0 8px rgba(212,168,67,0.3);min-width:36px;text-align:center;line-height:1}
+.clock-colon{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:700;color:var(--gold);opacity:.6;line-height:1}
+.clock-ampm{font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:700;color:var(--gold);background:#333;padding:4px 8px;border-radius:4px;cursor:pointer;border:1px solid #555;margin-left:6px;transition:all .15s;text-transform:uppercase;letter-spacing:1px}
+.clock-ampm:hover{background:var(--red);border-color:var(--red);color:#fff}
+.checkbox-group{display:flex;flex-wrap:wrap;gap:8px}
+.checkbox-group label{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--cream);border:1.5px solid var(--border);border-radius:50px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:500;color:var(--text-mid);cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
+.checkbox-group label:has(input:checked){background:var(--red);color:#fff;border-color:var(--red)}
+.checkbox-group input{display:none}
+.btn-generate{width:100%;padding:14px;border-radius:var(--radius-sm);font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;background:var(--red);color:#fff;margin-top:12px;text-transform:uppercase;letter-spacing:2px;transition:all .2s}
+.btn-generate:hover{background:var(--red-dark);box-shadow:0 4px 20px rgba(200,55,45,.3)}
+.btn-generate:disabled{opacity:.5;cursor:not-allowed}
+.shot-result{text-align:center;padding:20px 0}
+.shot-result .icon{font-size:3rem;margin-bottom:12px}
+.shot-result h3{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--success);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.shot-result .doc-link{display:inline-block;padding:10px 24px;background:var(--success);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;border-radius:8px;text-decoration:none;font-size:.85rem;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;transition:all .2s}
+.shot-result .doc-link:hover{background:#246e38}
+.share-btns{display:flex;gap:8px;justify-content:center}
+.share-btns button{padding:8px 16px;border-radius:8px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;background:var(--cream);color:var(--text-mid);border:1.5px solid var(--border);text-transform:uppercase;letter-spacing:1px;transition:all .2s}
+.share-btns button:hover{border-color:var(--blue);color:var(--blue)}
+.loading-state{text-align:center;padding:40px 0}
+.loading-state .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state p{font-family:'Oswald',sans-serif;color:var(--text-light);font-size:.85rem;text-transform:uppercase;letter-spacing:1px}
+.footer{max-width:1200px;margin:0 auto;padding:20px 24px;border-top:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Yellowtail',cursive;font-size:16px;color:var(--text-light)}
+.footer-meta{font-family:'Oswald',sans-serif;font-size:10px;font-weight:500;color:var(--text-light);text-transform:uppercase;letter-spacing:1px}
+@media(max-width:768px){.header{padding:14px 16px}.brand-title{font-size:28px}.grid{padding:12px 16px;grid-template-columns:1fr;gap:12px}.footer{flex-direction:column;gap:8px;text-align:center}.vending-wrap{padding:0 16px}}
+@media(max-width:420px){.brand-icon{width:38px;height:38px;font-size:20px}.brand-title{font-size:24px}.ignition-ring{width:120px;height:120px}.ignition-btn{width:84px;height:84px}.clock-digit{font-size:1.3rem}}
