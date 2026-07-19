@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Oswald:wght@500;600&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root { --cream: #FDF6EC; --cream-dark: #F5EBDA; --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D; --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456; --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D; --text-dark: #1A1A1A; --text-mid: #4A4A4A;​--text-light: #8A8A8A; --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4343A; --shadow-lg: 0 8px 32px rgba(15,25,35,0.12); --radius: 12px; --radius-sm: 8px; }
+:root { --cream: #FDF6EC; --cream-dark: #F5EBDA; --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D; --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456; --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D; --text-dark: #1A1A1A; --text-mid: #4A4A4A; --text-light: #8A8A8A; --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4943A; --shadow-lg: 0 8px 32px rgba(15,25,35,0.12); --radius: 12px; --radius-sm: 8px; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .header { background: var(--navy); color: var(--cream); padding: 20px 24px 16px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--red); }
@@ -47,9 +47,8 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .account-category { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
 .priority-badge { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 1px; }
 .priority-HIGH { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
-.priority-MEDIUM { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
-.priority-LOW { background: #E8F5EC; color: var(--success); border: 1px solid #B8DFCA; }
-.card-caption { padding: 0 16px 12px; font-size: 13px; color: var(--text-mid); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.priority-MEDIUM { background: #FEF3E2; color: #B80�0C; border: 1px solid #F5DDB5; }
+.card-caption { padding: 0 16px 12px; font-size: 13px; color: var(--text-mid); line-height: 1.5; overflow: hidden; }
 .card-stats { display: flex; border-top: 1px solid var(--border); background: var(--cream); }
 .card-stat { flex: 1; padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
 .card-stat:last-child { border-right: none; }
@@ -57,7 +56,7 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .card-stat-label { font-family: 'Oswald', sans-serif; font-size: 9px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 .card-stat-value.high-eng { color: var(--red); }
 .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); }
-.card-date { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+.card-date { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-light); text-transform: uppercase; }
 .card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .card-action-btn { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
 .card-action-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
@@ -68,7 +67,7 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .reel-embed iframe { width: 100%; height: 480px; border: none; display: block; }
 .dur-ok { color: var(--success); } .dur-short { color: var(--red); }
 .text-grade { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px; margin-left: 6px; display: inline-block; }
-.text-grade-A { background: #E8F0EA; color: var(--success); border: 1px solid #B8DFCA; }
+.text-grade-A { background: #E8F5EC; color: var(--success); border: 1px solid #B8DFCA; }
 .text-grade-B { background: #E8F0FA; color: var(--blue); border: 1px solid #B8D0E8; }
 .text-grade-C { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
 .text-grade-D { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
@@ -91,12 +90,12 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .footer { max-width: 1200px; margin: 40px auto 0; padding: 20px 24px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .footer-brand { font-family: 'Yellowtail', cursive; font-size: 16px; color: var(--text-light); }
 .footer-meta { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
-@media (max-width: 768px) { .header { padding: 14px 16px; } .brand-title { font-size: 28px; } .header-stats { display: none; } .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; } .search-box { width: 100%; order: -1; } .search-box:focus { width: 100%; } .footer { flex-direction: column; gap: 8px; text-align: center; } }
+@media (max-width: 768px) { .header { padding: 14px 16px; } .brand-title { font-size: 28px; } .header-stats { display: none; } .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; } .search-box { width: 100%; order: -1; } .footer { flex-direction: column; gap: 8px; text-align: center; } }
 @media (max-width: 420px) { .filter-btn { padding: 5px 10px; font-size: 11px; } .brand-icon { width: 38px; height: 38px; font-size: 20px; } .brand-title { font-size: 24px; } .reel-embed iframe { height: 400px; } }
 </style>
 </head>
 <body>
-<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🧰</div><div><div class="brand-title">Juicebox</div><div class="brand-subtitle">Powered by Lunchbreak</div></div></div><div class="header-stats"><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>Higk:</span><span class="count" id="highCount">0</span></div></div></div></header>
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🧰</div><div><div class="brand-title">Juicebox</div><div class="brand-subtitle">Powered by Lunchbreak</div></div></div><div class="header-stats"><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>High:</span><span class="count" id="highCount">0</span></div></div></div></header>
 <div class="date-bar" id="dateBar"></div>
 <div class="toolbar" id="toolbar">
 <button class="filter-btn active" data-filter="all">All <span class="badge" id="allBadge">0</span></button>
@@ -109,6 +108,7 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 </div>
 <div class="grid" id="clipGrid"><div class="loading"><div class="loading-spinner"></div><div>Scanning reels...</div></div></div>
 <div class="footer"><div class="footer-brand">Lunchbreak 2026</div><div class="footer-meta" id="lastUpdated">Last scan: loading...</div></div>
+<script src="lunchbreak-data.js"></script>
 <script src="lunchbreak.js"></script>
 </body>
 </html>
