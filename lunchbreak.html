@@ -7,20 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Oswald:wght@500;600&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream: #FDF6EC; --cream-dark: #F5EBDA;
-  --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D;
-  --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456;
-  --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D;
-  --text-dark: #1A1A1A; --text-mid: #4A4A4A; --text-light: #8A8A8A;
-  --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4943A;
-  --shadow-lg: 0 8px 32px rgba(15,25,35,0.12);
-  --radius: 12px; --radius-sm: 8px;
-}
+:root { --cream: #FDF6EC; --cream-dark: #F5EBDA; --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D; --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456; --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D; --text-dark: #1A1A1A; --text-mid: #4A4A4A;​--text-light: #8A8A8A; --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4343A; --shadow-lg: 0 8px 32px rgba(15,25,35,0.12); --radius: 12px; --radius-sm: 8px; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
-/* HEADER */
 .header { background: var(--navy); color: var(--cream); padding: 20px 24px 16px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--red); }
 .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
 .brand { display: flex; align-items: center; gap: 14px; }
@@ -32,16 +21,11 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 .stat-pill .count { font-weight: 600; color: white; }
-
-/* DATE PICKER */
-.date-bar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; border-bottom: 1px solid var(--border); }
+.date-bar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); }
 .date-bar::-webkit-scrollbar { display: none; }
 .date-chip { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
 .date-chip:hover { border-color: var(--blue); color: var(--blue); }
 .date-chip.active { background: var(--red); color: white; border-color: var(--red); }
-.date-chip .day-name { font-size: 10px; opacity: 0.7; }
-
-/* TOOLBAR */
 .toolbar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
 .filter-btn { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
 .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
@@ -53,11 +37,7 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .toolbar-spacer { flex: 1; }
 .search-box { font-family: 'Barlow', sans-serif; font-size: 13px; padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-dark); width: 180px; outline: none; transition: all 0.2s; }
 .search-box:focus { border-color: var(--blue); width: 240px; }
-
-/* GRID */
 .grid { max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
-
-/* CARD */
 .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: all 0.25s ease; position: relative; }
 .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--blue-light); }
 .card-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; cursor: pointer; }
@@ -84,23 +64,14 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .card-action-btn.posted { background: var(--success); color: white; border-color: var(--success); }
 .card-action-btn.download { background: var(--navy); color: white; border-color: var(--navy); }
 .card-action-btn.download:hover { background: var(--blue); border-color: var(--blue); }
-
-/* REEL EMBED */
 .reel-embed { width: 100%; background: #000; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .reel-embed iframe { width: 100%; height: 480px; border: none; display: block; }
-@media (max-width: 420px) { .reel-embed iframe { height: 400px; } }
-
-/* DURATION BADGE */
-.dur-ok { color: var(--success); }
-.dur-short { color: var(--red); }
-/* TEXT GRADE BADGE (A-D) */
+.dur-ok { color: var(--success); } .dur-short { color: var(--red); }
 .text-grade { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px; margin-left: 6px; display: inline-block; }
-.text-grade-A { background: #E8F5EC; color: var(--success); border: 1px solid #B8DFCA; }
+.text-grade-A { background: #E8F0EA; color: var(--success); border: 1px solid #B8DFCA; }
 .text-grade-B { background: #E8F0FA; color: var(--blue); border: 1px solid #B8D0E8; }
 .text-grade-C { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
 .text-grade-D { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
-
-/* TOGGLE SWITCH */
 .toggle-wrap { display: flex; align-items: center; gap: 6px; }
 .toggle-label { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); }
 .toggle-label.on { color: var(--success); }
@@ -111,40 +82,33 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .toggle input:checked + .slider { background: var(--success); }
 .toggle input:checked + .slider:before { transform: translateX(16px); }
 .toggle.saving .slider { opacity: 0.5; }
-
-/* LOADING / EMPTY */
 .loading { text-align: center; padding: 80px 24px; color: var(--text-light); }
 .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .empty-state { text-align: center; padding: 80px 24px; }
 .empty-state-title { font-family: 'Yellowtail', cursive; font-size: 26px; color: var(--text-dark); margin-bottom: 8px; }
 .empty-state-text { font-size: 14px; color: var(--text-light); }
-
-/* FOOTER */
 .footer { max-width: 1200px; margin: 40px auto 0; padding: 20px 24px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .footer-brand { font-family: 'Yellowtail', cursive; font-size: 16px; color: var(--text-light); }
 .footer-meta { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .header { padding: 14px 16px; }
-  .brand-title { font-size: 28px; }
-  .header-stats { display: none; }
-  .date-bar { padding: 10px 16px; }
-  .toolbar { padding: 10px 16px; }
-  .search-box { width: 100%; order: -1; }
-  .search-box:focus { width: 100%; }
-  .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; }
-  .card-stats { flex-wrap: wrap; }
-  .card-stat { min-width: 25%; }
-  .footer { flex-direction: column; gap: 8px; text-align: center; }
-}
-@media (max-width: 420px) {
-  .filter-btn { padding: 5px 10px; font-size: 11px; }
-  .brand-icon { width: 38px; height: 38px; font-size: 20px; }
-  .brand-title { font-size: 24px; }
-  .card-action-btn { padding: 4px 8px; font-size: 10px; }
-}
+@media (max-width: 768px) { .header { padding: 14px 16px; } .brand-title { font-size: 28px; } .header-stats { display: none; } .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; } .search-box { width: 100%; order: -1; } .search-box:focus { width: 100%; } .footer { flex-direction: column; gap: 8px; text-align: center; } }
+@media (max-width: 420px) { .filter-btn { padding: 5px 10px; font-size: 11px; } .brand-icon { width: 38px; height: 38px; font-size: 20px; } .brand-title { font-size: 24px; } .reel-embed iframe { height: 400px; } }
 </style>
 </head>
 <body>
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🧰</div><div><div class="brand-title">Juicebox</div><div class="brand-subtitle">Powered by Lunchbreak</div></div></div><div class="header-stats"><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>Higk:</span><span class="count" id="highCount">0</span></div></div></div></header>
+<div class="date-bar" id="dateBar"></div>
+<div class="toolbar" id="toolbar">
+<button class="filter-btn active" data-filter="all">All <span class="badge" id="allBadge">0</span></button>
+<button class="filter-btn" data-filter="HIGH">High</button>
+<button class="filter-btn" data-filter="MEDIUM">Medium</button>
+<button class="filter-btn" data-filter="posted">Posted</button>
+<button class="filter-btn" data-filter="unposted">Not Posted</button>
+<span class="toolbar-spacer"></span>
+<input type="text" class="search-box" placeholder="Search accounts..." id="searchBox">
+</div>
+<div class="grid" id="clipGrid"><div class="loading"><div class="loading-spinner"></div><div>Scanning reels...</div></div></div>
+<div class="footer"><div class="footer-brand">Lunchbreak 2026</div><div class="footer-meta" id="lastUpdated">Last scan: loading...</div></div>
+<script src="lunchbreak.js"></script>
+</body>
+</html>
