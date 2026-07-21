@@ -17,6 +17,9 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .brand-title { font-family: 'Yellowtail', cursive; font-weight: 400; font-size: 34px; line-height: 1; }
 .brand-subtitle { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); margin-top: 2px; }
 .header-stats { display: flex; gap: 20px; align-items: center; }
+.scan-btn { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; background: var(--red); color: white; border: none; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+.scan-btn:hover { background: var(--red-dark); transform: scale(1.05); }
+.scan-btn:disabled { cursor: wait; }
 .stat-pill { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); }
 .stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
@@ -89,12 +92,12 @@ body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream
 .footer { max-width: 1200px; margin: 40px auto 0; padding: 20px 24px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .footer-brand { font-family: 'Yellowtail', cursive; font-size: 16px; color: var(--text-light); }
 .footer-meta { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
-@media (max-width: 768px) { .header { padding: 14px 16px; } .brand-title { font-size: 28px; } .header-stats { display: none; } .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; } .search-box { width: 100%; order: -1; } .footer { flex-direction: column; gap: 8px; text-align: center; } }
+@media (max-width: 768px) { .header { padding: 14px 16px; } .brand-title { font-size: 28px; } .header-stats { display: flex; gap: 8px; } .stat-pill { display: none; } .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; } .search-box { width: 100%; order: -1; } .footer { flex-direction: column; gap: 8px; text-align: center; } }
 @media (max-width: 420px) { .filter-btn { padding: 5px 10px; font-size: 11px; } .brand-icon { width: 38px; height: 38px; font-size: 20px; } .brand-title { font-size: 24px; } .reel-embed iframe { height: 400px; } }
 </style>
 </head>
 <body>
-<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🧰</div><div><div class="brand-title">Juicebox</div><div class="brand-subtitle">Powered by Lunchbreak</div></div></div><div class="header-stats"><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>High:</span><span class="count" id="highCount">0</span></div></div></div></header>
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🧰</div><div><div class="brand-title">Juicebox</div><div class="brand-subtitle">Powered by Lunchbreak</div></div></div><div class="header-stats"><button class="scan-btn" onclick="runScan(this)">🔄 Scan Now</button><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>High:</span><span class="count" id="highCount">0</span></div></div></div></header>
 <div class="date-bar" id="dateBar"></div>
 <div class="toolbar" id="toolbar">
 <button class="filter-btn active" data-filter="all">All <span class="badge" id="allBadge">0</span></button>
