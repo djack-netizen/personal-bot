@@ -11,6 +11,25 @@ async function togglePosted(row,cb){
   catch(err){cb.checked=!p;l.textContent=!p?'Posted':'Not Posted';l.className='toggle-label'+(!p?' on':'');alert('Failed');}
   t.classList.remove('saving');
 }
+async function runScan(btn){
+  if(!GAS_URL){alert('GAS URL not configured');return;}
+  var orig=btn.innerHTML;
+  btn.innerHTML='\u23F3 Scanning...';btn.disabled=true;btn.style.opacity='0.6';
+  try{
+    var r=await fetch(GAS_URL+'?action=scan',{redirect:'follow'});
+    var data=await r.json();
+    if(data.ok){
+      btn.innerHTML='\u2705 '+data.clips+' clips';
+      setTimeout(function(){fD();btn.innerHTML=orig;btn.disabled=false;btn.style.opacity='1';},2500);
+    }else{
+      btn.innerHTML='\u274C Error';
+      setTimeout(function(){btn.innerHTML=orig;btn.disabled=false;btn.style.opacity='1';},2000);
+    }
+  }catch(err){
+    btn.innerHTML='\u274C Failed';
+    setTimeout(function(){btn.innerHTML=orig;btn.disabled=false;btn.style.opacity='1';},2000);
+  }
+}
 document.getElementById('toolbar').addEventListener('click',function(e){var b=e.target.closest('.filter-btn');if(!b)return;CF=b.dataset.filter;document.querySelectorAll('.filter-btn').forEach(function(x){x.className='filter-btn';});if(CF==='HIGH')b.className='filter-btn active-red';else if(CF==='MEDIUM')b.className='filter-btn active-gold';else b.className='filter-btn active';rG();});
 document.getElementById('searchBox').addEventListener('input',function(e){SQ=e.target.value;rG();});
 buildDatePicker();fD();setInterval(fD,5*60*1000);
