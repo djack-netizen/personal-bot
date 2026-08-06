@@ -1,4 +1,7 @@
+
+
 const SID='1TxAcALNsWi2PRQUZ2X7pOkE_hexkuL4779_p02r8xm8',HN='Daily Picks',SU=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(HN)}`;
+// Apps Script web app URL — must be deployed as "Anyone" (not domain-restricted)
 const GAS_URL='https://script.google.com/a/macros/openventures.io/s/AKfycbzA_lKg9H_HfLjZNfYPelTW5YL9_8p_JTWdIjYfnsXVUxSrv07ANkZP-TRr0YGkRdpx0g/exec';
 let A=[],CF='all',SQ='',selectedDate=null;
 
@@ -25,15 +28,13 @@ function buildDatePicker(){
   });
 }
 
-async function loadFromSheet(){
-  let clips=[];
+async function fD(){
   try{
     const csvUrl='https://docs.google.com/spreadsheets/d/'+SID+'/export?format=csv&gid=0';
     const r=await fetch(csvUrl);
-    if(!r.ok) throw new Error('CSV fetch failed');
     const txt=await r.text();
-    if(txt.startsWith('<')) throw new Error('Got HTML redirect');
     const rows=txt.split('\n');
+    let clips=[];
     for(let i=1;i<rows.length;i++){
       if(!rows[i].trim())continue;
       const cols=[];let cur='',inQ=false;
@@ -56,54 +57,57 @@ async function loadFromSheet(){
         textOverlayRisk:(cols[20]||'').toUpperCase().trim()
       });
     }
+    try{
+      const tr=await fetch('today.json?t='+Date.now());
+      if(tr.ok){
+        const tc=await tr.json();
+        const urls=new Set(clips.map(c=>c.reelUrl));
+        tc.forEach(c=>{if(!urls.has(c.reelUrl))clips.push(c);});
+      }
+    }catch(e){}
+    A=clips.map((c,i)=>({
+      rank:c.rank||i+1,sheetRow:i+2,date:c.date||'',
+      account:String(c.account||'').replace(/^@/,''),
+      tiktokHandle:String(c.tiktokHandle||'').replace(/^@/,''),
+      category:c.category||'',reelUrl:c.reelUrl||'',
+      views:c.views||0,likes:c.likes||0,comments:c.comments||0,
+      engagement:c.engagement||0,priority:(c.priority||'').toUpperCase().trim(),
+      onTikTok:c.onTikTok||'',posted:!!c.posted,datePosted:c.datePosted||'',
+      notes:c.notes||'',duration:c.duration||0,
+      textOverlayRisk:(c.textOverlayRisk||'').toUpperCase().trim(),
+    })).filter(c=>c.account);
+    rA();
   }catch(e){
     try{
       const r2=await fetch(SU),t=await r2.text(),j=JSON.parse(t.match(/google\.visualization\.Query\.setResponse\((.+)\);?/)[1]);
-      clips=j.table.rows.map((r,i)=>{
+      A=j.table.rows.map((r,i)=>{
         const g=n=>{const c=r.c[n];return c?(c.f||c.v||''):'';};
-        return{date:g(0),rank:i+1,account:String(g(2)).replace(/^@/,''),tiktokHandle:String(g(3)).replace(/^@/,''),category:g(4),reelUrl:eU(g(5)),views:pN(g(6)),likes:pN(g(7)),comments:pN(g(8)),engagement:parseFloat(g(9))||0,priority:(g(10)||'').toUpperCase().trim(),onTikTok:g(11),posted:(g(12)||'').toLowerCase().includes('yes'),datePosted:g(13),notes:g(18),duration:pN(g(19)),textOverlayRisk:(g(20)||'').toUpperCase().trim()};
+        return{rank:i+1,sheetRow:i+2,date:g(0),account:String(g(2)).replace(/^@/,''),tiktokHandle:String(g(3)).replace(/^@/,''),category:g(4),reelUrl:eU(g(5)),views:pN(g(6)),likes:pN(g(7)),comments:pN(g(8)),engagement:parseFloat(g(9))||0,priority:(g(10)||'').toUpperCase().trim(),onTikTok:g(11),posted:(g(12)||'').toLowerCase().includes('yes'),datePosted:g(13),notes:g(18),duration:pN(g(19)),textOverlayRisk:(g(20)||'').toUpperCase().trim()};
       }).filter(c=>c.account);
-    }catch(e2){}
-  }
-  return clips;
-}
-
-async function loadFromTodayJson(){
-  try{
-    const tr=await fetch('today.json?t='+Date.now());
-    if(tr.ok){
-      return await tr.json();
+      rA();
+    }catch(e2){
+      // Sheet + gviz both failed, try today.json as last resort
+      try{
+        const tr=await fetch('today.json?t='+Date.now());
+        if(tr.ok){
+          const tc=await tr.json();
+          A=tc.map((c,i)=>({
+            rank:c.rank||i+1,sheetRow:i+2,date:c.date||'',
+            account:String(c.account||'').replace(/^@/,''),
+            tiktokHandle:String(c.tiktokHandle||'').replace(/^@/,''),
+            category:c.category||'',reelUrl:c.reelUrl||'',
+            views:c.views||0,likes:c.likes||0,comments:c.comments||0,
+            engagement:c.engagement||0,priority:(c.priority||'').toUpperCase().trim(),
+            onTikTok:c.onTikTok||'',posted:!!c.posted,datePosted:c.datePosted||'',
+            notes:c.notes||'',duration:c.duration||0,
+            textOverlayRisk:(c.textOverlayRisk||'').toUpperCase().trim(),
+          })).filter(c=>c.account);
+          if(A.length){rA();return;}
+        }
+      }catch(e3){}
+      document.getElementById('clipGrid').innerHTML='<div class="empty-state"><div class="empty-state-title">Connection Issue</div><div class="empty-state-text">Refresh to retry.</div></div>';
     }
-  }catch(e){}
-  return[];
-}
-
-async function fD(){
-  // Load both sources in parallel — today.json ALWAYS loads
-  const [sheetClips, todayClips] = await Promise.all([loadFromSheet(), loadFromTodayJson()]);
-  
-  let clips = sheetClips;
-  // Merge today.json clips (dedup by URL)
-  const urls=new Set(clips.map(c=>c.reelUrl));
-  todayClips.forEach(c=>{if(!urls.has(c.reelUrl))clips.push(c);});
-  
-  A=clips.map((c,i)=>({
-    rank:c.rank||i+1,sheetRow:i+2,date:c.date||'',
-    account:String(c.account||'').replace(/^@/,''),
-    tiktokHandle:String(c.tiktokHandle||'').replace(/^@/,''),
-    category:c.category||'',reelUrl:c.reelUrl||'',
-    views:c.views||0,likes:c.likes||0,comments:c.comments||0,
-    engagement:c.engagement||0,priority:(c.priority||'').toUpperCase().trim(),
-    onTikTok:c.onTikTok||'',posted:!!c.posted,datePosted:c.datePosted||'',
-    notes:c.notes||'',duration:c.duration||0,
-    textOverlayRisk:(c.textOverlayRisk||'').toUpperCase().trim(),
-  })).filter(c=>c.account);
-  
-  if(!A.length){
-    document.getElementById('clipGrid').innerHTML='<div class="empty-state"><div class="empty-state-title">No clips found</div><div class="empty-state-text">Run a scan to populate clips.</div></div>';
-    return;
   }
-  rA();
 }
 
 function eU(v){if(!v)return'';const s=String(v);const m=s.match(/https?:\/\/[^\s"')]+/);return m?m[0]:s;}
@@ -166,7 +170,7 @@ async function togglePosted(row,cb){
   const posted=cb.checked;
   label.textContent=posted?'Posted':'Not Posted';
   label.className='toggle-label'+(posted?' on':'');
-  if(!GAS_URL){alert('Apps Script URL not configured.');cb.checked=!posted;label.textContent=!posted?'Posted':'Not Posted';label.className='toggle-label'+(!posted?' on':'');return;}
+  if(!GAS_URL){alert('Apps Script URL was not configured.');cb.checked=!posted;label.textContent=!posted?'Posted':'Not Posted';label.className='toggle-label'+(!posted?' on':'');return;}
   toggle.classList.add('saving');
   try{
     await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({row:row,posted:posted}),redirect:'follow'});
