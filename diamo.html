@@ -1,158 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>DIAMO B2B - Meta Ads Dashboard</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1117;color:#e4e4e7}
-.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:24px 32px;border-bottom:1px solid #2a2a3e}
-.header h1{font-size:24px;font-weight:700;color:#fff}
-.header .subtitle{color:#9ca3af;font-size:13px;margin-top:4px}
-.header .updated{color:#6b7280;font-size:12px;margin-top:2px}
-.container{max-width:1400px;margin:0 auto;padding:24px 20px}
-.tabs{display:flex;gap:8px;margin-bottom:24px}
-.tab{padding:8px 20px;border-radius:8px;background:#1e1e2e;color:#9ca3af;cursor:pointer;font-size:14px;font-weight:500;border:1px solid #2a2a3e;transition:all .2s}
-.tab.active,.tab:hover{background:#3b82f6;color:#fff;border-color:#3b82f6}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
-.kpi{background:#1e1e2e;border-radius:12px;padding:20px;border:1px solid #2a2a3e}
-.kpi .label{font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.kpi .value{font-size:28px;font-weight:700;color:#fff}
-.kpi .value.green{color:#34d399}
-.kpi .value.blue{color:#60a5fa}
-.kpi .value.amber{color:#fbbf24}
-.kpi .value.red{color:#f87171}
-.section-title{font-size:18px;font-weight:600;margin-bottom:16px;color:#fff}
-table{width:100%;border-collapse:collapse;margin-bottom:28px;font-size:13px}
-thead th{background:#1a1a2e;color:#9ca3af;text-transform:uppercase;font-size:11px;letter-spacing:.5px;padding:12px 14px;text-align:left;border-bottom:1px solid #2a2a3e;white-space:nowrap}
-tbody td{padding:12px 14px;border-bottom:1px solid #1e1e2e;color:#d1d5db}
-tbody tr:hover{background:#1e1e2e}
-.status-active{color:#34d399;font-weight:600}
-.status-paused{color:#6b7280;font-weight:600}
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
-.badge-green{background:#064e3b;color:#34d399}
-.badge-amber{background:#451a03;color:#fbbf24}
-.badge-red{background:#450a0a;color:#f87171}
-.footer{text-align:center;padding:24px;color:#4b5563;font-size:12px;border-top:1px solid #1e1e2e;margin-top:40px}
-.hidden{display:none}
-@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.container{padding:16px 12px}table{font-size:12px}thead th,tbody td{padding:8px 6px}}
-</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#e0e0e0}
+.header{background:#111;padding:20px 32px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:20px;color:#fff}.header .updated{font-size:12px;color:#888}
+.range-tabs{display:flex;gap:8px;padding:20px 32px 0}
+.range-tab{padding:6px 16px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-size:13px}
+.range-tab.active{background:#6f1ae8;color:#fff;border-color:#6f1ae8}
+.content{padding:20px 32px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.kpi-card{background:#161616;border-radius:12px;padding:20px;border:1px solid #222}
+.kpi-card .label{font-size:12px;color:#888;text-transform:uppercase;margin-bottom:8px}
+.kpi-card .value{font-size:24px;font-weight:700;color:#fff}
+.kpi-card .change{font-size:12px;margin-top:4px}
+.kpi-card .change.up{color:#34a853}.kpi-card .change.down{color:#ea4335}
+.chart-container{background:#161616;border-radius:12px;padding:20px;border:1px solid #222;margin-bottom:24px;height:300px;position:relative}
+table{width:100%;border-collapse:collapse;background:#161616;border-radius:12px;overflow:hidden;border:1px solid #222}
+th{text-align:left;padding:12px 16px;background:#1a1a1a;color:#888;font-size:12px;text-transform:uppercase;font-weight:600}
+td{padding:12px 16px;border-top:1px solid #222;font-size:14px}
+.cpl-highlight{color:#6f1ae8;font-weight:700}</style>
 </head>
 <body>
 <div class="header">
-<h1>DIAMO B2B - Meta Ads Dashboard</h1>
-<div class="subtitle">Ad Account: act_1423348345499145 - All-in-one hotel revenue platform</div>
-<div class="updated">Last updated: Aug 18, 2026 at 6:57 PM UTC - Powered by David Jack's Personal Bot</div>
+  <h1>&#128142; DIAMO B2B &#8212; Meta Ads Dashboard</h1>
+  <div class="updated">Last updated: Aug 25, 2026 7:30 PM UTC</div>
 </div>
-<div class="container">
-<div class="tabs">
-<div class="tab active" onclick="showWindow('7d')">Last 7 Days</div>
-<div class="tab" onclick="showWindow('14d')">Last 14 Days</div>
-<div class="tab" onclick="showWindow('30d')">Last 30 Days</div>
+<div class="range-tabs" id="rangeTabs">
+  <div class="range-tab active" data-range="7">7 Days</div>
+  <div class="range-tab" data-range="14">14 Days</div>
+  <div class="range-tab" data-range="30">30 Days</div>
 </div>
-<div id="view-7d" class="window">
-<div class="kpi-grid">
-<div class="kpi"><div class="label">Total Spend</div><div class="value">$870.12</div></div>
-<div class="kpi"><div class="label">Impressions</div><div class="value blue">12,475</div></div>
-<div class="kpi"><div class="label">Reach</div><div class="value blue">7,403</div></div>
-<div class="kpi"><div class="label">Link Clicks</div><div class="value green">192</div></div>
-<div class="kpi"><div class="label">Leads</div><div class="value green">14</div></div>
-<div class="kpi"><div class="label">Cost per Lead</div><div class="value amber">$62.15</div></div>
-<div class="kpi"><div class="label">CTR</div><div class="value">2.42%</div></div>
-<div class="kpi"><div class="label">CPC</div><div class="value">$2.88</div></div>
-</div>
-<div class="section-title">Campaign Breakdown (7 Days: Aug 11 - Aug 17)</div>
-<table>
-<thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th><th>CPL</th><th>Video Views</th></tr></thead>
-<tbody>
-<tr><td>Tremont Through The Door Leads</td><td><span class="status-active">ACTIVE</span></td><td>$359.51</td><td>6,622</td><td>5,319</td><td>169</td><td>2.55%</td><td>$2.13</td><td>6</td><td>$59.92</td><td>2,205</td></tr>
-<tr><td>Molloy Record Year Leads</td><td><span class="status-active">ACTIVE</span></td><td>$270.11</td><td>2,389</td><td>1,630</td><td>58</td><td>2.43%</td><td>$4.66</td><td>2</td><td>$135.06</td><td>861</td></tr>
-<tr><td>DirectBookings Video (Aug 2026)</td><td><span class="status-active">ACTIVE</span></td><td>$132.33</td><td>2,499</td><td>1,061</td><td>53</td><td>2.12%</td><td>$2.50</td><td>3</td><td>$44.11</td><td>354</td></tr>
-<tr><td>Case Studies Leads</td><td><span class="status-active">ACTIVE</span></td><td>$108.17</td><td>965</td><td>717</td><td>22</td><td>2.28%</td><td>$4.92</td><td>3</td><td>$36.06</td><td>206</td></tr>
-</tbody>
-</table>
-</div>
-<div id="view-14d" class="window hidden">
-<div class="kpi-grid">
-<div class="kpi"><div class="label">Total Spend</div><div class="value">$1,650.06</div></div>
-<div class="kpi"><div class="label">Impressions</div><div class="value blue">24,056</div></div>
-<div class="kpi"><div class="label">Reach</div><div class="value blue">13,057</div></div>
-<div class="kpi"><div class="label">Link Clicks</div><div class="value green">344</div></div>
-<div class="kpi"><div class="label">Leads</div><div class="value green">27</div></div>
-<div class="kpi"><div class="label">Cost per Lead</div><div class="value amber">$61.11</div></div>
-<div class="kpi"><div class="label">CTR</div><div class="value">2.33%</div></div>
-<div class="kpi"><div class="label">CPC</div><div class="value">$2.95</div></div>
-</div>
-<div class="section-title">Campaign Breakdown (14 Days: Aug 4 - Aug 17)</div>
-<table>
-<thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th><th>CPL</th><th>Video Views</th></tr></thead>
-<tbody>
-<tr><td>Tremont Through The Door Leads</td><td><span class="status-active">ACTIVE</span></td><td>$698.02</td><td>13,181</td><td>9,373</td><td>338</td><td>2.56%</td><td>$2.07</td><td>15</td><td>$46.53</td><td>4,325</td></tr>
-<tr><td>Molloy Record Year Leads</td><td><span class="status-active">ACTIVE</span></td><td>$535.80</td><td>5,371</td><td>3,512</td><td>109</td><td>2.03%</td><td>$4.92</td><td>3</td><td>$178.60</td><td>1,949</td></tr>
-<tr><td>Case Studies Leads</td><td><span class="status-active">ACTIVE</span></td><td>$242.01</td><td>2,342</td><td>1,543</td><td>43</td><td>1.84%</td><td>$5.63</td><td>4</td><td>$60.50</td><td>479</td></tr>
-<tr><td>DirectBookings Video (Aug 2026)</td><td><span class="status-active">ACTIVE</span></td><td>$149.62</td><td>2,832</td><td>1,115</td><td>65</td><td>2.30%</td><td>$2.30</td><td>5</td><td><span class="badge badge-green">$29.92</span></td><td>404</td></tr>
-<tr><td>AI Revenue Leads</td><td><span class="status-paused">PAUSED</span></td><td>$16.15</td><td>193</td><td>179</td><td>1</td><td>0.52%</td><td>$16.15</td><td>0</td><td>-</td><td>35</td></tr>
-<tr><td>Animation TOF LeadGen</td><td><span class="status-paused">PAUSED</span></td><td>$8.46</td><td>137</td><td>113</td><td>4</td><td>2.92%</td><td>$2.12</td><td>0</td><td>-</td><td>12</td></tr>
-</tbody>
-</table>
-</div>
-<div id="view-30d" class="window hidden">
-<div class="kpi-grid">
-<div class="kpi"><div class="label">Total Spend</div><div class="value">$3,685.19</div></div>
-<div class="kpi"><div class="label">Impressions</div><div class="value blue">53,547</div></div>
-<div class="kpi"><div class="label">Reach</div><div class="value blue">23,941</div></div>
-<div class="kpi"><div class="label">Link Clicks</div><div class="value green">702</div></div>
-<div class="kpi"><div class="label">Leads</div><div class="value green">71</div></div>
-<div class="kpi"><div class="label">Cost per Lead</div><div class="value amber">$51.90</div></div>
-<div class="kpi"><div class="label">CTR</div><div class="value">2.08%</div></div>
-<div class="kpi"><div class="label">CPC</div><div class="value">$3.31</div></div>
-</div>
-<div class="section-title">Campaign Breakdown (30 Days: Jul 19 - Aug 17)</div>
-<table>
-<thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th><th>CPL</th><th>Video Views</th></tr></thead>
-<tbody>
-<tr><td>Tremont Through The Door Leads</td><td><span class="status-active">ACTIVE</span></td><td>$1,246.59</td><td>23,219</td><td>14,243</td><td>581</td><td>2.50%</td><td>$2.15</td><td>35</td><td><span class="badge badge-green">$35.62</span></td><td>7,670</td></tr>
-<tr><td>Molloy Record Year Leads</td><td><span class="status-active">ACTIVE</span></td><td>$1,164.85</td><td>14,037</td><td>7,206</td><td>253</td><td>1.80%</td><td>$4.60</td><td>9</td><td><span class="badge badge-red">$129.43</span></td><td>4,943</td></tr>
-<tr><td>Case Studies Leads</td><td><span class="status-active">ACTIVE</span></td><td>$555.76</td><td>5,313</td><td>3,280</td><td>105</td><td>1.98%</td><td>$5.29</td><td>17</td><td><span class="badge badge-green">$32.69</span></td><td>1,025</td></tr>
-<tr><td>AI Revenue Leads</td><td><span class="status-paused">PAUSED</span></td><td>$310.58</td><td>3,996</td><td>2,644</td><td>49</td><td>1.23%</td><td>$6.34</td><td>4</td><td>$77.65</td><td>684</td></tr>
-<tr><td>Animation TOF LeadGen</td><td><span class="status-paused">PAUSED</span></td><td>$257.79</td><td>4,150</td><td>2,381</td><td>60</td><td>1.45%</td><td>$4.30</td><td>1</td><td><span class="badge badge-red">$257.79</span></td><td>323</td></tr>
-<tr><td>DirectBookings Video (Aug 2026)</td><td><span class="status-active">ACTIVE</span></td><td>$149.62</td><td>2,832</td><td>1,115</td><td>65</td><td>2.30%</td><td>$2.30</td><td>5</td><td><span class="badge badge-green">$29.92</span></td><td>404</td></tr>
-</tbody>
-</table>
-</div>
-<div class="section-title" style="margin-top:8px">All Campaigns (Status Overview)</div>
-<table>
-<thead><tr><th>Campaign</th><th>Objective</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td>DirectBookings Video (Aug 2026)</td><td>Leads</td><td><span class="status-active">ACTIVE</span></td></tr>
-<tr><td>Molloy Record Year Leads (Jun 2026)</td><td>Leads</td><td><span class="status-active">ACTIVE</span></td></tr>
-<tr><td>Tremont Through The Door Leads (May 2026)</td><td>Leads</td><td><span class="status-active">ACTIVE</span></td></tr>
-<tr><td>Video Case Studies Leads</td><td>Leads</td><td><span class="status-active">ACTIVE</span></td></tr>
-<tr><td>Animation TOF LeadGen (May 2026)</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>Tremont Testimonial Midwest+NE (Apr 2026)</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>Orli SoCal Leads (Apr 2026)</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>Top 10 Revenue Strategies Traffic (Mar 2026)</td><td>Traffic</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>Static Lead Form Leads</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>AI Revenue Leads</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>IV Top 3 Leads Lookalike</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>Orli 30 second typeform</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>Orli 30 second leadform lookalike</td><td>Leads</td><td><span class="status-paused">PAUSED</span></td></tr>
-<tr><td>New Workflow Oct 27</td><td>Traffic</td><td><span class="status-paused">PAUSED</span></td></tr>
-</tbody>
-</table>
-</div>
-<div class="footer">
-DIAMO Meta Ads Dashboard - Managed by OPN Agency - Data from Meta Graph API v21.0<br>
-David Jack's Personal Bot &copy; 2026
+<div class="content">
+  <div class="kpi-grid" id="kpiGrid"></div>
+  <div class="chart-container"><canvas id="dailyChart"></canvas></div>
+  <div id="campaignTable"></div>
 </div>
 <script>
-function showWindow(w){
-document.querySelectorAll('.window').forEach(el=>el.classList.add('hidden'));
-document.getElementById('view-'+w).classList.remove('hidden');
-document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
-event.target.classList.add('active');
-}
+const DATA={"label": "DIAMO B2B", "kpis": {"7": {"spend": 1023.09, "impressions": 12322, "clicks": 253, "ctr": 2.053238, "cpc": 4.043834, "leads": 7, "video_views": 3451, "reach": 7111, "prev": {"spend": 1003.32, "impressions": 14475, "clicks": 339, "ctr": 2.341969, "cpc": 2.959646, "reach": 8399, "leads": 15, "video_views": 4226}}, "14": {"spend": 1893.21, "impressions": 24797, "clicks": 555, "ctr": 2.238174, "cpc": 3.411189, "leads": 21, "video_views": 7078, "reach": 12091, "prev": {"spend": 1782.73, "impressions": 25004, "clicks": 546, "ctr": 2.183651, "cpc": 3.265073, "reach": 13861, "leads": 34, "video_views": 7338}}, "30": {"spend": 3843.93, "impressions": 52171, "clicks": 1120, "ctr": 2.146787, "cpc": 3.43208, "leads": 56, "video_views": 14940, "reach": 22327, "prev": {"spend": 3822.0, "impressions": 54722, "clicks": 1032, "ctr": 1.885896, "cpc": 3.703488, "reach": 23673, "leads": 80, "video_views": 14699}}}, "daily": [{"date": "2026-07-26", "spend": 150.71, "impressions": 2022, "clicks": 33, "ctr": 1.632047, "cpc": 4.56697, "reach": 1732, "leads": 5, "video_views": 490}, {"date": "2026-07-27", "spend": 157.73, "impressions": 2485, "clicks": 41, "ctr": 1.649899, "cpc": 3.847073, "reach": 2091, "leads": 1, "video_views": 643}, {"date": "2026-07-28", "spend": 150.13, "impressions": 1934, "clicks": 32, "ctr": 1.654602, "cpc": 4.691563, "reach": 1606, "leads": 1, "video_views": 539}, {"date": "2026-07-29", "spend": 110.49, "impressions": 1473, "clicks": 40, "ctr": 2.715547, "cpc": 2.76225, "reach": 1264, "leads": 5, "video_views": 406}, {"date": "2026-07-30", "spend": 136.43, "impressions": 1706, "clicks": 36, "ctr": 2.110199, "cpc": 3.789722, "reach": 1489, "leads": 0, "video_views": 511}, {"date": "2026-07-31", "spend": 96.81, "impressions": 1205, "clicks": 29, "ctr": 2.406639, "cpc": 3.338276, "reach": 1056, "leads": 1, "video_views": 389}, {"date": "2026-08-01", "spend": 75.03, "impressions": 1289, "clicks": 21, "ctr": 1.62917, "cpc": 3.572857, "reach": 1164, "leads": 2, "video_views": 355}, {"date": "2026-08-02", "spend": 141.22, "impressions": 1816, "clicks": 39, "ctr": 2.147577, "cpc": 3.621026, "reach": 1462, "leads": 4, "video_views": 458}, {"date": "2026-08-03", "spend": 152.17, "impressions": 1861, "clicks": 36, "ctr": 1.934444, "cpc": 4.226944, "reach": 1604, "leads": 3, "video_views": 493}, {"date": "2026-08-04", "spend": 132.6, "impressions": 1979, "clicks": 35, "ctr": 1.76857, "cpc": 3.788571, "reach": 1698, "leads": 2, "video_views": 574}, {"date": "2026-08-05", "spend": 102.18, "impressions": 1717, "clicks": 37, "ctr": 2.154921, "cpc": 2.761622, "reach": 1497, "leads": 2, "video_views": 521}, {"date": "2026-08-06", "spend": 113.91, "impressions": 1599, "clicks": 40, "ctr": 2.501563, "cpc": 2.84775, "reach": 1440, "leads": 2, "video_views": 495}, {"date": "2026-08-07", "spend": 105.2, "impressions": 1455, "clicks": 34, "ctr": 2.33677, "cpc": 3.094118, "reach": 1316, "leads": 0, "video_views": 483}, {"date": "2026-08-08", "spend": 74.96, "impressions": 1361, "clicks": 38, "ctr": 2.792065, "cpc": 1.972632, "reach": 1238, "leads": 4, "video_views": 469}, {"date": "2026-08-09", "spend": 131.13, "impressions": 1768, "clicks": 32, "ctr": 1.809955, "cpc": 4.097813, "reach": 1543, "leads": 0, "video_views": 537}, {"date": "2026-08-10", "spend": 119.96, "impressions": 1702, "clicks": 42, "ctr": 2.467685, "cpc": 2.85619, "reach": 1318, "leads": 3, "video_views": 499}, {"date": "2026-08-11", "spend": 140.51, "impressions": 2139, "clicks": 55, "ctr": 2.571295, "cpc": 2.554727, "reach": 1723, "leads": 5, "video_views": 609}, {"date": "2026-08-12", "spend": 135.21, "impressions": 1956, "clicks": 60, "ctr": 3.067485, "cpc": 2.2535, "reach": 1588, "leads": 2, "video_views": 555}, {"date": "2026-08-13", "spend": 136.1, "impressions": 1611, "clicks": 31, "ctr": 1.924271, "cpc": 4.390323, "reach": 1378, "leads": 1, "video_views": 495}, {"date": "2026-08-14", "spend": 101.49, "impressions": 1591, "clicks": 32, "ctr": 2.011314, "cpc": 3.171563, "reach": 1324, "leads": 1, "video_views": 466}, {"date": "2026-08-15", "spend": 97.26, "impressions": 1536, "clicks": 40, "ctr": 2.604167, "cpc": 2.4315, "reach": 1314, "leads": 0, "video_views": 440}, {"date": "2026-08-16", "spend": 146.97, "impressions": 2036, "clicks": 47, "ctr": 2.308448, "cpc": 3.127021, "reach": 1621, "leads": 2, "video_views": 587}, {"date": "2026-08-17", "spend": 112.58, "impressions": 1606, "clicks": 37, "ctr": 2.303861, "cpc": 3.042703, "reach": 1318, "leads": 3, "video_views": 475}, {"date": "2026-08-18", "spend": 133.2, "impressions": 2000, "clicks": 37, "ctr": 1.85, "cpc": 3.6, "reach": 1619, "leads": 1, "video_views": 599}, {"date": "2026-08-19", "spend": 140.7, "impressions": 1712, "clicks": 26, "ctr": 1.518692, "cpc": 5.411538, "reach": 1428, "leads": 0, "video_views": 476}, {"date": "2026-08-20", "spend": 126.53, "impressions": 1475, "clicks": 26, "ctr": 1.762712, "cpc": 4.866538, "reach": 1273, "leads": 0, "video_views": 422}, {"date": "2026-08-21", "spend": 136.72, "impressions": 1603, "clicks": 44, "ctr": 2.744853, "cpc": 3.107273, "reach": 1341, "leads": 1, "video_views": 427}, {"date": "2026-08-22", "spend": 94.22, "impressions": 1458, "clicks": 37, "ctr": 2.537723, "cpc": 2.546486, "reach": 1207, "leads": 1, "video_views": 420}, {"date": "2026-08-23", "spend": 162.79, "impressions": 1872, "clicks": 38, "ctr": 2.029915, "cpc": 4.283947, "reach": 1487, "leads": 1, "video_views": 508}, {"date": "2026-08-24", "spend": 149.36, "impressions": 1571, "clicks": 34, "ctr": 2.164227, "cpc": 4.392941, "reach": 1294, "leads": 3, "video_views": 414}, {"date": "2026-08-25", "spend": 79.63, "impressions": 633, "clicks": 11, "ctr": 1.737757, "cpc": 7.239091, "reach": 556, "leads": 0, "video_views": 185}], "campaigns_by_range": {"7": [{"name": "OPN_DIAMO_Video_Case Studies_Leads", "id": "120241916435890732", "spend": 174.36, "impressions": 1371, "clicks": 30, "ctr": 2.188184, "cpc": 6.706154, "leads": 0, "video_views": 268, "reach": 0}, {"name": "DIAMO_Tremont_Through The Door_Leads_May2026", "id": "120246859431360732", "spend": 362.93, "impressions": 6109, "clicks": 128, "ctr": 2.095269, "cpc": 5.040694, "leads": 3, "video_views": 1948, "reach": 0}, {"name": "DIAMO_Molloy_Record_Year_Leads_Jun2026", "id": "120248664630180732", "spend": 324.77, "impressions": 2309, "clicks": 46, "ctr": 1.992204, "cpc": 10.149063, "leads": 2, "video_views": 866, "reach": 0}, {"name": "DIAMO_DirectBookings_Video_Aug2026", "id": "120251300776310732", "spend": 161.03, "impressions": 2533, "clicks": 49, "ctr": 1.934465, "cpc": 6.193462, "leads": 2, "video_views": 368, "reach": 0}], "14": [{"name": "OPN_DIAMO_Video_Case Studies_Leads", "id": "120241916435890732", "spend": 282.53, "impressions": 2336, "clicks": 52, "ctr": 2.226027, "cpc": 6.570465, "leads": 3, "video_views": 474, "reach": 0}, {"name": "DIAMO_Tremont_Through The Door_Leads_May2026", "id": "120246859431360732", "spend": 722.44, "impressions": 12731, "clicks": 297, "ctr": 2.332888, "cpc": 3.991381, "leads": 9, "video_views": 4153, "reach": 0}, {"name": "DIAMO_Molloy_Record_Year_Leads_Jun2026", "id": "120248664630180732", "spend": 594.88, "impressions": 4698, "clicks": 104, "ctr": 2.213708, "cpc": 8.748235, "leads": 4, "video_views": 1728, "reach": 0}, {"name": "DIAMO_DirectBookings_Video_Aug2026", "id": "120251300776310732", "spend": 293.41, "impressions": 5033, "clicks": 102, "ctr": 2.026624, "cpc": 5.239464, "leads": 5, "video_views": 722, "reach": 0}], "30": [{"name": "OPN_DIAMO_Video_AI Revenue_Leads", "id": "120233983479590732", "spend": 191.81, "impressions": 2350, "clicks": 28, "ctr": 1.191489, "cpc": 13.700714, "leads": 3, "video_views": 390, "reach": 0}, {"name": "OPN_DIAMO_Video_Case Studies_Leads", "id": "120241916435890732", "spend": 598.87, "impressions": 5299, "clicks": 109, "ctr": 2.056992, "cpc": 7.215301, "leads": 11, "video_views": 1085, "reach": 0}, {"name": "DIAMO_Tremont_Through The Door_Leads_May2026", "id": "120246859431360732", "spend": 1371.66, "impressions": 24836, "clicks": 589, "ctr": 2.371557, "cpc": 3.896761, "leads": 26, "video_views": 8100, "reach": 0}, {"name": "DIAMO_Animation_TOF_LeadGen_May2026", "id": "120247173384730732", "spend": 152.9, "impressions": 2232, "clicks": 43, "ctr": 1.926523, "cpc": 4.497059, "leads": 0, "video_views": 214, "reach": 0}, {"name": "DIAMO_Molloy_Record_Year_Leads_Jun2026", "id": "120248664630180732", "spend": 1217.98, "impressions": 12087, "clicks": 237, "ctr": 1.960784, "cpc": 7.960654, "leads": 9, "video_views": 4378, "reach": 0}, {"name": "DIAMO_DirectBookings_Video_Aug2026", "id": "120251300776310732", "spend": 310.7, "impressions": 5366, "clicks": 114, "ctr": 2.124488, "cpc": 5.093443, "leads": 7, "video_views": 772, "reach": 0}]}};
+let currentRange="7",chart=null;
+function pctChange(curr,prev){if(prev===undefined||prev===null||prev===0)return"";var pct=((curr-prev)/Math.abs(prev)*100).toFixed(1);var cls=pct>=0?"up":"down";var arrow=pct>=0?"\u25B2":"\u25BC";return'<div class="change '+cls+'">'+arrow+" "+Math.abs(pct)+'%</div>';}
+function fmt(v,type){if(type==="money")return"$"+Number(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});if(type==="pct")return Number(v).toFixed(2)+"%";if(type==="dec")return"$"+Number(v).toFixed(2);return Number(v).toLocaleString("en-US");}
+function render(){var kpi=DATA.kpis[currentRange]||{};var prev=kpi.prev||{};
+var cpl=kpi.leads>0?(kpi.spend/kpi.leads):0;var prevCpl=prev.leads>0?(prev.spend/prev.leads):0;
+var cards=[{label:"Spend",value:fmt(kpi.spend||0,"money"),change:pctChange(kpi.spend||0,prev.spend)},{label:"Impressions",value:fmt(kpi.impressions||0,"num"),change:pctChange(kpi.impressions||0,prev.impressions)},{label:"Reach",value:fmt(kpi.reach||0,"num"),change:pctChange(kpi.reach||0,prev.reach)},{label:"Clicks",value:fmt(kpi.clicks||0,"num"),change:pctChange(kpi.clicks||0,prev.clicks)},{label:"CTR",value:fmt(kpi.ctr||0,"pct"),change:pctChange(kpi.ctr||0,prev.ctr)},{label:"CPC",value:fmt(kpi.cpc||0,"dec"),change:pctChange(kpi.cpc||0,prev.cpc)},{label:"Leads",value:fmt(kpi.leads||0,"num"),change:pctChange(kpi.leads||0,prev.leads)},{label:"CPL",value:cpl>0?fmt(cpl,"dec"):"N/A",change:prevCpl>0?pctChange(cpl,prevCpl):""},{label:"Video Views",value:fmt(kpi.video_views||0,"num"),change:pctChange(kpi.video_views||0,prev.video_views)}];
+document.getElementById("kpiGrid").innerHTML=cards.map(function(c){return'<div class="kpi-card"><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div>'+c.change+'</div>';}).join("");
+var rangeN=parseInt(currentRange);var daily=DATA.daily||[];var recentDaily=daily.slice(-rangeN);var labels=recentDaily.map(function(r){return r.date.slice(5);});var spendData=recentDaily.map(function(r){return r.spend;});var leadsData=recentDaily.map(function(r){return r.leads||0;});
+if(chart)chart.destroy();var ctx=document.getElementById("dailyChart").getContext("2d");
+chart=new Chart(ctx,{type:"bar",data:{labels:labels,datasets:[{label:"Daily Spend",data:spendData,backgroundColor:"rgba(111,26,232,0.7)",borderRadius:4,yAxisID:"y"},{label:"Leads",data:leadsData,type:"line",borderColor:"#34a853",backgroundColor:"rgba(52,168,83,0.2)",pointRadius:3,yAxisID:"y1",fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"#888"}}},scales:{x:{ticks:{color:"#888"},grid:{display:false}},y:{position:"left",ticks:{color:"#888",callback:function(v){return"$"+v;}},grid:{color:"#222"}},y1:{position:"right",ticks:{color:"#34a853"},grid:{display:false}}}}});
+var camps=(DATA.campaigns_by_range||{})[currentRange]||[];
+var th="<tr><th>Campaign</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>CPC</th><th>Leads</th><th>CPL</th><th>Video Views</th></tr>";
+var rows=camps.map(function(c){var campCpl=c.leads>0?(c.spend/c.leads):0;return"<tr><td>"+c.name+"</td><td>"+fmt(c.spend,"money")+"</td><td>"+fmt(c.impressions,"num")+"</td><td>"+fmt(c.clicks,"num")+"</td><td>"+fmt(c.ctr,"pct")+"</td><td>"+fmt(c.cpc,"dec")+"</td><td>"+fmt(c.leads||0,"num")+"</td><td class=\"cpl-highlight\">"+(campCpl>0?fmt(campCpl,"dec"):"--")+"</td><td>"+fmt(c.video_views||0,"num")+"</td></tr>";}).join("");
+document.getElementById("campaignTable").innerHTML=camps.length?"<table>"+th+rows+"</table>":"<p style='color:#666;text-align:center;padding:20px;'>No active campaigns in this period</p>";}
+document.getElementById("rangeTabs").addEventListener("click",function(e){var t=e.target.closest(".range-tab");if(!t)return;document.querySelectorAll(".range-tab").forEach(function(x){x.classList.remove("active");});t.classList.add("active");currentRange=t.dataset.range;render();});
+render();
 </script>
 </body>
 </html>
