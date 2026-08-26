@@ -1,1 +1,2270 @@
-AUTOMATED_BASE64_UPDATE
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Juicebox — Powered by Lunchbreak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Oswald:wght@500;600&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FDF6EC; --cream-dark: #F5EBDA;
+  --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D;
+  --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456;
+  --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D;
+  --text-dark: #1A1A1A; --text-mid: #4A4A4A; --text-light: #8A8A8A;
+  --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4943A;
+  --shadow-lg: 0 8px 32px rgba(15,25,35,0.12);
+  --radius: 12px; --radius-sm: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* HEADER */
+.header { background: var(--navy); color: var(--cream); padding: 20px 24px 16px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--red); }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-icon { width: 48px; height: 48px; background: var(--red); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 2px 8px rgba(200,55,45,0.4); }
+.brand-title { font-family: 'Yellowtail', cursive; font-weight: 400; font-size: 34px; line-height: 1; }
+.brand-subtitle { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); margin-top: 2px; }
+.header-stats { display: flex; gap: 20px; align-items: center; }
+.stat-pill { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); }
+.stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.stat-pill .count { font-weight: 600; color: white; }
+
+/* DATE PICKER */
+.date-bar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; border-bottom: 1px solid var(--border); }
+.date-bar::-webkit-scrollbar { display: none; }
+.date-chip { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+.date-chip:hover { border-color: var(--blue); color: var(--blue); }
+.date-chip.active { background: var(--red); color: white; border-color: var(--red); }
+.date-chip .day-name { font-size: 10px; opacity: 0.7; }
+
+/* TOOLBAR */
+.toolbar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+.filter-btn { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+.filter-btn.active-red { background: var(--red); color: white; border-color: var(--red); }
+.filter-btn.active-gold { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.filter-btn .badge { font-size: 10px; background: rgba(0,0,0,0.15); padding: 1px 6px; border-radius: 10px; }
+.filter-btn.active .badge, .filter-btn.active-red .badge, .filter-btn.active-gold .badge { background: rgba(255,255,255,0.25); }
+.toolbar-spacer { flex: 1; }
+.search-box { font-family: 'Barlow', sans-serif; font-size: 13px; padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-dark); width: 180px; outline: none; transition: all 0.2s; }
+.search-box:focus { border-color: var(--blue); width: 240px; }
+
+/* GRID */
+.grid { max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+
+/* CARD */
+.card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: all 0.25s ease; cursor: pointer; position: relative; }
+.card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--blue-light); }
+.card-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
+.card-account { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px; color: white; text-transform: uppercase; flex-shrink: 0; }
+.account-name { font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-dark); }
+.account-category { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+.priority-badge { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.priority-HIGH { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
+.priority-MEDIUM { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
+.priority-LOW { background: #E8F5EC; color: var(--success); border: 1px solid #B8DFCA; }
+.card-caption { padding: 0 16px 12px; font-size: 13px; color: var(--text-mid); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-stats { display: flex; border-top: 1px solid var(--border); background: var(--cream); }
+.card-stat { flex: 1; padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+.card-stat:last-child { border-right: none; }
+.card-stat-value { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 16px; color: var(--text-dark); }
+.card-stat-label { font-family: 'Oswald', sans-serif; font-size: 9px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.card-stat-value.high-eng { color: var(--red); }
+.card-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); }
+.card-date { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+.card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-action-btn { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+.card-action-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+.card-action-btn.posted { background: var(--success); color: white; border-color: var(--success); }
+.card-action-btn.download { background: var(--navy); color: white; border-color: var(--navy); }
+.card-action-btn.download:hover { background: var(--blue); border-color: var(--blue); }
+
+/* DURATION BADGE */
+.dur-ok { color: var(--success); }
+.dur-short { color: var(--red); }
+/* TEXT OVERLAY RISK BADGE */
+.overlay-badge { font-family: 'Oswald', sans-serif; font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; }
+.overlay-MEDIUM { background: #FEF3E2; color: #B8760C; border: 1px solid #F5DDB5; }
+.overlay-HIGH { background: #FDE8E7; color: var(--red); border: 1px solid #F5C4C2; }
+
+/* TOGGLE SWITCH */
+.toggle-wrap { display: flex; align-items: center; gap: 6px; }
+.toggle-label { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); }
+.toggle-label.on { color: var(--success); }
+.toggle { position: relative; width: 36px; height: 20px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle .slider { position: absolute; inset: 0; background: var(--border); border-radius: 20px; transition: all 0.25s; }
+.toggle .slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 2px; bottom: 2px; background: white; border-radius: 50%; transition: all 0.25s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.toggle input:checked + .slider { background: var(--success); }
+.toggle input:checked + .slider:before { transform: translateX(16px); }
+.toggle.saving .slider { opacity: 0.5; }
+
+/* LOADING / EMPTY */
+.loading { text-align: center; padding: 80px 24px; color: var(--text-light); }
+.loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state { text-align: center; padding: 80px 24px; }
+.empty-state-title { font-family: 'Yellowtail', cursive; font-size: 26px; color: var(--text-dark); margin-bottom: 8px; }
+.empty-state-text { font-size: 14px; color: var(--text-light); }
+
+/* FOOTER */
+.footer { max-width: 1200px; margin: 40px auto 0; padding: 20px 24px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.footer-brand { font-family: 'Yellowtail', cursive; font-size: 16px; color: var(--text-light); }
+.footer-meta { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header { padding: 14px 16px; }
+  .brand-title { font-size: 28px; }
+  .header-stats { display: none; }
+  .date-bar { padding: 10px 16px; }
+  .toolbar { padding: 10px 16px; }
+  .search-box { width: 100%; order: -1; }
+  .search-box:focus { width: 100%; }
+  .grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 12px; }
+  .card-stats { flex-wrap: wrap; }
+  .card-stat { min-width: 25%; }
+  .footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (max-width: 420px) {
+  .filter-btn { padding: 5px 10px; font-size: 11px; }
+  .brand-icon { width: 38px; height: 38px; font-size: 20px; }
+  .brand-title { font-size: 24px; }
+  .card-action-btn { padding: 4px 8px; font-size: 10px; }
+}
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">🧰</div><div><div class="brand-title">Juicebox</div><div class="brand-subtitle">Powered by Lunchbreak</div></div></div><div class="header-stats"><div class="stat-pill"><span class="dot"></span><span>Today:</span><span class="count" id="todayCount">0</span><span>clips</span></div><div class="stat-pill"><span>High:</span><span class="count" id="highCount">0</span></div></div></div></header>
+
+<!-- DATE PICKER -->
+<div class="date-bar" id="dateBar"></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar" id="toolbar">
+<button class="filter-btn active" data-filter="all">All <span class="badge" id="allBadge">0</span></button>
+<button class="filter-btn" data-filter="HIGH">High</button>
+<button class="filter-btn" data-filter="MEDIUM">Medium</button>
+<button class="filter-btn" data-filter="posted">Posted</button>
+<button class="filter-btn" data-filter="unposted">Not Posted</button>
+<span class="toolbar-spacer"></span>
+<input type="text" class="search-box" placeholder="Search accounts..." id="searchBox">
+</div>
+
+<div class="grid" id="clipGrid"><div class="loading"><div class="loading-spinner"></div><div>Scanning reels...</div></div></div>
+
+<div class="footer"><div class="footer-brand">Lunchbreak 2026</div><div class="footer-meta" id="lastUpdated">Last scan: loading...</div></div>
+
+<script>
+const INLINE_CLIPS = [
+{
+"date": "2026-07-15",
+"rank": 1,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/C2AeqqVROZ_/",
+"views": 13728456,
+"likes": 1150265,
+"comments": 40271,
+"engagement": 9.26,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (13.7M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 3,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/C1qJUeRxIJc/",
+"views": 9823823,
+"likes": 725129,
+"comments": 12444,
+"engagement": 7.76,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (9.8M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 4,
+"account": "eater",
+"tiktokHandle": "eater",
+"category": "food_beverage_culture",
+"reelUrl": "https://instagram.com/reel/DLVDKfdtIlG/",
+"views": 791907,
+"likes": 58766,
+"comments": 298,
+"engagement": 7.53,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (791K views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 6,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/DaaKB3NIilr/",
+"views": 3091566,
+"likes": 183998,
+"comments": 1323,
+"engagement": 6.08,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (3.1M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 7,
+"account": "firstwefeast",
+"tiktokHandle": "firstwefeast",
+"category": "cooking_shows_media",
+"reelUrl": "https://instagram.com/reel/DayMZf7gFSP/",
+"views": 126194,
+"likes": 7222,
+"comments": 72,
+"engagement": 5.89,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (126K views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 8,
+"account": "cocktailchemistry",
+"tiktokHandle": "cocktailchemistry",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/CZR2kgdIlFi/",
+"views": 68790,
+"likes": 3709,
+"comments": 65,
+"engagement": 5.68,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Cocktail content - high TT potential",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 9,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/C17d-FkRIZH/",
+"views": 12885145,
+"likes": 669858,
+"comments": 12797,
+"engagement": 5.5,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (12.9M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 10,
+"account": "cocktailchemistry",
+"tiktokHandle": "cocktailchemistry",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/CXlvjRZlcBv/",
+"views": 30540,
+"likes": 1494,
+"comments": 59,
+"engagement": 5.47,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "Decent engagement, smaller reach",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 11,
+"account": "eater",
+"tiktokHandle": "eater",
+"category": "food_beverage_culture",
+"reelUrl": "https://instagram.com/reel/DaQqJEZggFW/",
+"views": 282311,
+"likes": 15227,
+"comments": 42,
+"engagement": 5.44,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (282K views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 12,
+"account": "masterchefonfox",
+"tiktokHandle": "masterchefonfox",
+"category": "cooking_shows_media",
+"reelUrl": "https://instagram.com/reel/DZ-r9cET0mm/",
+"views": 6808875,
+"likes": 362534,
+"comments": 2249,
+"engagement": 5.42,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (6.8M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 13,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/DakavTwowqG/",
+"views": 4470320,
+"likes": 213330,
+"comments": 8635,
+"engagement": 5.35,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (4.5M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 14,
+"account": "vinepair",
+"tiktokHandle": "vinepair",
+"category": "food_beverage_culture",
+"reelUrl": "https://instagram.com/reel/DagRotLhU77/",
+"views": 73075,
+"likes": 3459,
+"comments": 81,
+"engagement": 5.07,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Wine/cocktail content",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 15,
+"account": "cocktailchemistry",
+"tiktokHandle": "cocktailchemistry",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/CY_woTNoITh/",
+"views": 49402,
+"likes": 2440,
+"comments": 20,
+"engagement": 5.06,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "Decent engagement, smaller reach",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 16,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/DaYGMlCNMx2/",
+"views": 4117706,
+"likes": 199308,
+"comments": 2682,
+"engagement": 5.04,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (4.1M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 17,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/C191wsUgdhH/",
+"views": 8738005,
+"likes": 420370,
+"comments": 5015,
+"engagement": 4.98,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (8.7M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 18,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/C1sYsvkPd4u/",
+"views": 19208639,
+"likes": 929952,
+"comments": 8235,
+"engagement": 4.97,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Top candidate (19.2M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 19,
+"account": "stevethebartender",
+"tiktokHandle": "stevethebartender",
+"category": "bartenders_mixology",
+"reelUrl": "https://instagram.com/reel/DWlyJGtid5C/",
+"views": 6805,
+"likes": 298,
+"comments": 13,
+"engagement": 4.95,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "Niche bartender content",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-15",
+"rank": 20,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral_food_creators",
+"reelUrl": "https://instagram.com/reel/DasoZ-4Iqxu/",
+"views": 2931514,
+"likes": 140643,
+"comments": 1317,
+"engagement": 4.93,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (2.9M views)",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 1,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C2AeqqVROZ_/",
+"views": 13728877,
+"likes": 1149973,
+"comments": 40265,
+"engagement": 9.3,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 2,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C1qJUeRxIJc/",
+"views": 9823898,
+"likes": 724833,
+"comments": 12440,
+"engagement": 7.8,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 3,
+"account": "eater",
+"tiktokHandle": "eater",
+"category": "food beverage culture",
+"reelUrl": "https://instagram.com/reel/DLVDKfdtIlG/",
+"views": 791939,
+"likes": 58759,
+"comments": 298,
+"engagement": 7.5,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 4,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C17d-FkRIZH/",
+"views": 12885332,
+"likes": 669632,
+"comments": 12790,
+"engagement": 5.5,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 5,
+"account": "masterchefonfox",
+"tiktokHandle": "masterchefonfox",
+"category": "cooking shows media",
+"reelUrl": "https://instagram.com/reel/DZ-r9cET0mm/",
+"views": 6821161,
+"likes": 363238,
+"comments": 2274,
+"engagement": 5.4,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 6,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C1sYsvkPd4u/",
+"views": 19208708,
+"likes": 929552,
+"comments": 8232,
+"engagement": 5.0,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 7,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/DakavTwowqG/",
+"views": 4535632,
+"likes": 215304,
+"comments": 8676,
+"engagement": 5.3,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 8,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C191wsUgdhH/",
+"views": 8738373,
+"likes": 420244,
+"comments": 5013,
+"engagement": 5.0,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 9,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/DasoZ-4Iqxu/",
+"views": 3057282,
+"likes": 146392,
+"comments": 1353,
+"engagement": 4.9,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 10,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C1vRkDERviD/",
+"views": 3890001,
+"likes": 180467,
+"comments": 2184,
+"engagement": 4.8,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 11,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C12gdkoP_A1/",
+"views": 5652110,
+"likes": 250009,
+"comments": 2960,
+"engagement": 4.6,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 12,
+"account": "cookingwithlynja",
+"tiktokHandle": "cookingwithlynja",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/C0jr_5ks-NL/",
+"views": 5771580,
+"likes": 253050,
+"comments": 3297,
+"engagement": 4.6,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 13,
+"account": "cznburak",
+"tiktokHandle": "cznburak",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/Dafs5z9NsLW/",
+"views": 2099311,
+"likes": 92455,
+"comments": 2263,
+"engagement": 4.7,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 14,
+"account": "cocktail.molotov",
+"tiktokHandle": "cocktail.molotov",
+"category": "bartenders mixology",
+"reelUrl": "https://instagram.com/reel/Ck_pqfKDiqT/",
+"views": 303,
+"likes": 27,
+"comments": 0,
+"engagement": 8.9,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 15,
+"account": "eater",
+"tiktokHandle": "eater",
+"category": "food beverage culture",
+"reelUrl": "https://instagram.com/reel/DNOEbwxSR8y/",
+"views": 4086078,
+"likes": 179866,
+"comments": 394,
+"engagement": 4.4,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 16,
+"account": "firstwefeast",
+"tiktokHandle": "firstwefeast",
+"category": "cooking shows media",
+"reelUrl": "https://instagram.com/reel/Da26XaFxoLR/",
+"views": 56227,
+"likes": 4097,
+"comments": 33,
+"engagement": 7.5,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 17,
+"account": "firstwefeast",
+"tiktokHandle": "firstwefeast",
+"category": "cooking shows media",
+"reelUrl": "https://instagram.com/reel/Da0jXhMFBe1/",
+"views": 608862,
+"likes": 31816,
+"comments": 93,
+"engagement": 5.3,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 18,
+"account": "eater",
+"tiktokHandle": "eater",
+"category": "food beverage culture",
+"reelUrl": "https://instagram.com/reel/DQCNhrHDjen/",
+"views": 2421156,
+"likes": 92410,
+"comments": 351,
+"engagement": 3.9,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 19,
+"account": "farmersfridge",
+"tiktokHandle": "farmersfridge",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/DWY-MlJgIYH/",
+"views": 188644,
+"likes": 7800,
+"comments": 231,
+"engagement": 4.5,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-16",
+"rank": 20,
+"account": "cocktailchemistry",
+"tiktokHandle": "cocktailchemistry",
+"category": "viral food creators",
+"reelUrl": "https://instagram.com/reel/CZR2kgdIlFi/",
+"views": 68793,
+"likes": 3710,
+"comments": 65,
+"engagement": 5.7,
+"priority": "HIGH",
+"posted": true,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 1,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/C2AeqqVROZ_/",
+"views": 13729352,
+"likes": 1149493,
+"comments": 0,
+"engagement": 26463.3,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 2,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/C17d-FkRIZH/",
+"views": 12885552,
+"likes": 669250,
+"comments": 0,
+"engagement": 14741.0,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 3,
+"account": "gordongram",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/Da0c1ymtTpk/",
+"views": 1075481,
+"likes": 23522,
+"comments": 0,
+"engagement": 501.0,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 4,
+"account": "bonappetitmag",
+"tiktokHandle": "",
+"category": "Cooking Show",
+"reelUrl": "https://www.instagram.com/reel/Da03cPOuqKO/",
+"views": 1818684,
+"likes": 21699,
+"comments": 0,
+"engagement": 464.6,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 5,
+"account": "buzzfeedtasty",
+"tiktokHandle": "",
+"category": "Food Culture",
+"reelUrl": "https://www.instagram.com/reel/DXuciRbjX2O/",
+"views": 3834369,
+"likes": 14903,
+"comments": 0,
+"engagement": 360.3,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 6,
+"account": "buzzfeedtasty",
+"tiktokHandle": "",
+"category": "Food Culture",
+"reelUrl": "https://www.instagram.com/reel/DZSYzVBAL5e/",
+"views": 3505534,
+"likes": 6883,
+"comments": 0,
+"engagement": 208.3,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 7,
+"account": "gordongram",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/Da1By3QN5Pu/",
+"views": 414824,
+"likes": 5697,
+"comments": 0,
+"engagement": 125.6,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 8,
+"account": "flavortown",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/Da5WiGNOVcq/",
+"views": 146000,
+"likes": 3400,
+"comments": 0,
+"engagement": 73.0,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 9,
+"account": "wolfgangpuck",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/DaunWuktB9S/",
+"views": 71000,
+"likes": 1900,
+"comments": 0,
+"engagement": 40.0,
+"priority": "LOW",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 10,
+"account": "davidchang",
+"tiktokHandle": "",
+"category": "Celebrity Chef",
+"reelUrl": "https://www.instagram.com/reel/DalLiWmR6V4/",
+"views": 37000,
+"likes": 1000,
+"comments": 0,
+"engagement": 21.0,
+"priority": "LOW",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C2AeqqVROZ_",
+"tiktokHandle": "13729362",
+"category": "1149493",
+"reelUrl": "40247",
+"views": 1270234,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C17d-FkRIZH",
+"tiktokHandle": "12885559",
+"category": "669249",
+"reelUrl": "12773",
+"views": 707568,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C191wsUgdhH",
+"tiktokHandle": "8738762",
+"category": "420022",
+"reelUrl": "5012",
+"views": 435058,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DaxRTYSos6K",
+"tiktokHandle": "16513923",
+"category": "344420",
+"reelUrl": "8203",
+"views": 369029,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "Da1FQIyIpbV",
+"tiktokHandle": "10097109",
+"category": "310869",
+"reelUrl": "7144",
+"views": 332301,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C-8PXHtvXFr",
+"tiktokHandle": "16175068",
+"category": "291566",
+"reelUrl": "4629",
+"views": 305453,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DMij8XQoQQL",
+"tiktokHandle": "10519118",
+"category": "272328",
+"reelUrl": "4894",
+"views": 287010,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C973frxCVu4",
+"tiktokHandle": "10228330",
+"category": "281927",
+"reelUrl": "892",
+"views": 284603,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C12gdkoP_A1",
+"tiktokHandle": "5652324",
+"category": "249891",
+"reelUrl": "2959",
+"views": 258768,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DNOEbwxSR8y",
+"tiktokHandle": "4086177",
+"category": "179853",
+"reelUrl": "394",
+"views": 181035,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DasoZ-4Iqxu",
+"tiktokHandle": "3156294",
+"category": "150467",
+"reelUrl": "1370",
+"views": 154577,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C9keozdKXjt",
+"tiktokHandle": "6274576",
+"category": "112407",
+"reelUrl": "854",
+"views": 114969,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DQCNhrHDjen",
+"tiktokHandle": "2421282",
+"category": "92402",
+"reelUrl": "351",
+"views": 93455,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "Ch8lQ8Tj1aD",
+"tiktokHandle": "4548774",
+"category": "74729",
+"reelUrl": "676",
+"views": 76757,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "C14uq_Dxuom",
+"tiktokHandle": "2377231",
+"category": "64166",
+"reelUrl": "312",
+"views": 65102,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DLVDKfdtIlG",
+"tiktokHandle": "791998",
+"category": "58747",
+"reelUrl": "298",
+"views": 59641,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DNBy1-qPJGs",
+"tiktokHandle": "3583404",
+"category": "48725",
+"reelUrl": "1343",
+"views": 52754,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "Da0c1ymtTpk",
+"tiktokHandle": "1076307",
+"category": "23537",
+"reelUrl": "176",
+"views": 24065,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "Da03cPOuqKO",
+"tiktokHandle": "1819241",
+"category": "21705",
+"reelUrl": "200",
+"views": 22305,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-17",
+"rank": 0,
+"account": "DajEGq7lRGa",
+"tiktokHandle": "670962",
+"category": "19765",
+"reelUrl": "192",
+"views": 20341,
+"likes": 0,
+"comments": 0,
+"engagement": 0,
+"priority": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-19",
+"rank": 1,
+"account": "foodnetwork",
+"tiktokHandle": "",
+"category": "cooking_shows_media",
+"reelUrl": "https://www.instagram.com/reel/Da8YmengI_h/",
+"views": 249831,
+"likes": 2598,
+"comments": 52,
+"engagement": 1155.71,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Light text: 0 editorial + 51 environmental chars",
+"duration": 0,
+"textOverlayRisk": "76"
+},
+{
+"date": "2026-07-20",
+"rank": 1,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/C2AeqqVROZ_/",
+"views": 13731063,
+"likes": 1148785,
+"comments": 40217,
+"engagement": 8.7,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 2,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/C17d-FkRIZH/",
+"views": 12886254,
+"likes": 668642,
+"comments": 12747,
+"engagement": 5.3,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 3,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/C191wsUgdhH/",
+"views": 8740089,
+"likes": 419688,
+"comments": 5008,
+"engagement": 4.9,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 4,
+"account": "foodbible",
+"tiktokHandle": "",
+"category": "Food Beverage Culture",
+"reelUrl": "https://www.instagram.com/reel/C-8PXHtvXFr/",
+"views": 16175579,
+"likes": 291453,
+"comments": 4632,
+"engagement": 1.8,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 5,
+"account": "cznburak",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/DMij8XQoQQL/",
+"views": 10539475,
+"likes": 272765,
+"comments": 4896,
+"engagement": 2.6,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 6,
+"account": "foodbible",
+"tiktokHandle": "",
+"category": "Food Beverage Culture",
+"reelUrl": "https://www.instagram.com/reel/C973frxCVu4/",
+"views": 10228360,
+"likes": 281802,
+"comments": 892,
+"engagement": 2.8,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 7,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/C12gdkoP_A1/",
+"views": 5652875,
+"likes": 249713,
+"comments": 2955,
+"engagement": 4.5,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 8,
+"account": "cznburak",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/DUWKE0yjEPf/",
+"views": 15149911,
+"likes": 185659,
+"comments": 720,
+"engagement": 1.2,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 9,
+"account": "eater",
+"tiktokHandle": "",
+"category": "Food Beverage Culture",
+"reelUrl": "https://www.instagram.com/reel/DNOEbwxSR8y/",
+"views": 4086524,
+"likes": 179832,
+"comments": 394,
+"engagement": 4.4,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-20",
+"rank": 10,
+"account": "cznburak",
+"tiktokHandle": "",
+"category": "Viral Food Creators",
+"reelUrl": "https://www.instagram.com/reel/Da7r_LVIJIp/",
+"views": 9674401,
+"likes": 147150,
+"comments": 1799,
+"engagement": 1.5,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 1,
+"account": "foodnetwork",
+"tiktokHandle": "",
+"category": "Celebrity Chefs",
+"reelUrl": "https://www.instagram.com/reel/DbGr1wviZUc/",
+"views": 1465427,
+"likes": 10086,
+"comments": 5176,
+"engagement": 1.04,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 2,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Creators",
+"reelUrl": "https://www.instagram.com/reel/CyqrPryoa3V/",
+"views": 2911545,
+"likes": 202198,
+"comments": 2276,
+"engagement": 7.02,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 3,
+"account": "cznburak",
+"tiktokHandle": "",
+"category": "Viral Creators",
+"reelUrl": "https://www.instagram.com/reel/DbILwMEoYGb/",
+"views": 2274347,
+"likes": 97238,
+"comments": 2044,
+"engagement": 4.37,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 4,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Creators",
+"reelUrl": "https://www.instagram.com/reel/CzMGbWFAsA1/",
+"views": 2158474,
+"likes": 103124,
+"comments": 462,
+"engagement": 4.8,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 5,
+"account": "space_tamnik",
+"tiktokHandle": "",
+"category": "Viral Creators",
+"reelUrl": "https://www.instagram.com/reel/DbA4tGnpZFO/",
+"views": 5835755,
+"likes": 49678,
+"comments": 315,
+"engagement": 0.86,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 6,
+"account": "firstwefeast",
+"tiktokHandle": "",
+"category": "Cooking Shows",
+"reelUrl": "https://www.instagram.com/reel/DbGw3OeD4O7/",
+"views": 675246,
+"likes": 44060,
+"comments": 143,
+"engagement": 6.55,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 7,
+"account": "masterchefonfox",
+"tiktokHandle": "",
+"category": "Cooking Shows",
+"reelUrl": "https://www.instagram.com/reel/Da_L9qPBedB/",
+"views": 848704,
+"likes": 39907,
+"comments": 342,
+"engagement": 4.74,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 8,
+"account": "firstwefeast",
+"tiktokHandle": "",
+"category": "Cooking Shows",
+"reelUrl": "https://www.instagram.com/reel/DbD1-epFL-Z/",
+"views": 614332,
+"likes": 40958,
+"comments": 208,
+"engagement": 6.7,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 9,
+"account": "cookingwithlynja",
+"tiktokHandle": "",
+"category": "Viral Creators",
+"reelUrl": "https://www.instagram.com/reel/CzrJ6CSvs2f/",
+"views": 932297,
+"likes": 24284,
+"comments": 268,
+"engagement": 2.63,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 10,
+"account": "firstwefeast",
+"tiktokHandle": "",
+"category": "Cooking Shows",
+"reelUrl": "https://www.instagram.com/reel/DbGJdXhlKOn/",
+"views": 391125,
+"likes": 26544,
+"comments": 55,
+"engagement": 6.8,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-23",
+"rank": 11,
+"account": "masterchefonfox",
+"tiktokHandle": "",
+"category": "Cooking Shows",
+"reelUrl": "https://www.instagram.com/reel/DbBpWdYhNik/",
+"views": 336898,
+"likes": 23486,
+"comments": 526,
+"engagement": 7.13,
+"priority": "MEDIUM",
+"posted": false,
+"datePosted": "No",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 1,
+"account": "space_tamnik",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DUsnpJLkZjW/",
+"views": 116809549,
+"likes": 1970273,
+"comments": 0,
+"engagement": 1.69,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 2,
+"account": "space_tamnik",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DCJlNbhyRs7/",
+"views": 111732289,
+"likes": 4252400,
+"comments": 0,
+"engagement": 3.81,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 3,
+"account": "thejoshelkin",
+"tiktokHandle": "",
+"category": "celebrity_chefs",
+"reelUrl": "https://www.instagram.com/reel/Cx3KI30Rc9h/",
+"views": 106471960,
+"likes": 1206752,
+"comments": 0,
+"engagement": 1.13,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 4,
+"account": "foodclubfox",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DLc06FOTLZR/",
+"views": 61793347,
+"likes": 1614939,
+"comments": 0,
+"engagement": 2.61,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 5,
+"account": "pastrychef_am",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DXCZxIBiFPE/",
+"views": 38576092,
+"likes": 2362821,
+"comments": 0,
+"engagement": 6.13,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 6,
+"account": "feelgoodfoodie",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/C_rYZ5JupE9/",
+"views": 34835510,
+"likes": 324171,
+"comments": 0,
+"engagement": 0.93,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 7,
+"account": "beautifulcuisines",
+"tiktokHandle": "",
+"category": "cinematic_restaurants",
+"reelUrl": "https://www.instagram.com/reel/Cr08kQKMJJW/",
+"views": 29302406,
+"likes": 1505916,
+"comments": 0,
+"engagement": 5.14,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 8,
+"account": "foodfilmschool",
+"tiktokHandle": "",
+"category": "cinematic_restaurants",
+"reelUrl": "https://www.instagram.com/reel/DRHDXPXD8dI/",
+"views": 27378059,
+"likes": 775610,
+"comments": 0,
+"engagement": 2.83,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 9,
+"account": "feelgoodfoodie",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/C_9bmYyuKOd/",
+"views": 23433317,
+"likes": 210393,
+"comments": 0,
+"engagement": 0.9,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-07-28",
+"rank": 10,
+"account": "pastrychef_am",
+"tiktokHandle": "",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DXmZjgIjfkY/",
+"views": 16873849,
+"likes": 860804,
+"comments": 0,
+"engagement": 5.1,
+"priority": "HIGH",
+"onTikTok": "",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 0,
+"textOverlayRisk": ""
+},
+{
+"date": "2026-08-19",
+"rank": 1,
+"account": "jordan_the_stallion8",
+"tiktokHandle": "jordan_the_stallion8",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DcKVhQtpEy1/",
+"views": 10383347,
+"likes": 478795,
+"comments": 2629,
+"engagement": 4.61,
+"priority": "HIGH",
+"onTikTok": "No",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 73,
+"textOverlayRisk": "A"
+},
+{
+"date": "2026-08-20",
+"rank": 1,
+"account": "emilymariko",
+"tiktokHandle": "emilymariko",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/Da_4XuuIDFV/",
+"views": 1289401,
+"likes": 35903,
+"comments": 217,
+"engagement": 2.78,
+"priority": "HIGH",
+"onTikTok": "No",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 62,
+"textOverlayRisk": "A"
+},
+{
+"date": "2026-08-20",
+"rank": 2,
+"account": "emilymariko",
+"tiktokHandle": "emilymariko",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/DbrmTxuoTGs/",
+"views": 987325,
+"likes": 42463,
+"comments": 278,
+"engagement": 4.3,
+"priority": "HIGH",
+"onTikTok": "No",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 70,
+"textOverlayRisk": "A"
+},
+{
+"date": "2026-08-20",
+"rank": 3,
+"account": "emilymariko",
+"tiktokHandle": "emilymariko",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/Dblic3goNxB/",
+"views": 996360,
+"likes": 37066,
+"comments": 271,
+"engagement": 3.72,
+"priority": "HIGH",
+"onTikTok": "No",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 62,
+"textOverlayRisk": "A"
+},
+{
+"date": "2026-08-20",
+"rank": 4,
+"account": "emilymariko",
+"tiktokHandle": "emilymariko",
+"category": "viral_food_creators",
+"reelUrl": "https://www.instagram.com/reel/Da8ry5Qy9gj/",
+"views": 885173,
+"likes": 34987,
+"comments": 189,
+"engagement": 3.95,
+"priority": "HIGH",
+"onTikTok": "No",
+"posted": false,
+"datePosted": "",
+"notes": "",
+"duration": 61,
+"textOverlayRisk": "A"
+},
+{
+"date": "2026-08-26",
+"rank": 1,
+"account": "gordongram",
+"tiktokHandle": "gordonramsayofficial",
+"category": "celebrity_chefs",
+"reelUrl": "https://www.instagram.com/reel/DceFBIgoTO4/",
+"views": 1551976,
+"likes": 21479,
+"comments": 291,
+"engagement": 1.4,
+"priority": "HIGH",
+"posted": false,
+"datePosted": "",
+"notes": "Viral IG clip (1,551,976 views)",
+"duration": 72,
+"textOverlayRisk": "A"
+}
+];
+
+const SID='1TxAcALNsWi2PRQUZ2X7pOkE_hexkuL4779_p02r8xm8',HN='Daily Picks',SU=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(HN)}`;
+// Apps Script web app URL — must be deployed as "Anyone" (not domain-restricted)
+const GAS_URL='https://script.google.com/a/macros/openventures.io/s/AKfycbzA_lKg9H_HfLjZNfYPelTW5YL9_8p_JTWdIjYfnsXVUxSrv07ANkZP-TRr0YGkRdpx0g/exec';
+let A=[],CF='all',SQ='',selectedDate=null;
+
+// Column index mapping (0-based from sheet):
+// 0:Date 1:Rank 2:IG Account 3:TikTok Handle 4:Category 5:IG Reel Link
+// 6:IG Views 7:IG Likes 8:IG Comments 9:Engagement% 10:Priority
+// 11:On TikTok? 12:Posted to TikTok? 13:Date Posted
+// 14:TT Views 15:TT Likes 16:TT Comments 17:TT Shares 18:Notes
+// 19:Duration (sec) 20:Text Overlay Risk
+
+function buildDatePicker(){
+  const bar=document.getElementById('dateBar');
+  const today=new Date();
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let html='';
+  for(let i=0;i<15;i++){
+    const d=new Date(today);d.setDate(today.getDate()-i);
+    const iso=d.toISOString().slice(0,10);
+    const label=i===0?'Today':i===1?'Yesterday':`${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`;
+    html+=`<button class="date-chip${i===0?' active':''}" data-date="${iso}">${label}</button>`;
+  }
+  bar.innerHTML=html;
+  selectedDate=today.toISOString().slice(0,10);
+  bar.addEventListener('click',e=>{
+    const chip=e.target.closest('.date-chip');if(!chip)return;
+    selectedDate=chip.dataset.date;
+    bar.querySelectorAll('.date-chip').forEach(c=>c.className='date-chip');
+    chip.className='date-chip active';
+    rG();
+  });
+}
+
+async function fD(){
+  try{
+    // Primary: use inline data if available, fallback to clips.json
+    let clips;
+    if(typeof INLINE_CLIPS !== 'undefined' && INLINE_CLIPS.length > 0) {
+      clips = INLINE_CLIPS;
+    } else {
+      const r=await fetch('clips.json?t='+Date.now());
+      clips=await r.json();
+    }
+    A=clips.map((c,i)=>({
+      rank:c.rank||i+1,
+      sheetRow:i+2,
+      date:c.date||'',
+      account:String(c.account||'').replace(/^@/,''),
+      tiktokHandle:String(c.tiktokHandle||'').replace(/^@/,''),
+      category:c.category||'',
+      reelUrl:c.reelUrl||'',
+      views:c.views||0,
+      likes:c.likes||0,
+      comments:c.comments||0,
+      engagement:c.engagement||0,
+      priority:(c.priority||'').toUpperCase().trim(),
+      onTikTok:c.onTikTok||'',
+      posted:!!c.posted,
+      datePosted:c.datePosted||'',
+      notes:c.notes||'',
+      duration:c.duration||0,
+      textOverlayRisk:(c.textOverlayRisk||'').toUpperCase().trim(),
+    })).filter(c=>c.account);
+    rA();
+  }catch(e){
+    // Fallback: try Google Sheet gviz
+    try{
+      const r2=await fetch(SU),t=await r2.text(),j=JSON.parse(t.match(/google\.visualization\.Query\.setResponse\((.+)\);?/)[1]);
+      A=j.table.rows.map((r,i)=>{
+        const g=n=>{const c=r.c[n];return c?(c.f||c.v||''):'';};
+        const sheetRow=i+2;
+        return{rank:i+1,sheetRow,date:g(0),account:String(g(2)).replace(/^@/,''),tiktokHandle:String(g(3)).replace(/^@/,''),category:g(4),reelUrl:eU(g(5)),views:pN(g(6)),likes:pN(g(7)),comments:pN(g(8)),engagement:parseFloat(g(9))||0,priority:(g(10)||'').toUpperCase().trim(),onTikTok:g(11),posted:(g(12)||'').toLowerCase().includes('yes'),datePosted:g(13),notes:g(18),duration:pN(g(19)),textOverlayRisk:(g(20)||'').toUpperCase().trim()};
+      }).filter(c=>c.account);
+      rA();
+    }catch(e2){
+      document.getElementById('clipGrid').innerHTML='<div class="empty-state"><div class="empty-state-title">Connection Issue</div><div class="empty-state-text">Refresh to retry.</div></div>';
+    }
+  }
+}
+
+function eU(v){if(!v)return'';const s=String(v);const m=s.match(/https?:\/\/[^\s"')]+/);return m?m[0]:s;}
+function pN(v){if(!v)return 0;return parseInt(String(v).replace(/[^0-9.]/g,''))||0;}
+
+function rA(){
+  const dateClips=selectedDate?A.filter(c=>c.date===selectedDate):A;
+  const high=dateClips.filter(c=>c.priority==='HIGH');
+  document.getElementById('todayCount').textContent=dateClips.length;
+  document.getElementById('highCount').textContent=high.length;
+  document.getElementById('allBadge').textContent=dateClips.length;
+  document.getElementById('lastUpdated').textContent='Last scan: '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  rG();
+}
+
+function gF(){
+  let c=selectedDate?A.filter(x=>x.date===selectedDate):[...A];
+  if(CF==='HIGH'||CF==='MEDIUM'||CF==='LOW')c=c.filter(x=>x.priority===CF);
+  else if(CF==='posted')c=c.filter(x=>x.posted);
+  else if(CF==='unposted')c=c.filter(x=>!x.posted);
+  if(SQ){const q=SQ.toLowerCase();c=c.filter(x=>x.account.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)||(x.notes||'').toLowerCase().includes(q));}
+  return c;
+}
+
+function rG(){
+  const g=document.getElementById('clipGrid'),cs=gF();
+  if(!cs.length){g.innerHTML='<div class="empty-state"><div class="empty-state-title">No clips for this day</div><div class="empty-state-text">Try picking a different date or changing filters.</div></div>';return;}
+  g.innerHTML=cs.map(rC).join('');
+}
+
+function rC(c){
+  const ini=c.account.slice(0,2).toUpperCase(),eC=c.engagement>=5?'high-eng':'';
+  const cc={'celebrity_chefs':'#C8372D','cooking_shows_media':'#D4A843','viral_food_creators':'#2D8B46','food_beverage_culture':'#6B4C8A','bartenders_mixology':'#2B4C7E','chef':'#C8372D','cocktail':'#2B4C7E','food media':'#D4A843','bartender':'#6B4C8A','food creator':'#2D8B46'};
+  const ac=cc[(c.category||'').toLowerCase()]||'#2B4C7E';
+  const catLabel=(c.category||'Uncategorized').replace(/_/g,' ');
+
+  // Duration display
+  const dur=c.duration;
+  let durHtml='';
+  if(dur>0){
+    const durClass=dur>=60?'dur-ok':'dur-short';
+    const durIcon=dur>=60?'✅':'⚠️';
+    durHtml=`<div class="card-stat"><div class="card-stat-value ${durClass}">${durIcon} ${dur}s</div><div class="card-stat-label">Duration</div></div>`;
+  }
+
+  // Text overlay risk badge
+  let overlayBadge='';
+  if(c.textOverlayRisk==='HIGH') overlayBadge='<span class="overlay-badge overlay-HIGH">⚠ Text Heavy</span>';
+  else if(c.textOverlayRisk==='MEDIUM') overlayBadge='<span class="overlay-badge overlay-MEDIUM">Text Risk</span>';
+
+  try{return`<div class="card" onclick="openReel('${c.reelUrl}')"><div class="card-header"><div class="card-account"><div class="avatar" style="background:${ac}">${ini}</div><div><div class="account-name">@${c.account}${overlayBadge}</div><div class="account-category">${catLabel}${c.tiktokHandle?' · TT: @'+c.tiktokHandle:''}</div></div></div>${c.priority?`<span class="priority-badge priority-${c.priority}">${c.priority}</span>`:''}</div>${c.notes?`<div class="card-caption">${eH(c.notes)}</div>`:''}
+<div class="card-stats"><div class="card-stat"><div class="card-stat-value">${fN(c.views)}</div><div class="card-stat-label">Views</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.likes)}</div><div class="card-stat-label">Likes</div></div><div class="card-stat"><div class="card-stat-value">${fN(c.comments)}</div><div class="card-stat-label">Comments</div></div>${durHtml}<div class="card-stat"><div class="card-stat-value ${eC}">${c.engagement.toFixed(1)}%</div><div class="card-stat-label">Engagement</div></div></div>
+<div class="card-footer"><div class="card-date">${c.date||'-'}</div><div class="card-actions"><button class="card-action-btn" onclick="event.stopPropagation();openReel('${c.reelUrl}')">View Reel</button><button class="card-action-btn download" onclick="event.stopPropagation();dlReel('${c.reelUrl}',this)">Copy Link</button><label class="toggle-wrap" onclick="event.stopPropagation()"><span class="toggle-label ${c.posted?'on':''}">${c.posted?'Posted':'Not Posted'}</span><label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" ${c.posted?'checked':''} onchange="togglePosted(${c.sheetRow},this)"><span class="slider"></span></label></label></div></div></div>`;}catch(e){return'';}
+}
+
+function fN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
+function eH(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function openReel(u){if(u&&u.startsWith('http'))window.open(u,'_blank');}
+function dlReel(u,btn){if(!u||!u.startsWith('http'))return;navigator.clipboard.writeText(u).then(()=>{if(btn){const orig=btn.textContent;btn.textContent='Copied!';btn.style.background='var(--success)';btn.style.borderColor='var(--success)';btn.style.color='white';setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.borderColor='';btn.style.color='';},1500);}}).catch(()=>{window.prompt('Copy this link:',u);});}
+
+// === FIXED togglePosted (Issue #7) ===
+// Uses sheetRow (actual row in Google Sheet) instead of array index.
+// Uses regular fetch (not no-cors) since Apps Script must be deployed as "Anyone".
+// Finds clip by sheetRow for local state update (works correctly with filtered views).
+async function togglePosted(row,cb){
+  const wrap=cb.closest('.toggle-wrap');
+  const label=wrap.querySelector('.toggle-label');
+  const toggle=cb.closest('.toggle');
+  const posted=cb.checked;
+  label.textContent=posted?'Posted':'Not Posted';
+  label.className='toggle-label'+(posted?' on':'');
+  if(!GAS_URL){alert('Apps Script URL not configured.');cb.checked=!posted;label.textContent=!posted?'Posted':'Not Posted';label.className='toggle-label'+(!posted?' on':'');return;}
+  toggle.classList.add('saving');
+  try{
+    const resp=await fetch(GAS_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({row:row,posted:posted}),
+      redirect:'follow'
+    });
+    // Update local data — find by sheetRow, not by array index
+    const clip=A.find(c=>c.sheetRow===row);
+    if(clip) clip.posted=posted;
+  }catch(err){
+    cb.checked=!posted;
+    label.textContent=!posted?'Posted':'Not Posted';
+    label.className='toggle-label'+(!posted?' on':'');
+    alert('Failed to save. Try again.');
+  }
+  toggle.classList.remove('saving');
+}
+
+document.getElementById('toolbar').addEventListener('click',e=>{const b=e.target.closest('.filter-btn');if(!b)return;CF=b.dataset.filter;document.querySelectorAll('.filter-btn').forEach(x=>x.className='filter-btn');if(CF==='HIGH')b.className='filter-btn active-red';else if(CF==='MEDIUM')b.className='filter-btn active-gold';else b.className='filter-btn active';rG();});
+document.getElementById('searchBox').addEventListener('input',e=>{SQ=e.target.value;rG();});
+buildDatePicker();
+fD();
+setInterval(fD,5*60*1000);
+</script>
+</body>
+</html>
