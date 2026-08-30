@@ -4,3 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Juicebox — Powered by Lunchbreak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Oswald:wght@500;600&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FDF6EC; --cream-dark: #F5EBDA;
+  --red: #C8372D; --red-dark: #A12B23; --red-light: #E8564D;
+  --blue: #2B4C7E; --blue-light: #3D6DB5; --blue-dark: #1A3456;
+  --navy: #0F1923; --gold: #D4A843; --gold-light: #E8C56D;
+  --text-dark: #1A1A1A; --text-mid: #4A4A4A; --text-light: #8A8A8A;
+  --border: #E0D5C4; --card-bg: #FFFFFF; --success: #2D8B46; --warning: #D4943A;
+  --shadow-lg: 0 8px 32px rgba(15,25,35,0.12);
+  --radius: 12px; --radius-sm: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Barlow', -apple-system, sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* HEADER */
+.header { background: var(--navy); color: var(--cream); padding: 20px 24px 16px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--red); }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-icon { width: 48px; height: 48px; background: var(--red); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 2px 8px rgba(200,55,45,0.4); }
+.brand-title { font-family: 'Yellowtail', cursive; font-weight: 400; font-size: 34px; line-height: 1; }
+.brand-subtitle { font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); margin-top: 2px; }
+.header-stats { display: flex; gap: 20px; align-items: center; }
+.stat-pill { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); }
+.stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.stat-pill .count { font-weight: 600; color: white; }
+
+/* DATE PICKER */
+.date-bar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; border-bottom: 1px solid var(--border); }
+.date-bar::-webkit-scrollbar { display: none; }
+.date-chip { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+.date-chip:hover { border-color: var(--blue); color: var(--blue); }
+.date-chip.active { background: var(--red); color: white; border-color: var(--red); }
+.date-chip .day-name { font-size: 10px; opacity: 0.7; }
+
+/* TOOLBAR */
+.toolbar { max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+.filter-btn { font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text-mid); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+.filter-btn.active-red { background: var(--red); color: white; border-color: var(--red); }
+.filter-btn.active-gold { background: var(--gold); color: var(--navy); border-color: var(--gold); }
